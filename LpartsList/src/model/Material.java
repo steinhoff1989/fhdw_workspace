@@ -5,7 +5,7 @@ import java.util.Vector;
 
 
 public class Material extends ComponentCommon {
-
+	//TEST
 
 	private static final String UnstructuredMaterialMessage = "Materialien haben kein Struktur!";
 	public static Material create(final String name, final int price) {
