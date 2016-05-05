@@ -34,16 +34,20 @@ public class ExpressionFacade {
 		variable.down();
 	}
 	public void createAdd(final Expression firstArgument, final Expression secondArgument) {
-		// TODO implement "createAdd" and store in expression list, compare "createVariable"!
+		final Add newAdd = Add.create(firstArgument, secondArgument);
+		this.getExpressions().add(newAdd);
 	}
 	public void createSubtract(final Expression firstArgument, final Expression secondArgument) {
-		// TODO implement "createSubtract" and store in expression list, compare "createVariable"!
+		final Subtract newSubtract = Subtract.create(firstArgument, secondArgument);
+		this.getExpressions().add(newSubtract);
 	}
 	public void createMultiply(final Expression firstArgument, final Expression secondArgument) {
-		// TODO implement "createMultiply" and store in expression list, compare "createVariable"!
+		final Multiply newMultiply = Multiply.create(firstArgument, secondArgument);
+		this.getExpressions().add(newMultiply);
 	}
 	public void createDivide(final Expression firstArgument, final Expression secondArgument) {
-		// TODO implement "createDivide" and store in expression list, compare "createVariable"!
+		final Divide newDivide = Divide.create(firstArgument, secondArgument);
+		this.getExpressions().add(newDivide);
 	}
 
 }

@@ -19,7 +19,7 @@ public class Variable implements Expression {
 		this.name = name;
 		this.setValue(initialValue);
 	}
-	private String getName() {
+	public String getName() {
 		return this.name;
 	}
 
