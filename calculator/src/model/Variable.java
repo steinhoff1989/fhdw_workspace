@@ -1,7 +1,7 @@
 package model;
 
 
-public class Variable implements Expression {
+public class Variable extends AObservee implements Expression {
 	
 	private static final int InitialVariableValue = 0;
 	private static final String ValueOpenBracket = "(";
@@ -42,5 +42,6 @@ public class Variable implements Expression {
 	}
 	private void setValue(final int newValue) {
 		this.value = newValue;
+		this.notifyObservers();
 	}
 }

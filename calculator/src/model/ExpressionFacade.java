@@ -36,18 +36,26 @@ public class ExpressionFacade {
 	public void createAdd(final Expression firstArgument, final Expression secondArgument) {
 		final Add newAdd = Add.create(firstArgument, secondArgument);
 		this.getExpressions().add(newAdd);
+		firstArgument.register(newAdd);
+		secondArgument.register(newAdd);
 	}
 	public void createSubtract(final Expression firstArgument, final Expression secondArgument) {
 		final Subtract newSubtract = Subtract.create(firstArgument, secondArgument);
 		this.getExpressions().add(newSubtract);
+		firstArgument.register(newSubtract);
+		secondArgument.register(newSubtract);
 	}
 	public void createMultiply(final Expression firstArgument, final Expression secondArgument) {
 		final Multiply newMultiply = Multiply.create(firstArgument, secondArgument);
 		this.getExpressions().add(newMultiply);
+		firstArgument.register(newMultiply);
+		secondArgument.register(newMultiply);
 	}
 	public void createDivide(final Expression firstArgument, final Expression secondArgument) {
 		final Divide newDivide = Divide.create(firstArgument, secondArgument);
 		this.getExpressions().add(newDivide);
+		firstArgument.register(newDivide);
+		secondArgument.register(newDivide);
 	}
 
 }

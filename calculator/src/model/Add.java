@@ -22,4 +22,5 @@ public class Add extends TwoPartOperation{
 	public int getValue() {
 		return firstArgument.getValue() + secondArgument.getValue();
 	}
+
 }

@@ -1,7 +1,7 @@
 package model;
 
 
-public interface Expression {
+public interface Expression extends Observee {
 
 	public String getName();
 	public int getValue();

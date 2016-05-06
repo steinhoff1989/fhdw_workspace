@@ -1,6 +1,6 @@
 package model;
 
-public abstract class TwoPartOperation implements Operation{
+public abstract class TwoPartOperation extends AObservee implements Operation, Observer{
 
 	protected static final String ValueOpenBracket = "(";
 	protected static final String ValueCloseBracket = ")";
@@ -16,5 +16,11 @@ public abstract class TwoPartOperation implements Operation{
 	@Override
 	public String toString(){
 		return this.getName() + ValueOpenBracket + this.getValue() + ValueCloseBracket;
+	}
+	
+	@Override
+	public void update() {
+		getValue();
+		notifyObservers();
 	}
 }
