@@ -11,6 +11,8 @@ public class Divide extends TwoPartOperation{
 	public Divide(Expression firstArgument, Expression secondArgument){
 		this.firstArgument= firstArgument;
 		this.secondArgument = secondArgument;
+		this.firstArgument.register(this);
+		this.secondArgument.register(this);
 	}
 
 	@Override
@@ -19,7 +21,7 @@ public class Divide extends TwoPartOperation{
 	}
 
 	@Override
-	public int getValue() {
+	public int getValue2() {
 		return firstArgument.getValue() / secondArgument.getValue();
 	}
 }

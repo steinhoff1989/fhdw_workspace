@@ -11,6 +11,8 @@ public class Add extends TwoPartOperation{
 	public Add(Expression firstArgument, Expression secondArgument){
 		this.firstArgument= firstArgument;
 		this.secondArgument = secondArgument;
+		this.firstArgument.register(this);
+		this.secondArgument.register(this);
 	}
 
 	@Override
@@ -18,9 +20,7 @@ public class Add extends TwoPartOperation{
 		return firstArgument.getName() + ADD + secondArgument.getName();
 	}
 
-	@Override
-	public int getValue() {
-		return firstArgument.getValue() + secondArgument.getValue();
+	public int getValue2() {
+		return this.firstArgument.getValue() + this.secondArgument.getValue();
 	}
-
 }

@@ -1,6 +1,6 @@
 package model;
 
-public abstract class TwoPartOperation extends AObservee implements Operation, Observer{
+public abstract class TwoPartOperation extends Operation{
 
 	protected static final String ValueOpenBracket = "(";
 	protected static final String ValueCloseBracket = ")";
@@ -20,7 +20,14 @@ public abstract class TwoPartOperation extends AObservee implements Operation, O
 	
 	@Override
 	public void update() {
-		getValue();
-		notifyObservers();
+		//this.state.getValue(this);
+		this.state = ValueNotCachedState.getInstance();
+		this.state.getValue(this);
+		this.notifyObservers();
+	}
+	
+	@Override
+	public int getValue() {
+		return this.state.getValue(this);
 	}
 }
