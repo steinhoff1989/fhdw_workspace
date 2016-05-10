@@ -20,7 +20,7 @@ public abstract class AObservee implements Observee{
 		observers.remove(o);
 	}
 	
-	public void notifyObservers(){
+	public void notifyObservers() throws DivisionByZeroException{
 		Iterator<Observer> iterator = observers.iterator();
 		while(iterator.hasNext()){
 			Observer current = iterator.next();

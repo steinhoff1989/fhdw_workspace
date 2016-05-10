@@ -17,7 +17,11 @@ public class Variable extends AObservee implements Expression {
 	
 	private Variable(final String name, final int initialValue){
 		this.name = name;
-		this.setValue(initialValue);
+		try {
+			this.setValue(initialValue);
+		} catch (DivisionByZeroException e) {
+			throw new Error();
+		}
 	}
 	public String getName() {
 		return this.name;
@@ -32,15 +36,23 @@ public class Variable extends AObservee implements Expression {
 		return this.getName() + ValueOpenBracket + this.getValue() + ValueCloseBracket;
 	}
 	public void up(){
-		this.setValue(this.getValue() + IncrementValue);
+		try {
+			this.setValue(this.getValue() + IncrementValue);
+		} catch (DivisionByZeroException e) {
+			throw new Error();
+		}
 	}
 	public void down(){
-		this.setValue(this.getValue() - IncrementValue);
+		try {
+			this.setValue(this.getValue() - IncrementValue);
+		} catch (DivisionByZeroException e) {
+			throw new Error();
+		}
 	}
 	public int getValue() {
 		return this.value;
 	}
-	private void setValue(final int newValue) {
+	private void setValue(final int newValue) throws DivisionByZeroException {
 		this.value = newValue;
 		this.notifyObservers();
 	}

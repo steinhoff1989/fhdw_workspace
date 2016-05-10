@@ -21,9 +21,8 @@ public class Multiply extends TwoPartOperation{
 	}
 
 	@Override
-	public int getValue2() {
-		return firstArgument.getValue() * secondArgument.getValue();
+	public int calculateValue() throws DivisionByZeroException {
+		return this.firstArgument.getValue() * this.secondArgument.getValue();
 	}
-	
 	
 }

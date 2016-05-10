@@ -20,7 +20,9 @@ public class Add extends TwoPartOperation{
 		return firstArgument.getName() + ADD + secondArgument.getName();
 	}
 
-	public int getValue2() {
+	@Override
+	public int calculateValue() throws DivisionByZeroException {
 		return this.firstArgument.getValue() + this.secondArgument.getValue();
 	}
+	
 }

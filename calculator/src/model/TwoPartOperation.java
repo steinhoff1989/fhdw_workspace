@@ -15,19 +15,33 @@ public abstract class TwoPartOperation extends Operation{
 	
 	@Override
 	public String toString(){
-		return this.getName() + ValueOpenBracket + this.getValue() + ValueCloseBracket;
+		try {
+			return this.getName() + ValueOpenBracket + this.getValue() + ValueCloseBracket;
+		} catch (DivisionByZeroException e) {
+			throw new Error();
+		}
+	}
+
+	@Override
+	public int getValue() throws DivisionByZeroException {
+		return this.state.getValue(this);
 	}
 	
 	@Override
-	public void update() {
-		//this.state.getValue(this);
+	public void update() throws DivisionByZeroException {
 		this.state = ValueNotCachedState.getInstance();
 		this.state.getValue(this);
 		this.notifyObservers();
 	}
 	
-	@Override
-	public int getValue() {
-		return this.state.getValue(this);
+	public Expression getFirstArgument() {
+		return firstArgument;
 	}
+
+	public Expression getSecondArgument() {
+		return secondArgument;
+	}
+	
+	
+
 }

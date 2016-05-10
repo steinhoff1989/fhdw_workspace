@@ -6,5 +6,5 @@ public interface Observee {
 	
 	public void deregister(Observer o);
 	
-	public void notifyObservers();
+	public void notifyObservers() throws DivisionByZeroException;
 }

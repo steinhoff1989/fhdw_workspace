@@ -60,15 +60,10 @@ public class ExpressionFacade {
 	}
 
 	public void createDivide(final Expression firstArgument, final Expression secondArgument) {
-		Divide newDivide;
-		try {
-			newDivide = Divide.create(firstArgument, secondArgument);
-			this.getExpressions().add(newDivide);
-			firstArgument.register(newDivide);
-			secondArgument.register(newDivide);
-		} catch (CreationWithSeconArgumentZeroException e) {
-			e.printStackTrace();
-		}
+		Divide newDivide = Divide.create(firstArgument, secondArgument);
+		this.getExpressions().add(newDivide);
+		firstArgument.register(newDivide);
+		secondArgument.register(newDivide);
 	}
 
 }

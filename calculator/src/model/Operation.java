@@ -12,5 +12,6 @@ public abstract class Operation extends AObservee implements Expression, Observe
 		this.state = state;
 	}
 	
-	public abstract int getValue2();
+	public abstract int calculateValue() throws DivisionByZeroException;
+	
 }
