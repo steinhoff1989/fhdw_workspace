@@ -1,6 +1,9 @@
 package model;
 
 import java.util.Iterator;
+
+//PENIS
+//MUSCHI
 import java.util.LinkedList;
 import java.util.List;
 
