@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+//bobo
+
 /** A simple account that possesses a list of account entries, 
  *  the sum of which constitutes the account's >balance>.
  */
