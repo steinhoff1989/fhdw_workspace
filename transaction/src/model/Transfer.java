@@ -30,6 +30,9 @@ public class Transfer implements TransferOrTransaction {
 	}
 	@Override
 	public void book() {
+		
+		fromAccount.book(new Debit(this));
+		toAccount.book(new Credit(this));
 		// TODO Implement "book()" in Transfer! 
 		System.out.println("Booking of transfer finished!");
 	}
