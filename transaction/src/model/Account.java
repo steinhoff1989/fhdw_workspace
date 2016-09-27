@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.naming.OperationNotSupportedException;
+
 //bobo
 
 /** A simple account that possesses a list of account entries, 
@@ -56,5 +58,29 @@ public class Account {
 	private void notifyObservers() {
 		Iterator<AccountObserver> currentObservers = this.observers.iterator();
 		while (currentObservers.hasNext()) currentObservers.next().update();
+	}
+	
+	public void book(Entry e){
+		e.acceptEntryVisitor(new EntryVisitor<Boolean>() {
+
+			@Override
+			public Boolean handleFakeEntry(FakeEntry e) {
+				//TODO: implement FakeEntry
+				return null;
+			}
+
+			@Override
+			public Boolean handleDebitEntry(Debit e) {
+				Account.this.balance = Account.this.balance - e.transfer.getAmount();
+				return true;
+			}
+
+			@Override
+			public Boolean handleCreditEntry(Credit e) {
+				Account.this.balance = Account.this.balance + e.transfer.getAmount();
+				return true;
+			}
+		});
+		accountEntries.add(e);
 	}
 }

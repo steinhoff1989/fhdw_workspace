@@ -1,5 +1,7 @@
 package viewModel;
 
+import model.Credit;
+import model.Debit;
 import model.Entry;
 import model.EntryVisitor;
 import model.FakeEntry;
@@ -24,6 +26,18 @@ public class EntryView {
 			@Override
 			public String handleFakeEntry(FakeEntry fakeEntry) {
 				return fakeEntry.getFake();
+			}
+
+			@Override
+			public String handleDebitEntry(Debit debitEntry) {
+				// TODO Auto-generated method stub
+				return debitEntry.toString();
+			}
+
+			@Override
+			public String handleCreditEntry(Credit creditEntry) {
+				// TODO Auto-generated method stub
+				return creditEntry.toString();
 			}
 		});
 	}

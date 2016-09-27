@@ -17,43 +17,64 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void transferTest1() {
+	public void TransferNullBuchung() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
+		
+		int entries1=a1.getAccountEntries().size();
+		int entries2=a2.getAccountEntries().size();
+		
 		
 		Transfer t1 = new Transfer(a1, a2, 0, "Test1");
 		t1.book();
 		
-		if(a1.getAccountEntries().size() == 1 ||
-				a2.getAccountEntries().size() == 1){
-			fail();
-		}
+		assertEquals(entries1 +1, a1.getAccountEntries().size());
+		assertEquals(entries2 +1, a2.getAccountEntries().size());
 	}
 	
 	@Test
-	public void transferTest2() {
+	public void TransNegBuchung() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
+		
+		long balance1 = a1.getBalance();
+		long balance2 = a2.getBalance();
+		
+		int entries1=a1.getAccountEntries().size();
+		int entries2=a2.getAccountEntries().size();
 		
 		Transfer t1 = new Transfer(a1, a2, -5, "Test1");
 		t1.book();
 		
-		assertEquals(-5, a1.getBalance());
+		assertEquals(balance1 + 5, a1.getBalance());
+		assertEquals(balance2 - 5, a2.getBalance());
+		assertEquals(entries1 +1, a1.getAccountEntries().size());
+		assertEquals(entries2 +1, a2.getAccountEntries().size());
 	}
 	
 	@Test
-	public void transferTest3() {
+	public void TransferStandard() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
+		
+		long balance1 = a1.getBalance();
+		long balance2 = a2.getBalance();
+		
+		int entries1=a1.getAccountEntries().size();
+		int entries2=a2.getAccountEntries().size();
 		
 		Transfer t1 = new Transfer(a1, a2, 5, "Test1");
 		t1.book();
 		
-		assertEquals(5, a1.getBalance());
+		
+		assertEquals(balance1 - 5, a1.getBalance());
+		assertEquals(balance2 + 5, a2.getBalance());
+		assertEquals(entries1 + 1, a1.getAccountEntries().size());
+		assertEquals(entries2 + 1, a2.getAccountEntries().size());
 	}
 	
 	@Test
-	public void transferTest4() {
+	public void equalDebitAndCreditTransfer() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -68,7 +89,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void transferTest5() {
+	public void lowerThanZeroBalanceTest() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -82,7 +103,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void transferTest6() {
+	public void LowerThanZeroTest() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -97,7 +118,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void transferTest7() {
+	public void standardTransfer() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -112,7 +133,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void transferTest8() {
+	public void doubleTransferBooking() {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
