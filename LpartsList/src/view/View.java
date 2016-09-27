@@ -199,7 +199,6 @@ public class View extends JFrame {
 			this.priceChangeButton = new JButton();
 			this.priceChangeButton.setText("Ändere Preis: ");
 			this.priceChangeButton.addActionListener(new ActionListener(){
-				@Override
 				public void actionPerformed(final ActionEvent e) {
 					priceChanged_action();
 				}
@@ -337,10 +336,8 @@ public class View extends JFrame {
 			this.priceTextField = new JTextField();
 			this.priceTextField.setText("1");
 			this.priceTextField.addFocusListener(new FocusListener(){
-				@Override
 				public void focusGained(final FocusEvent e) {
 				}
-				@Override
 				public void focusLost(final FocusEvent e) {
 					try {
 						Integer.parseInt(getPriceTextField().getText());
@@ -367,7 +364,6 @@ public class View extends JFrame {
 			this.newMaterialButton.setText("Erzeuge Material");
 			this.newMaterialButton
 					.addActionListener(new java.awt.event.ActionListener() {
-						@Override
 						public void actionPerformed(final java.awt.event.ActionEvent e) {
 							final String name = getNameTextField().getText();
 							final int price = Integer.parseInt(getPriceTextField().getText());
@@ -409,7 +405,6 @@ public class View extends JFrame {
 			this.newProductButton.setText("Erzeuge Produkt");
 			this.newProductButton
 					.addActionListener(new java.awt.event.ActionListener() {
-						@Override
 						public void actionPerformed(final java.awt.event.ActionEvent e) {
 							final String name = getNameTextField().getText();
 							final int price = Integer.parseInt(getPriceTextField().getText());
@@ -508,7 +503,6 @@ public class View extends JFrame {
 			this.addButton = new JButton();
 			this.addButton.setText("Teil hinzufügen");
 			this.addButton.addActionListener(new java.awt.event.ActionListener() {
-				@Override
 				public void actionPerformed(final java.awt.event.ActionEvent e) {
 					try {
 						final int amount = Integer.parseInt(getCountTextField()

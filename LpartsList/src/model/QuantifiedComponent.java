@@ -56,12 +56,10 @@ public class QuantifiedComponent extends AbstractObservee implements Comparable<
 		return this.quantity * Integer.valueOf(this.component.getOverallPrice2());
 	}
 
-	@Override
 	public int compareTo(QuantifiedComponent arg0) {
 		return this.component.getName().compareTo(arg0.getComponent().getName());
 	}
 
-	@Override
 	public void update(ComponentEvent e) {
 		this.notifyObserver(e);
 	}

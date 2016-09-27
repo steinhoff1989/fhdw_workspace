@@ -15,7 +15,6 @@ public abstract class ComponentCommon extends AbstractObservee implements Compon
 		this.state = NCState.getInstance();
 	}
 
-	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -31,7 +30,7 @@ public abstract class ComponentCommon extends AbstractObservee implements Compon
 	public boolean equals(Object argument) {
 		return super.equals(argument);
 	}
-	@Override
+
 	public void changePrice(int newPrice) {
 		this.price = newPrice;
 		this.setState(NCState.getInstance()); 
@@ -42,11 +41,10 @@ public abstract class ComponentCommon extends AbstractObservee implements Compon
 		this.state = state;
 	}
 	
-	@Override
 	public List<QuantifiedComponent> getMaterialList() {
 		return state.getMaterialList(this);
 	}
-	@Override
+
 	public String getOverallPrice() {
 		return state.getOverAllPrice(this);
 	}

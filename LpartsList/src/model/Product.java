@@ -20,7 +20,6 @@ public class Product extends ComponentCommon implements Observer{
 		this.components = components;
 	}
 
-	@Override
 	public void addPart(final ComponentCommon part, final int amount) throws Exception{
 		if (part.contains(this))throw new Exception(CycleMessage);
 		final String partName = part.getName();
@@ -39,7 +38,6 @@ public class Product extends ComponentCommon implements Observer{
 		return this.components;
 	}
 
-	@Override
 	public boolean contains(final Component component) {
 		if (this.equals(component)) return true;
 		final Iterator<QuantifiedComponent> i = this.getComponents().values().iterator();
@@ -50,12 +48,10 @@ public class Product extends ComponentCommon implements Observer{
 		return false;
 	}
 
-	@Override
 	public Vector<QuantifiedComponent> getDirectParts() {
 		return new Vector<QuantifiedComponent>(this.getComponents().values());
 	}
 
-	@Override
 	public int getNumberOfMaterials() {
 		int result = 0;
 		final Iterator<QuantifiedComponent> i = this.getComponents().values().iterator();
@@ -66,7 +62,6 @@ public class Product extends ComponentCommon implements Observer{
 		return result;
 	}
 
-	@Override
 	public List<QuantifiedComponent> getMaterialList2() {
 		MaterialList result = new MaterialList();
 		
@@ -81,7 +76,6 @@ public class Product extends ComponentCommon implements Observer{
 		return result.toList();
 	}
 
-	@Override
 	public String getOverallPrice2() {
 		int result = 0;
 		final List<QuantifiedComponent> quantifiedMaterials = this.getDirectParts();
@@ -93,16 +87,13 @@ public class Product extends ComponentCommon implements Observer{
 		return Integer.toString(result);
 	}
 
-	@Override
 	public void update(ComponentEvent e) {
 		e.accept(new EventVisitor(){
 
-			@Override
 			public void handlePriceChangedEvent(PriceChangedEvent e) {
 				state.priceChanged(Product.this);
 			}
 
-			@Override
 			public void handleStructureChangedEvent(StructureChangedEvent e) {
 				state.structureChanged(Product.this);
 				
