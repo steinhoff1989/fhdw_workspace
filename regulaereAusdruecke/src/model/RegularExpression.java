@@ -21,7 +21,11 @@ public abstract class RegularExpression {
 	}
 
 	public boolean recognize(String input){
-		return this.toAutomat().recognizes(input);
+		if(input.equals("")) return true;
+		
+		Automaton automat = this.toAutomat();
+		if(iterated) automat.iterate();
+		return automat.recognizes(input);
 	}
 	
 	public abstract RegularExpression concatenate(RegularExpression regEx);
