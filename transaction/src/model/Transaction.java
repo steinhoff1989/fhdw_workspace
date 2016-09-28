@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,8 +23,14 @@ public class Transaction implements TransferOrTransaction {
 	}
 	@Override
 	public void book() {
-		// TODO implement "book()" in Transaction!
-		System.out.println("Booking of transaction finished!");
+		
+		Iterator<Transfer> i = transfers.iterator();
+		while(i.hasNext()){
+			Transfer current = i.next();
+			
+			current.book();
+		}
+		
 
 	}
 }
