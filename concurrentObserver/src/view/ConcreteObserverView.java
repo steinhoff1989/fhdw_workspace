@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 import application.Application;
 import model.ConcreteObservee;
 import model.ConcreteObserver;
+import model.ConcreteObserverParallel;
 import model.ConcreteObserverSequential;
 import model.ConcreteObserverViewer;
 
@@ -129,7 +130,9 @@ public class ConcreteObserverView extends JFrame implements ConcreteObserverView
 	}
 
 	public void registerParallelCommand(){
-		this.registerSequentialCommand();//TODO Enable concurrent updates!
+		this.observer = ConcreteObserverParallel.create(this);
+		this.observee.register(this.observer); 
+		this.switchRegisterDeregisterEnabled();
 	}
 
 	

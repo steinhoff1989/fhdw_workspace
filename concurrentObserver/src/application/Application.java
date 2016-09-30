@@ -32,7 +32,8 @@ public class Application {
 			topMargin = topMargin + deltaTopMargin;
 			observer.setLocation(leftMargin,topMargin);
 			observer.setVisible(true);
-			observer.registerParallelCommand();//TODO Hint: Initial registration is performed here!
+			observer.registerParallelCommand();
+			//TODO Hint: Initial registration is performed here!
 		}	
 	}
 	private static void changeFontSizes() {

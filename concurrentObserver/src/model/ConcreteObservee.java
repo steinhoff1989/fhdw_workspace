@@ -17,6 +17,6 @@ public class ConcreteObservee extends Observee {
 	}
 	public void setValue(int value){
 		this.value = value; 
-		//TODO Think about notification for registered observers!
+		this.notifyObservers();
 	}
 }

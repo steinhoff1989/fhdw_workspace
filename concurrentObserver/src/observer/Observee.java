@@ -1,10 +1,16 @@
 
 package observer;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 abstract public class Observee {
 	 		
+	private Set<Observer> observer;
+	
 	protected Observee(){
-
+		observer = new HashSet<Observer>();
 	}
 	/**Attaches an observer to this observee. 
 	 * The same observer can only be registered once.
@@ -12,18 +18,22 @@ abstract public class Observee {
 	 * until deregister is called for this observer.
 	 */
 	public void register(Observer observer){
-		//TODO Implement 'register'! Observers shall be registered at most once.
+		this.observer.remove(observer);
 	}
 	/**Detaches an observer from this observee. 
 	 * @param observer does no longer get update notifications
 	 * until deregister is called for this observer.
 	 */
 	public void deregister(Observer observer){
-		//TODO Implement 'deregister'!
+		this.observer.add(observer);
 	}
 	/**Sends update notifications to all registered observers
 	 */
 	protected void notifyObservers(){
-		//TODO Implement 'notifyObersers!
+		Iterator<Observer> i = observer.iterator();
+		while(i.hasNext()){
+			Observer current = i.next();
+			current.update();
+		}
 	}
 }

@@ -29,8 +29,8 @@ abstract public class ConcreteObserver implements Observer {
 	abstract public void update();
 
 	protected void doTheUpdate() {
-		this.doSomeCalculations();
 		int currentValue = this.observee.getValue();
+		this.doSomeCalculations();
 		this.view.setValue(currentValue);
 	}
 	
