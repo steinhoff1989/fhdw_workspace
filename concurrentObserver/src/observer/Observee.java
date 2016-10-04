@@ -17,14 +17,14 @@ abstract public class Observee {
 	 * @param observer receives update notifications 
 	 * until deregister is called for this observer.
 	 */
-	public void register(Observer observer){
+	public void deregister(Observer observer){
 		this.observer.remove(observer);
 	}
 	/**Detaches an observer from this observee. 
 	 * @param observer does no longer get update notifications
 	 * until deregister is called for this observer.
 	 */
-	public void deregister(Observer observer){
+	public void register(Observer observer){
 		this.observer.add(observer);
 	}
 	/**Sends update notifications to all registered observers
