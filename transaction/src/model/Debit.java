@@ -7,7 +7,7 @@ public class Debit extends Entry{
 	}
 	
 	@Override
-	public <T> T acceptEntryVisitor(EntryVisitor<T> visitor) {
+	public <T> T acceptEntryVisitor(EntryVisitor<T> visitor) throws AmountUnderLimitException {
 		return visitor.handleDebitEntry(this);
 	}
 

@@ -11,13 +11,16 @@ import javax.naming.OperationNotSupportedException;
 
 //bobo
 
-/** A simple account that possesses a list of account entries, 
- *  the sum of which constitutes the account's >balance>.
+/**
+ * A simple account that possesses a list of account entries, the sum of which
+ * constitutes the account's >balance>.
  */
 public class Account {
-	
-	/** The balance of all accounts shall be greater or equal than this limit. */
-	public static final long UniversalAccountLimit = -1000; 
+
+	/**
+	 * The balance of all accounts shall be greater or equal than this limit.
+	 */
+	public static final long UniversalAccountLimit = -1000;
 
 	public static Account create(String name) {
 		return new Account(name);
@@ -33,52 +36,70 @@ public class Account {
 		this.balance = 0;
 		this.accountEntries = new LinkedList<Entry>();
 		this.observers = new LinkedList<AccountObserver>();
-		this.initialise(); //TODO Remove in final project!!!
+		this.initialise(); // TODO Remove in final project!!!
 	}
-	//TODO Remove in final project!!!
-	private void initialise() { 
-		for (int i = 0; i < this.name.length();i++) this.accountEntries.add(FakeEntry.create(name, i));
+
+	// TODO Remove in final project!!!
+	private void initialise() {
+		for (int i = 0; i < this.name.length(); i++)
+			this.accountEntries.add(FakeEntry.create(name, i));
 	}
+
 	public long getBalance() {
 		return this.balance;
 	}
+
 	public String getName() {
 		return this.name;
 	}
+
 	public List<Entry> getAccountEntries() {
 		return this.accountEntries;
 	}
+
 	public void register(AccountObserver observer) {
-		if (this.observers.contains(observer)) return;
+		if (this.observers.contains(observer))
+			return;
 		this.observers.add(observer);
 	}
+
 	public void deregister(AccountObserver observer) {
 		this.observers.remove(observer);
 	}
+
 	private void notifyObservers() {
 		Iterator<AccountObserver> currentObservers = this.observers.iterator();
-		while (currentObservers.hasNext()) currentObservers.next().update();
+		while (currentObservers.hasNext())
+			currentObservers.next().update();
 	}
-	
-	public void book(Entry e){
+
+	public void book(Entry e) throws AmountUnderLimitException {
 		e.acceptEntryVisitor(new EntryVisitor<Boolean>() {
 
 			@Override
 			public Boolean handleFakeEntry(FakeEntry e) {
-				//TODO: implement FakeEntry
+				// TODO: implement FakeEntry
 				return null;
 			}
 
 			@Override
-			public Boolean handleDebitEntry(Debit e) {
-				Account.this.balance = Account.this.balance - e.transfer.getAmount();
-				return true;
+			public Boolean handleDebitEntry(Debit e) throws AmountUnderLimitException {
+				if (Account.this.balance - e.transfer.getAmount() >= UniversalAccountLimit) {
+					Account.this.balance = Account.this.balance - e.transfer.getAmount();
+					return true;
+				} else {
+					throw new AmountUnderLimitException();
+				}
 			}
 
 			@Override
-			public Boolean handleCreditEntry(Credit e) {
-				Account.this.balance = Account.this.balance + e.transfer.getAmount();
-				return true;
+			public Boolean handleCreditEntry(Credit e) throws AmountUnderLimitException {
+				if (Account.this.balance + e.transfer.getAmount() >= UniversalAccountLimit) {
+					Account.this.balance = Account.this.balance + e.transfer.getAmount();
+					return true;
+				}else{
+					throw new AmountUnderLimitException();
+				}
 			}
 		});
 		accountEntries.add(e);

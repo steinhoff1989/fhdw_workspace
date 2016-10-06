@@ -30,10 +30,25 @@ public class Transfer implements TransferOrTransaction {
 	}
 	@Override
 	public void book() {
-		
-		fromAccount.book(new Debit(this));
-		toAccount.book(new Credit(this));
-		// TODO Implement "book()" in Transfer! 
+		if(amount>=0){
+			try {
+				fromAccount.book(new Debit(this));
+				toAccount.book(new Credit(this));
+			} catch (AmountUnderLimitException e) {
+				//TODO: COUNT FAIL
+				System.out.println("Booking of transfer failed!");
+				return;
+			}
+		}else{
+			try {
+				toAccount.book(new Credit(this));
+				fromAccount.book(new Debit(this));
+			} catch (AmountUnderLimitException e) {
+				//TODO: COUNT FAIL
+				System.out.println("Booking of transfer failed!");
+				return;
+			}
+		}
 		System.out.println("Booking of transfer finished!");
 	}
 

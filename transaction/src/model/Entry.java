@@ -5,6 +5,6 @@ public abstract class Entry {
 	
 	Transfer transfer;
 
-	abstract public <T> T acceptEntryVisitor(EntryVisitor<T> visitor);
+	abstract public <T> T acceptEntryVisitor(EntryVisitor<T> visitor) throws AmountUnderLimitException;
 	
 }

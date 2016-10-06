@@ -7,7 +7,7 @@ public class Credit extends Entry{
 	}
 	
 	@Override
-	public <T> T acceptEntryVisitor(EntryVisitor<T> visitor) {
+	public <T> T acceptEntryVisitor(EntryVisitor<T> visitor) throws AmountUnderLimitException {
 		return visitor.handleCreditEntry(this);
 	}
 
