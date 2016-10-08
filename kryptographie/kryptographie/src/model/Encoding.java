@@ -324,21 +324,50 @@ public class Encoding {
 			i++;
 		}
 
-		alphabet.add(new ChiffreEntry(i++, '.'));
-		alphabet.add(new ChiffreEntry(i++, ','));
-		alphabet.add(new ChiffreEntry(i++, ':'));
-		alphabet.add(new ChiffreEntry(i++, ';'));
-		alphabet.add(new ChiffreEntry(i++, '-'));
+		alphabet.add(new ChiffreEntry(i++, 'ß'));
+		alphabet.add(new ChiffreEntry(i++, 'ä'));
+		alphabet.add(new ChiffreEntry(i++, 'ö'));
+		alphabet.add(new ChiffreEntry(i++, 'ü'));
+		alphabet.add(new ChiffreEntry(i++, 'Ä'));
+		alphabet.add(new ChiffreEntry(i++, 'Ö'));
+		alphabet.add(new ChiffreEntry(i++, 'Ü'));
 		alphabet.add(new ChiffreEntry(i++, '!'));
-		alphabet.add(new ChiffreEntry(i++, '?'));
 		alphabet.add(new ChiffreEntry(i++, '"'));
+		alphabet.add(new ChiffreEntry(i++, '§'));
+		alphabet.add(new ChiffreEntry(i++, '$'));
+		alphabet.add(new ChiffreEntry(i++, '%'));
+		alphabet.add(new ChiffreEntry(i++, '&'));
+		alphabet.add(new ChiffreEntry(i++, '/'));
 		alphabet.add(new ChiffreEntry(i++, '('));
 		alphabet.add(new ChiffreEntry(i++, ')'));
+		alphabet.add(new ChiffreEntry(i++, '='));
+		alphabet.add(new ChiffreEntry(i++, '?'));
+		alphabet.add(new ChiffreEntry(i++, '`'));
+		alphabet.add(new ChiffreEntry(i++, '{'));
+		alphabet.add(new ChiffreEntry(i++, '['));
+		alphabet.add(new ChiffreEntry(i++, ']'));
+		alphabet.add(new ChiffreEntry(i++, '}'));
+		alphabet.add(new ChiffreEntry(i++, '\\'));
+		alphabet.add(new ChiffreEntry(i++, '@'));
+		alphabet.add(new ChiffreEntry(i++, '€'));
+		alphabet.add(new ChiffreEntry(i++, '+'));
+		alphabet.add(new ChiffreEntry(i++, '#'));
+		alphabet.add(new ChiffreEntry(i++, ','));
+		alphabet.add(new ChiffreEntry(i++, '.'));
+		alphabet.add(new ChiffreEntry(i++, '-'));
 		alphabet.add(new ChiffreEntry(i++, '*'));
+		alphabet.add(new ChiffreEntry(i++, '\''));
+		alphabet.add(new ChiffreEntry(i++, ';'));
+		alphabet.add(new ChiffreEntry(i++, ':'));
+		alphabet.add(new ChiffreEntry(i++, '_'));
+		alphabet.add(new ChiffreEntry(i++, '<'));
+		alphabet.add(new ChiffreEntry(i++, '>'));
+		alphabet.add(new ChiffreEntry(i++, '|'));
+		alphabet.add(new ChiffreEntry(i++, '^'));
+		alphabet.add(new ChiffreEntry(i++, '°'));
+		alphabet.add(new ChiffreEntry(i++, '~'));
 		alphabet.add(new ChiffreEntry(i++, ' '));
 		alphabet.add(new ChiffreEntry(i++, '\n'));
-		alphabet.add(new ChiffreEntry(i++, '€'));
-		alphabet.add(new ChiffreEntry(i++, '@'));
 		return alphabet;
 	}
 }
