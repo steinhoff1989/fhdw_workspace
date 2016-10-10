@@ -1,12 +1,12 @@
 package model;
 
-public class Transfer implements TransferOrTransaction {
+public class Transfer extends TransferOrTransaction {
 
 	public static Transfer create(Account from, Account to,	long amount, String purpose) {
 		return new Transfer(from, to, amount, purpose);
 	}
-	final private Account fromAccount;
-	final private Account toAccount;
+	private Account fromAccount;
+	private Account toAccount;
 	final private long amount;
 	final private String purpose;
 
@@ -29,27 +29,19 @@ public class Transfer implements TransferOrTransaction {
 		return this.purpose;
 	}
 	@Override
-	public void book() {
-		if(amount>=0){
-			try {
-				fromAccount.book(new Debit(this));
-				toAccount.book(new Credit(this));
-			} catch (AmountUnderLimitException e) {
-				//TODO: COUNT FAIL
-				System.out.println("Booking of transfer failed!");
-				return;
-			}
-		}else{
-			try {
-				toAccount.book(new Credit(this));
-				fromAccount.book(new Debit(this));
-			} catch (AmountUnderLimitException e) {
-				//TODO: COUNT FAIL
-				System.out.println("Booking of transfer failed!");
-				return;
-			}
-		}
-		System.out.println("Booking of transfer finished!");
+	public void book() throws AmountUnderLimitException, TransferAlreadyBookedException {
+		this.state.book(this);
+	}
+	public void setFromAccount(Account fromAccount) {
+		this.fromAccount = fromAccount;
+		
+	}
+	public void setToAccount(Account toAccount) {
+		this.toAccount = toAccount;
+		
+	}
+	public void setState(SuccessState newState) {
+		this.state = newState;
 	}
 
 }

@@ -6,7 +6,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import model.Account;
+import model.AmountUnderLimitException;
+import model.Transaction;
+import model.TransactionFailedException;
 import model.Transfer;
+import model.TransferAlreadyBookedException;
 
 public class ModelTest {
 
@@ -17,7 +21,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void TransferNullBuchung() {
+	public void TransferNullBuchung() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -33,7 +37,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void TransNegBuchung() {
+	public void TransNegBuchung() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -53,7 +57,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void TransferStandard() {
+	public void TransferStandard() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -74,7 +78,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void equalDebitAndCreditTransfer() {
+	public void equalDebitAndCreditTransfer() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -89,7 +93,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void lowerThanZeroBalanceTest() {
+	public void lowerThanZeroBalanceTest() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -103,7 +107,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void LowerThanZeroTest() {
+	public void LowerThanZeroTest() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -118,7 +122,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void standardTransfer() {
+	public void standardTransfer() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -133,7 +137,7 @@ public class ModelTest {
 	}
 	
 	@Test
-	public void doubleTransferBooking() {
+	public void doubleTransferBooking() throws AmountUnderLimitException, TransferAlreadyBookedException {
 		Account a1 = new Account("Account1");
 		Account a2 = new Account("Account2");
 		
@@ -145,6 +149,29 @@ public class ModelTest {
 		
 		assertEquals(-3, a1.getBalance());
 		assertEquals(3, a2.getBalance());
+	}
+	
+	@Test
+	public void transactionFailedTest1() throws AmountUnderLimitException, TransferAlreadyBookedException {
+		Account a1 = new Account("Account1");
+		Account a2 = new Account("Account2");
+		
+		Transfer t1 = new Transfer(a1, a2, 600, "Test1");
+		Transfer t2 = new Transfer(a1, a2, 600, "Test1");
+		Transfer t3 = new Transfer(a2, a1, 400, "Test1");
+		
+		Transaction trans1 = Transaction.create();
+		trans1.addTransfer(t1);
+		trans1.addTransfer(t2);
+		trans1.addTransfer(t3);
+		
+		try {
+			trans1.book();
+			fail();
+		} catch (TransactionFailedException e) {
+			assertEquals(0, a1.getBalance());
+			assertEquals(0, a2.getBalance());
+		}
 	}
 
 }

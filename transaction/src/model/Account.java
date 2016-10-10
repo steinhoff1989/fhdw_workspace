@@ -88,7 +88,8 @@ public class Account {
 					Account.this.balance = Account.this.balance - e.transfer.getAmount();
 					return true;
 				} else {
-					throw new AmountUnderLimitException();
+					e.transfer.state.incrementCounter();
+					throw new AmountUnderLimitException("Booking not possible. Booking undershot the limit by " + (((Account.this.balance - e.transfer.getAmount()) - UniversalAccountLimit) *(-1)));
 				}
 			}
 
@@ -98,7 +99,8 @@ public class Account {
 					Account.this.balance = Account.this.balance + e.transfer.getAmount();
 					return true;
 				}else{
-					throw new AmountUnderLimitException();
+					e.transfer.state.incrementCounter();
+					throw new AmountUnderLimitException("Booking not possible. Booking undershot the limit by " + ((Account.this.balance + e.transfer.getAmount() - UniversalAccountLimit)  * (-1)));
 				}
 			}
 		});
