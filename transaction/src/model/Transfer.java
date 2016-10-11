@@ -1,5 +1,7 @@
 package model;
 
+import viewModel.TransferOrTransactionView;
+
 public class Transfer extends TransferOrTransaction {
 
 	public static Transfer create(Account from, Account to,	long amount, String purpose) {
@@ -40,7 +42,7 @@ public class Transfer extends TransferOrTransaction {
 		this.toAccount = toAccount;
 		
 	}
-	public void setState(SuccessState newState) {
+	public void setState(TransferState newState) {
 		this.state = newState;
 	}
 

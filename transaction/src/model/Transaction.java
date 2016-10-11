@@ -7,8 +7,6 @@ import java.util.Stack;
 
 public class Transaction extends TransferOrTransaction {
 
-	Stack<Transfer> bookStack;
-
 	public static Transaction create() {
 		return new Transaction();
 	}
@@ -17,7 +15,6 @@ public class Transaction extends TransferOrTransaction {
 
 	private Transaction() {
 		this.transfers = new LinkedList<Transfer>();
-		this.bookStack = new Stack<Transfer>();
 	}
 
 	public void addTransfer(Transfer transfer) {
@@ -31,6 +28,7 @@ public class Transaction extends TransferOrTransaction {
 	@Override
 	public void book() throws AmountUnderLimitException, TransactionFailedException, TransferAlreadyBookedException {
 
+		Stack<Transfer> bookStack = new Stack<Transfer>();
 		Iterator<Transfer> i = transfers.iterator();
 		try {
 			while (i.hasNext()) {
@@ -39,11 +37,11 @@ public class Transaction extends TransferOrTransaction {
 				bookStack.push(current);
 			}
 		} catch (AmountUnderLimitException | TransferAlreadyBookedException e) {
-			Iterator<Transfer> i2 = bookStack.iterator();
-			while (i2.hasNext()) {
-				Transfer rebook = i2.next();
+			while (!bookStack.isEmpty()) {
+				Transfer rebook = bookStack.pop();
 				Transfer reBookTransfer = new Transfer(rebook.getToAccount(), rebook.getFromAccount(), rebook.getAmount(), rebook.getPurpose());
 				reBookTransfer.book();
+				rebook.setState(new NotCompletedState());
 			}
 			throw new TransactionFailedException("One transfer in transaction failed.");
 		}

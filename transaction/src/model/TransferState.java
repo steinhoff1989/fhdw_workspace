@@ -1,10 +1,10 @@
 package model;
 
-public abstract class TransferOrTransactionState {
+public abstract class TransferState {
 
 	protected int failCounter;
 
-	public TransferOrTransactionState() {
+	public TransferState() {
 		super();
 		this.failCounter = 0;
 	}
@@ -18,7 +18,5 @@ public abstract class TransferOrTransactionState {
 	}
 	
 	public abstract void book(Transfer transfer) throws AmountUnderLimitException, TransferAlreadyBookedException;
-	
-	
-	
+
 }

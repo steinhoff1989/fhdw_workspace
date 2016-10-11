@@ -1,6 +1,6 @@
 package model;
 
-public class NotCompletedState extends TransferOrTransactionState {
+public class NotCompletedState extends TransferState {
 
 	public NotCompletedState() {
 		super();
@@ -15,6 +15,13 @@ public class NotCompletedState extends TransferOrTransactionState {
 			transfer.getToAccount().book(new Credit(transfer));
 			transfer.getFromAccount().book(new Debit(transfer));
 		}
-		transfer.setState(new SuccessState());
+		transfer.setState(new SuccessState(this.failCounter));
 	}
+
+	@Override
+	public String toString() {
+		return "NotCompletedState";
+	}
+	
+	
 }

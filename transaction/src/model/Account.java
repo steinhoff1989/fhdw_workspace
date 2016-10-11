@@ -41,8 +41,8 @@ public class Account {
 
 	// TODO Remove in final project!!!
 	private void initialise() {
-		for (int i = 0; i < this.name.length(); i++)
-			this.accountEntries.add(FakeEntry.create(name, i));
+//		for (int i = 0; i < this.name.length(); i++)
+//			this.accountEntries.add(FakeEntry.create(name, i));
 	}
 
 	public long getBalance() {

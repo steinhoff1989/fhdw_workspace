@@ -1,9 +1,10 @@
 package model;
 
-public class SuccessState extends TransferOrTransactionState{
+public class SuccessState extends TransferState{
 
-	public SuccessState() {
+	public SuccessState(int failCount) {
 		super();
+		this.failCounter = failCount;
 	}
 
 	@Override
@@ -11,4 +12,8 @@ public class SuccessState extends TransferOrTransactionState{
 		throw new TransferAlreadyBookedException("Transfer is already booked.");
 	}
 
+	@Override
+	public String toString() {
+		return "SuccessState";
+	}
 }

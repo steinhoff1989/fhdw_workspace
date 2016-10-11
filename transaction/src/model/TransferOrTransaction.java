@@ -8,7 +8,7 @@ public abstract class TransferOrTransaction {
 	 */
 	public abstract void book() throws AccountException;
 	
-	public TransferOrTransactionState state;
+	public TransferState state;
 
 	public TransferOrTransaction() {
 		super();
