@@ -29,11 +29,11 @@ abstract public class Observee {
 	}
 	/**Sends update notifications to all registered observers
 	 */
-	protected void notifyObservers(){
+	protected void notifyObservers(int value){
 		Iterator<Observer> i = observer.iterator();
 		while(i.hasNext()){
 			Observer current = i.next();
-			current.update();
+			current.update(value);
 		}
 	}
 }

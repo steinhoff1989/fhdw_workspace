@@ -1,34 +1,39 @@
 package model;
 
+
 import view.ConcreteObserverView;
 
-public class ConcreteObserverParallel extends ConcreteObserver{
+public class ConcreteObserverParallel extends ConcreteObserver {
 
 	public static ConcreteObserver create(ConcreteObserverView concreteObserverView) {
 		return new ConcreteObserverParallel(concreteObserverView);
 	}
 
+//	final private Object criticalSection = new Object();
+
 	private Thread myUpdateThread;
-	boolean updateNeeded;
-	
+//	boolean updateNeeded;
+
+	private Buffer buffer;
+
 	private ConcreteObserverParallel(ConcreteObserverViewer view) {
 		super(view);
-		this.updateNeeded = false;
+		this.buffer = new Buffer();
+//		this.updateNeeded = false;
 		this.myUpdateThread = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				while(true){
-					if(updateNeeded){
-						updateNeeded = false;
-						ConcreteObserverParallel.this.doTheUpdate();	
-					}else{
-						synchronized (ConcreteObserverParallel.this) {
-							try {
-								ConcreteObserverParallel.this.wait();
-							} catch (InterruptedException e) {}
-						}
-					}
+				while (true) {
+//					synchronized (criticalSection) {
+//						if (!updateNeeded) {
+//							try {
+//								criticalSection.wait();
+//							} catch (InterruptedException e) {}
+//						}
+//						updateNeeded = false;
+//					}
+					ConcreteObserverParallel.this.doTheUpdate(buffer.get()); // TODO
 				}
 			}
 		});
@@ -36,13 +41,11 @@ public class ConcreteObserverParallel extends ConcreteObserver{
 	}
 
 	@Override
-	public void update() {
-		this.updateNeeded = true;
-		synchronized (this) {
-			this.notify();
-		}
+	public void update(int value) {
+//		synchronized (criticalSection) {
+//			this.updateNeeded = true;
+			this.buffer.put(value);
+//			criticalSection.notify();
+//		}
 	}
 }
-
-
-

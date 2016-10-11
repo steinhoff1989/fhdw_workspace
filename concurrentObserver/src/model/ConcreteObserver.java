@@ -12,6 +12,9 @@ abstract public class ConcreteObserver implements Observer {
 	ConcreteObserverViewer view;
 	ConcreteObservee observee;
 	
+	boolean toggle = false;
+	private int currentValue = 0;
+	
 	protected ConcreteObserver(ConcreteObserverViewer view){
 		this.view = view;
 		this.observee = Application.getObservee();
@@ -26,12 +29,17 @@ abstract public class ConcreteObserver implements Observer {
 		} catch (InterruptedException e) {}
 	} 
 
-	abstract public void update();
+	abstract public void update(int value);
 
-	protected void doTheUpdate() {
-		int currentValue = this.observee.getValue();
+	protected void doTheUpdate(int value) {
+		if(toggle){
+			currentValue += value;
+		}else{
+			currentValue -= value;
+		}
+		toggle = !toggle;
 		this.doSomeCalculations();
-		this.view.setValue(currentValue);
+		this.view.setValue(this.currentValue);
 	}
 	
 }

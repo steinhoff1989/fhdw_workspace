@@ -11,8 +11,8 @@ public class ConcreteObserverSequential extends ConcreteObserver {
 	}
 
 	@Override
-	public void update() {
-		doTheUpdate();
+	public void update(int value) {
+		doTheUpdate(value);
 	}
 
 }
