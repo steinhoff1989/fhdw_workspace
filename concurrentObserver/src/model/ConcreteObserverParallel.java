@@ -1,6 +1,7 @@
 package model;
 
 
+import model.Buffer.StoppException;
 import view.ConcreteObserverView;
 
 public class ConcreteObserverParallel extends ConcreteObserver {
@@ -14,17 +15,18 @@ public class ConcreteObserverParallel extends ConcreteObserver {
 	private Thread myUpdateThread;
 //	boolean updateNeeded;
 
-	private Buffer buffer;
+	private Buffer<Integer> buffer;
 
 	private ConcreteObserverParallel(ConcreteObserverViewer view) {
 		super(view);
-		this.buffer = new Buffer();
+		this.buffer = new Buffer<Integer>();
 //		this.updateNeeded = false;
 		this.myUpdateThread = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				while (true) {
+				boolean running = true;
+				while (running) {
 //					synchronized (criticalSection) {
 //						if (!updateNeeded) {
 //							try {
@@ -33,7 +35,11 @@ public class ConcreteObserverParallel extends ConcreteObserver {
 //						}
 //						updateNeeded = false;
 //					}
-					ConcreteObserverParallel.this.doTheUpdate(buffer.get()); // TODO
+					try {
+						ConcreteObserverParallel.this.doTheUpdate(buffer.get());
+					} catch (Buffer.StoppException e) {
+						running = false;
+					}
 				}
 			}
 		});
