@@ -6,8 +6,15 @@ import java.util.List;
 public class Buffer<E> {
 	
 	Lock lockKA;
-	Lock lockWaiting;
-	boolean waiting;
+	Lock lockWaitingForNotEmpty;
+	Lock lockWaitingForNotFull;
+	boolean waitingForNotExpty;
+	private Object[] myBuffer;
+	private int first;
+	private int behindLast;
+//	List<BufferEntry<E>> implementingList;
+	private int internalCapacity;
+	private boolean waitingForNotFull;
 	
 	@SuppressWarnings("serial")
 	public static class StoppException extends Exception {}
@@ -33,42 +40,88 @@ public class Buffer<E> {
 		}
 	}
 	
-	List<BufferEntry<E>> implementingList;
+//	public Buffer(){
+////		this.implementingList = new LinkedList<BufferEntry<E>>();
+//		this.lockKA = new Lock(false);
+//		this.lockWaiting = new Lock(true);
+//		this.waiting = false;
+////		this.myBuffer
+////		this.first = 0;
+////		this.behindLast = 0;
+//	}
 	
-	public Buffer(){
-		this.implementingList = new LinkedList<BufferEntry<E>>();
+	public Buffer(int capacity){
+		this.internalCapacity = capacity <= 0 ? 1 : capacity + 1;
+		this.myBuffer = new Object[this.internalCapacity];
+		this.first = 0;
+		this.behindLast = 0;
+		
+//		this.implementingList = new LinkedList<BufferEntry<E>>();
 		this.lockKA = new Lock(false);
-		this.lockWaiting = new Lock(true);
-		this.waiting = false;
+		this.lockWaitingForNotEmpty = new Lock(true);
+		this.lockWaitingForNotFull= new Lock(true);
+		this.waitingForNotExpty = false;
+		this.waitingForNotFull= false;
 	}
+	
 	
 	public void put(E value) {
 		this.lockKA.lock();
-		this.implementingList.add(new Wrapped<E>(value));
-		if(waiting){
-			this.waiting = false;
-			lockWaiting.unlock();
+		if(this.isFull()){
+			this.waitingForNotFull = true;
+			this.lockKA.unlock();
+			this.lockWaitingForNotFull.lock();
+			this.lockKA.lock();
+		}
+		this.addNextEntry(new Wrapped<E>(value));
+		if(waitingForNotExpty){
+			this.waitingForNotExpty = false;
+			lockWaitingForNotEmpty.unlock();
 		}
 		this.lockKA.unlock();
 	}
+	
+
 	public E get() throws StoppException {
 		lockKA.lock();
 		if (this.isEmpty()){				
-			this.waiting = true;
+			this.waitingForNotExpty = true;
 			this.lockKA.unlock();
-			this.lockWaiting.lock();
+			this.lockWaitingForNotEmpty.lock();
 			lockKA.lock();
 		}
-		E result = this.implementingList.get(0).getWrapped();
-		this.implementingList.remove(0);
+		E result = this.getNextEntry().getWrapped();
+		if(this.waitingForNotFull){
+			this.waitingForNotFull = false;
+			this.lockWaitingForNotFull.unlock();
+		}
 		lockKA.unlock();
 		return result;
 	}
+	private Buffer<E>.BufferEntry<E> getNextEntry() {
+		@SuppressWarnings("unchecked")
+		BufferEntry<E> result = (Buffer<E>.BufferEntry<E>) this.myBuffer[this.first];
+		this.first = (this.first + 1) % this.internalCapacity;
+//		if(this.isEmpty()){
+//			
+//		}
+		return result;
+	}
+	
+	private void addNextEntry(Buffer<E>.BufferEntry<E> wrapped) {
+		this.myBuffer[this.behindLast] = wrapped;
+		this.behindLast = (this.behindLast + 1) % this.internalCapacity;
+	}
+
 	public void stopp(){
-		this.implementingList.add(new Stopp<E>());
+		this.addNextEntry(new Stopp<E>());
 	}
 	private boolean isEmpty(){
-		return this.implementingList.isEmpty();
+		return this.first == this.behindLast;
+	}
+	
+	private boolean isFull(){
+		return ((this.behindLast + 1) % this.internalCapacity) == this.first;
 	}
 }
 

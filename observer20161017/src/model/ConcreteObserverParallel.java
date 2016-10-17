@@ -13,7 +13,7 @@ public class ConcreteObserverParallel extends ConcreteObserver{
 	
 	private ConcreteObserverParallel(ConcreteObserverViewer view) {
 		super(view);
-		this.buffer = new Buffer<Integer>();
+		this.buffer = new Buffer<Integer>(1);
 		this.myUpdateThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
