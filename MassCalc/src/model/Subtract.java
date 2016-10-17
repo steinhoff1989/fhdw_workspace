@@ -1,14 +1,22 @@
 package model;
 
+import model.Buffer.StoppException;
+
 public class Subtract extends Process{
 
 	public Subtract(Buffer<Integer> streamOne, Buffer<Integer> streamTwo) {
 		super(streamOne, streamTwo);
+		this.startThread();
 	}
 
 	@Override
-	public int calculate(int value1, int value2) {
-		return value1 - value2;
+	public void calculate() {
+		try {
+			int result = this.getStreamOne().get() - this.getStreamTwo().get();
+			this.getStreamResult().put(result);
+		} catch (StoppException e) {
+			this.getStreamResult().stopp();
+		}
 	}
 
 }

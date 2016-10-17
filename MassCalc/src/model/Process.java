@@ -17,7 +17,11 @@ public abstract class Process {
 			@Override
 			public void run() {
 				// while(true){
-				Process.this.calculate();
+				try {
+					Process.this.calculate();
+				} catch (DivideByZeroException e) {
+					e.printStackTrace(); //TODO: Divide 0
+				}
 				// }
 			}
 		});
@@ -39,5 +43,5 @@ public abstract class Process {
 		return this.streamResult;
 	}
 
-	public abstract void calculate();
+	public abstract void calculate() throws DivideByZeroException;
 }
