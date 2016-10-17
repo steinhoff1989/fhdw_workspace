@@ -27,7 +27,7 @@ public class Lock implements AbstractLock {
 
 	@Override
 	synchronized public void unlock() {
-		this.locked = false; //Reihenfolge wichtig!
+		this.locked = false; //Reihenfolge in diesem Kontext nicht wichtig, da lock in gleichem KA!
 		this.notify();
 	}
 
