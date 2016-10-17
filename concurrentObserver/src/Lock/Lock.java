@@ -17,7 +17,7 @@ public class Lock implements AbstractLock {
 	synchronized public void lock() {
 		while(this.locked){
 			try {
-				this.wait(); //weit() verlässt den Kritischen Abschnitt!
+				this.wait(); //wait() verlässt den Kritischen Abschnitt!
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
