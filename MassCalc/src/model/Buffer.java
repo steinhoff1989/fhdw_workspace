@@ -7,7 +7,7 @@ public class Buffer<E> extends AbstractBuffer<E> {
 	}
 
 	// vorne raus
-	synchronized public E get() throws StoppException {
+	synchronized public E get() throws StoppException, DivideByZeroException {
 		// eigentlich if, aber hier while, da das Betriebssystem manchmal das
 		// wait aufwekcen könnte
 		while (this.isEmpty()) {

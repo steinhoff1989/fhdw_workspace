@@ -7,7 +7,7 @@ public class BufferConstant<E> extends AbstractBuffer<E> {
 	}
 
 	@Override
-	public E get() throws StoppException {
+	public E get() throws StoppException, DivideByZeroException {
 		// eigentlich if, aber hier while, da das Betriebssystem manchmal das
 		// wait aufwecken könnte
 		while (this.isEmpty()) {

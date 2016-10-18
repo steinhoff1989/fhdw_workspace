@@ -10,7 +10,7 @@ public class Multiply extends Process{
 	}
 
 	@Override
-	public void calculate() {
+	public void calculate() throws DivideByZeroException {
 		try {
 			int result = this.getStreamOne().get() * this.getStreamTwo().get();
 			this.getStreamResult().put(result);

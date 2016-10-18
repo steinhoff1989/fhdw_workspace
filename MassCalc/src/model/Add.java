@@ -10,7 +10,7 @@ public final class Add extends Process {
 	}
 
 	@Override
-	public void calculate() throws StoppException {
+	public void calculate() throws StoppException, DivideByZeroException {
 		int result = this.getStreamOne().get() + this.getStreamTwo().get();
 		this.getStreamResult().put(result);
 	}

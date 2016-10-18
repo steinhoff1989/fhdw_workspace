@@ -26,8 +26,7 @@ public abstract class Process {
 						running = false;
 						Process.this.streamResult.stopp();
 					} catch (DivideByZeroException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						Process.this.streamResult.dividedByZero();
 					}
 			}
 			}

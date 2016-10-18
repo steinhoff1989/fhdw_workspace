@@ -10,7 +10,7 @@ public abstract class AbstractBuffer<E> {
 	}
 	
 	protected interface BufferEntry<E> {
-		E getWrapped() throws StoppException;
+		E getWrapped() throws StoppException, DivideByZeroException;
 	}
 
 	private class Stopp<E> implements BufferEntry<E> {
@@ -20,6 +20,16 @@ public abstract class AbstractBuffer<E> {
 		@Override
 		public E getWrapped() throws StoppException {
 			throw new StoppException();
+		}
+	}
+	
+	private class DividedByZero<E> implements BufferEntry<E> {
+		DividedByZero() {
+		}
+
+		@Override
+		public E getWrapped() throws DivideByZeroException {
+			throw new DivideByZeroException();
 		}
 	}
 
@@ -48,12 +58,17 @@ public abstract class AbstractBuffer<E> {
 		this.notify();
 	}
 
-	public abstract E get() throws StoppException;
+	public abstract E get() throws StoppException, DivideByZeroException;
 	
 	
 	
 	synchronized public void stopp(){
 		this.implementingList.add(new Stopp<E>());
+		this.notify();
+	}
+	
+	synchronized public void dividedByZero(){
+		this.implementingList.add(new DividedByZero<E>());
 		this.notify();
 	}
 
