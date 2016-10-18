@@ -2,11 +2,10 @@ package model;
 
 public class Constant extends Process {
 	
-	public int value;
-
 	public Constant(int value) {
-		super(new Buffer<Integer>(), new Buffer<Integer>());
-		this.value = value;
+		super(new BufferConstant<Integer>(), new BufferConstant<Integer>());
+		BufferConstant<Integer> bufferConstant = new BufferConstant<Integer>();
+		this.setStreamResult(bufferConstant);
 		this.getStreamResult().put(value);
 	}
 

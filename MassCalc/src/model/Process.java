@@ -1,13 +1,15 @@
 package model;
 
+import model.AbstractBuffer.StoppException;
+
 public abstract class Process {
 
-	private final Buffer<Integer> streamOne;
-	private final Buffer<Integer> streamTwo;
-	private final Buffer<Integer> streamResult;
+	private final AbstractBuffer<Integer> streamOne;
+	private final AbstractBuffer<Integer> streamTwo;
+	private AbstractBuffer<Integer> streamResult;
 	private final Thread thread;
 
-	public Process(Buffer<Integer> streamOne, Buffer<Integer> streamTwo) {
+	public Process(AbstractBuffer<Integer> streamOne, AbstractBuffer<Integer> streamTwo) {
 		super();
 		this.streamOne = streamOne;
 		this.streamTwo = streamTwo;
@@ -16,13 +18,18 @@ public abstract class Process {
 
 			@Override
 			public void run() {
-				// while(true){
-				try {
-					Process.this.calculate();
-				} catch (DivideByZeroException e) {
-					e.printStackTrace(); //TODO: Divide 0
-				}
-				// }
+				boolean running = true;
+				while (running) {
+					try {
+						Process.this.calculate();
+					} catch (StoppException e) {
+						running = false;
+						Process.this.streamResult.stopp();
+					} catch (DivideByZeroException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
 			}
 		});
 	}
@@ -31,17 +38,21 @@ public abstract class Process {
 		this.thread.start();
 	}
 
-	public Buffer<Integer> getStreamOne() {
+	public AbstractBuffer<Integer> getStreamOne() {
 		return streamOne;
 	}
 
-	public Buffer<Integer> getStreamTwo() {
+	public AbstractBuffer<Integer> getStreamTwo() {
 		return streamTwo;
 	}
 
-	public Buffer<Integer> getStreamResult() {
+	public AbstractBuffer<Integer> getStreamResult() {
 		return this.streamResult;
 	}
+	
+	public void setStreamResult(AbstractBuffer<Integer> streamResult) {
+		this.streamResult = streamResult;
+	}
 
-	public abstract void calculate() throws DivideByZeroException;
+	public abstract void calculate() throws DivideByZeroException, StoppException;
 }

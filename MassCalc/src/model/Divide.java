@@ -1,10 +1,10 @@
 package model;
 
-import model.Buffer.StoppException;
+import model.AbstractBuffer.StoppException;
 
 public class Divide extends Process{
 
-	public Divide(Buffer<Integer> streamOne, Buffer<Integer> streamTwo) {
+	public Divide(AbstractBuffer<Integer> streamOne, AbstractBuffer<Integer> streamTwo) {
 		super(streamOne, streamTwo);
 		this.startThread();
 	}

@@ -1,26 +1,23 @@
 package model;
 
-public class Buffer<E> extends AbstractBuffer<E> {
+public class BufferConstant<E> extends AbstractBuffer<E> {
 
-	public Buffer() {
+	public BufferConstant() {
 		super();
 	}
 
-	// vorne raus
-	synchronized public E get() throws StoppException {
+	@Override
+	public E get() throws StoppException {
 		// eigentlich if, aber hier while, da das Betriebssystem manchmal das
-		// wait aufwekcen könnte
+		// wait aufwecken könnte
 		while (this.isEmpty()) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		E result = this.implementingList.get(0).getWrapped();
-
-		this.implementingList.remove(0);
 		return result;
 	}
 
