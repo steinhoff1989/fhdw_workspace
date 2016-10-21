@@ -70,5 +70,8 @@ public class Buffer<E> {
 	public boolean isEmpty() {
 		return this.implementingList.isEmpty();
 	}
+	public int size(){
+		return this.implementingList.size();
+	}
 
 }
