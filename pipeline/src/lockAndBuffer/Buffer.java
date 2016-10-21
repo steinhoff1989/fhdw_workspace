@@ -1,5 +1,3 @@
-
-
 package lockAndBuffer;
 
 public class Buffer<E> {
@@ -39,9 +37,9 @@ public class Buffer<E> {
 	
 	private Lock mutex = new Lock(false);
 	private Lock reading = new Lock(true);
-	private boolean waitingForNotEmpty = false;
+	private int waitingForNotEmpty = 0;
 	private Lock writing = new Lock(true);
-	private boolean waitingForNotFull = false;
+	private int waitingForNotFull = 0;
 
 	private Object[] myBuffer;
 	private int first;
@@ -54,14 +52,15 @@ public class Buffer<E> {
 	private void put(BufferEntry<E> value) {
 		mutex.lock();
 		if (this.isFull()) {
-			this.waitingForNotFull = true;
+			System.out.println("full");
+			this.waitingForNotFull++;
 			this.mutex.unlock();
 			writing.lock();
 			this.mutex.lock();
 		}
 		this.addNextEntry(value);
-		if (waitingForNotEmpty) {
-			this.waitingForNotEmpty = false;
+		if (waitingForNotEmpty > 0) {
+			this.waitingForNotEmpty--;
 			reading.unlock();
 		}
 		mutex.unlock();
@@ -69,17 +68,22 @@ public class Buffer<E> {
 	public E get() throws StoppException {
 		mutex.lock();
 		if (this.isEmpty()){
-			this.waitingForNotEmpty = true;
+			this.waitingForNotEmpty++;
 			mutex.unlock();
 			reading.lock();
 			mutex.lock();
 		}
-		E result = this.getNextEntry().getWrapped();
-		if (this.waitingForNotFull){
-			this.waitingForNotFull = false;
-			writing.unlock();
+		E result = null;
+		try{
+			result = this.getNextEntry().getWrapped();
 		}
-		mutex.unlock();
+		finally{
+			if (this.waitingForNotFull > 0){
+				this.waitingForNotFull--;
+				writing.unlock();
+			}
+			mutex.unlock();
+		}
 		return result;
 	}
 	private void addNextEntry(Buffer<E>.BufferEntry<E> wrapped) {

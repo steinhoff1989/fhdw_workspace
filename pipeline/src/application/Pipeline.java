@@ -4,7 +4,7 @@ import lockAndBuffer.Buffer;
 
 public class Pipeline {
 
-	private static final int Capacity = 3000;
+	private static final int Capacity = 30;
 
 	public static void main(String[] args) {
 		Buffer<Integer> buffer = Buffer.create(Capacity);
