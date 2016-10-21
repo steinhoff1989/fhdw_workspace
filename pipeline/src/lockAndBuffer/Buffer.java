@@ -46,6 +46,9 @@ public class Buffer<E> {
 	private int behindLast;
 	private int internalCapacity;
 	
+	private Lock writingUnlockFinished = new Lock(true);
+	private Lock readingUnlockFinished = new Lock(true);
+	
 	public void put(E value) {
 		this.put(new Wrapped<E>(value));
 	}
@@ -56,12 +59,14 @@ public class Buffer<E> {
 			this.waitingForNotFull++;
 			this.mutex.unlock();
 			writing.lock();
+			this.writingUnlockFinished.unlock();
 			this.mutex.lock();
 		}
 		this.addNextEntry(value);
 		if (waitingForNotEmpty > 0) {
 			this.waitingForNotEmpty--;
 			reading.unlock();
+			this.readingUnlockFinished.lock();
 		}
 		mutex.unlock();
 	}
@@ -71,6 +76,7 @@ public class Buffer<E> {
 			this.waitingForNotEmpty++;
 			mutex.unlock();
 			reading.lock();
+			this.readingUnlockFinished.unlock();
 			mutex.lock();
 		}
 		E result = null;
@@ -81,6 +87,7 @@ public class Buffer<E> {
 			if (this.waitingForNotFull > 0){
 				this.waitingForNotFull--;
 				writing.unlock();
+				this.writingUnlockFinished.lock();
 			}
 			mutex.unlock();
 		}

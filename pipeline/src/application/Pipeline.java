@@ -4,7 +4,7 @@ import lockAndBuffer.Buffer;
 
 public class Pipeline {
 
-	private static final int Capacity = 30;
+	private static final int Capacity = 50;
 
 	public static void main(String[] args) {
 		Buffer<Integer> buffer = Buffer.create(Capacity);
@@ -12,7 +12,25 @@ public class Pipeline {
 
 		manager.createAndStartProducer();
 		manager.createAndStartProducer();
+		manager.createAndStartProducer();
+		manager.createAndStartProducer();
+		manager.createAndStartProducer();
+		manager.createAndStartProducer();
+		manager.createAndStartProducer();
+		manager.createAndStartProducer();
 
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
+		manager.createAndStartConsumer();
 		manager.createAndStartConsumer();
 		manager.createAndStartConsumer();
 		manager.createAndStartConsumer();
