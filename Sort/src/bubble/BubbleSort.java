@@ -8,6 +8,7 @@ public class BubbleSort {
 	private Buffer<Comparable> inputBuffer;
 	@SuppressWarnings({ "rawtypes" })
 	private Buffer<Comparable> outputBuffer;
+	private boolean bubbled = false;
 
 	@SuppressWarnings({ "rawtypes" })
 	public BubbleSort(Buffer<Comparable> inputBuffer) {
@@ -15,42 +16,52 @@ public class BubbleSort {
 		this.outputBuffer = new Buffer<Comparable>();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void sort() {
-		@SuppressWarnings("rawtypes")
-		Comparable firstArg = null;
+		new Thread(new Runnable() {
 
-		try {
-			firstArg = this.inputBuffer.get();
-		} catch (StoppException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		sortHelper(firstArg);
+			@Override
+			public void run() {
+				@SuppressWarnings("rawtypes")
+				Comparable firstArg = null;
+
+				try {
+					firstArg = BubbleSort.this.inputBuffer.get();
+				} catch (StoppException e) {
+					BubbleSort.this.outputBuffer.stopp();
+					return;
+				}
+				sortHelper(firstArg);
+
+				if (bubbled) {
+//					BubbleSort temp = new BubbleSort(this.outputBuffer);
+//					this.outputBuffer = temp.outputBuffer;
+					bubbled = false;
+					BubbleSort.this.inputBuffer = BubbleSort.this.outputBuffer;
+					BubbleSort.this.outputBuffer = new Buffer<Comparable>();
+					BubbleSort.this.sort();
+				}
+			}
+		}).start();
 	}
 
-	public void sortHelper(Comparable firstArg) {
-		if (!this.inputBuffer.isEmpty()) {
-			Comparable secondArg = null;
-			try {
-				secondArg = this.inputBuffer.get();
-			} catch (StoppException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			if (firstArg.compareTo(secondArg) <= 0) {
-				this.outputBuffer.put(firstArg);
-				sortHelper(secondArg);
-			} else {
-				this.outputBuffer.put(secondArg);
-				sortHelper(firstArg);
-			}
-		}else{
+	private void sortHelper(Comparable firstArg) {
+		Comparable secondArg = null;
+		try {
+			secondArg = this.inputBuffer.get();
+		} catch (StoppException e) {
 			this.outputBuffer.put(firstArg);
+			this.outputBuffer.stopp();
+			return;
 		}
-		
 
+		if (firstArg.compareTo(secondArg) <= 0) {
+			this.outputBuffer.put(firstArg);
+			sortHelper(secondArg);
+		} else {
+			this.outputBuffer.put(secondArg);
+			this.bubbled = true;
+			sortHelper(firstArg);
+		}
 	}
 
 	public Buffer<Comparable> getInputBuffer() {
@@ -67,6 +78,10 @@ public class BubbleSort {
 
 	public void setOutputBuffer(Buffer<Comparable> outputBuffer) {
 		this.outputBuffer = outputBuffer;
+	}
+	
+	public Comparable getNextElement() throws StoppException{
+		return this.outputBuffer.get();
 	}
 
 }
