@@ -32,7 +32,7 @@ public class bubbleTest {
 		inputBuffer.stopp();
 		
 		BubbleSort toSort = new BubbleSort(inputBuffer);
-		toSort.sort();
+//		toSort.sort();
 		
 		try {
 			Thread.sleep(200);
@@ -72,7 +72,7 @@ public class bubbleTest {
 		inputBuffer.put(5);
 		inputBuffer.stopp();
 		
-		toSort.sort();
+//		toSort.sort();
 		
 		try {
 			Thread.sleep(200);
@@ -100,7 +100,14 @@ public class bubbleTest {
 		inputBuffer.stopp();
 		
 		BubbleSort toSort = new BubbleSort(inputBuffer);
-		toSort.sort();
+//		toSort.sort();
+		
+		try {
+			Thread.sleep(200);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		try {
 			assertEquals(0,toSort.getOutputBuffer().get());
@@ -125,7 +132,7 @@ public class bubbleTest {
 		inputBuffer.put(4);
 		inputBuffer.stopp();
 		
-		toSort.sort();
+//		toSort.sort();
 		
 		try {
 			Thread.sleep(200);

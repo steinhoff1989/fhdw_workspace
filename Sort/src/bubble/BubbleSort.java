@@ -14,34 +14,37 @@ public class BubbleSort {
 	public BubbleSort(Buffer<Comparable> inputBuffer) {
 		this.inputBuffer = inputBuffer;
 		this.outputBuffer = new Buffer<Comparable>();
-	}
-
-	public void sort() {
-		new Thread(new Runnable() {
+		
+		Thread t1 = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				@SuppressWarnings("rawtypes")
-				Comparable firstArg = null;
-
-				try {
-					firstArg = BubbleSort.this.inputBuffer.get();
-				} catch (StoppException e) {
-					BubbleSort.this.outputBuffer.stopp();
-					return;
-				}
-				sortHelper(firstArg);
-
-				if (bubbled) {
-//					BubbleSort temp = new BubbleSort(this.outputBuffer);
-//					this.outputBuffer = temp.outputBuffer;
-					bubbled = false;
-					BubbleSort.this.inputBuffer = BubbleSort.this.outputBuffer;
-					BubbleSort.this.outputBuffer = new Buffer<Comparable>();
-					BubbleSort.this.sort();
-				}
+				BubbleSort.this.sort();
 			}
-		}).start();
+		});
+		t1.start();
+	}
+
+	public void sort() {
+		@SuppressWarnings("rawtypes")
+		Comparable firstArg = null;
+
+		try {
+			firstArg = BubbleSort.this.inputBuffer.get();
+		} catch (StoppException e) {
+			BubbleSort.this.outputBuffer.stopp();
+			return;
+		}
+		sortHelper(firstArg);
+
+		if (bubbled) {
+//			BubbleSort temp = new BubbleSort(this.outputBuffer);
+//			this.outputBuffer = temp.outputBuffer;
+			bubbled = false;
+			BubbleSort.this.inputBuffer = BubbleSort.this.outputBuffer;
+			BubbleSort.this.outputBuffer = new Buffer<Comparable>();
+			BubbleSort.this.sort();
+		}
 	}
 
 	private void sortHelper(Comparable firstArg) {
