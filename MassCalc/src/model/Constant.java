@@ -1,16 +1,20 @@
 package model;
 
-public class Constant extends Process {
+public class Constant implements ArithmetischerAusdruck{
+	
+	BufferConstant<Integer> streamResult;
 	
 	public Constant(int value) {
-		super(new BufferConstant<Integer>(), new BufferConstant<Integer>());
-		BufferConstant<Integer> bufferConstant = new BufferConstant<Integer>();
-		this.setStreamResult(bufferConstant);
-		this.getStreamResult().put(value);
+		streamResult = new BufferConstant<Integer>();
+		this.streamResult.put(value);
+	}
+
+	public BufferConstant<Integer> getStreamResult() {
+		return streamResult;
 	}
 
 	@Override
-	public void calculate() {
+	public boolean contains(ArithmetischerAusdruck ar1) {
+		return this.equals(ar1);
 	}
-
 }

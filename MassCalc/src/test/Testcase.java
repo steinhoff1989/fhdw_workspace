@@ -8,7 +8,6 @@ import org.junit.Test;
 import model.AbstractBuffer.StoppException;
 import model.Add;
 import model.Buffer;
-import model.BufferConstant;
 import model.Constant;
 import model.Divide;
 import model.DivideByZeroException;
@@ -138,6 +137,7 @@ public class Testcase {
 		assertEquals((Integer) 7, sub1.getStreamResult().get());
 	}
 
+
 	@Test
 	public void testMultiplySimple() throws StoppException, DivideByZeroException {
 
@@ -168,7 +168,7 @@ public class Testcase {
 	}
 
 	@Test
-	public void testDivide2() throws StoppException {
+	public void testDividedByZeroException1() throws StoppException {
 
 		Buffer<Integer> streamOne = new Buffer<Integer>();
 		Buffer<Integer> streamTwo = new Buffer<Integer>();
@@ -178,6 +178,27 @@ public class Testcase {
 
 		Divide div1 = new Divide(streamOne, streamTwo);
 
+		try {
+			assertEquals((Integer) 7, div1.getStreamResult().get());
+			fail();
+		} catch (DivideByZeroException e) {
+		}
+	}
+	
+	@Test
+	public void testDividedByZeroException2() throws StoppException {
+		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamThree = new Buffer<Integer>();
+
+		streamOne.put(35);
+		streamTwo.put(35);
+		streamThree.put(16);
+		
+		Subtract sub1 = new Subtract(streamOne, streamTwo);
+		
+		Divide div1 = new Divide(streamOne, sub1.getStreamResult());
+		
 		try {
 			assertEquals((Integer) 7, div1.getStreamResult().get());
 			fail();

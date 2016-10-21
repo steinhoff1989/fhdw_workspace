@@ -2,7 +2,12 @@ package model;
 
 import model.AbstractBuffer.StoppException;
 
-public abstract class Process {
+public abstract class Process implements ArithmetischerAusdruck{
+
+	@Override
+	public boolean contains(ArithmetischerAusdruck ar1) {
+		return false; //TODO
+	}
 
 	private final AbstractBuffer<Integer> streamOne;
 	private final AbstractBuffer<Integer> streamTwo;
