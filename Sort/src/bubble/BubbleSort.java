@@ -2,21 +2,26 @@ package bubble;
 
 import bubble.Buffer.StoppException;
 
-public class BubbleSort {
+public class BubbleSort<T extends Comparable<T>> {
 
-	@SuppressWarnings({ "rawtypes" })
-	private Buffer<Comparable> inputBuffer;
-	@SuppressWarnings({ "rawtypes" })
-	private Buffer<Comparable> outputBuffer;
+	private Buffer<T> inputBuffer;
+	private Buffer<T> outputBuffer;
 	private boolean bubbled = false;
+	private Buffer<T> resultBuffer;
 
-	@SuppressWarnings({ "rawtypes" })
-	public BubbleSort(Buffer<Comparable> inputBuffer) {
+	private BubbleSort<T> nextBubbleSort;
+
+	
+	/**
+	 * Creates a new BubbleSort Object and starts a new Thread to sort <inputBuffer>
+	 * @param inputBuffer
+	 */
+	public BubbleSort(Buffer<T> inputBuffer) {
 		this.inputBuffer = inputBuffer;
-		this.outputBuffer = new Buffer<Comparable>();
-		
-		Thread t1 = new Thread(new Runnable() {
+		this.outputBuffer = new Buffer<>();
+		this.resultBuffer = new Buffer<>();
 
+		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				BubbleSort.this.sort();
@@ -25,9 +30,11 @@ public class BubbleSort {
 		t1.start();
 	}
 
-	public void sort() {
-		@SuppressWarnings("rawtypes")
-		Comparable firstArg = null;
+	/**
+	 * sorts the <inputBuffer> and writes the result to <resultBuffer>
+	 */
+	private void sort() {
+		T firstArg = null;
 
 		try {
 			firstArg = BubbleSort.this.inputBuffer.get();
@@ -36,19 +43,20 @@ public class BubbleSort {
 			return;
 		}
 		sortHelper(firstArg);
-
+		
 		if (bubbled) {
-//			BubbleSort temp = new BubbleSort(this.outputBuffer);
-//			this.outputBuffer = temp.outputBuffer;
-			bubbled = false;
-			BubbleSort.this.inputBuffer = BubbleSort.this.outputBuffer;
-			BubbleSort.this.outputBuffer = new Buffer<Comparable>();
-			BubbleSort.this.sort();
+			adaptResultFromNextThread();
+		} else {
+			adaptResultFromOutput();
 		}
 	}
 
-	private void sortHelper(Comparable firstArg) {
-		Comparable secondArg = null;
+	/**
+	 * Uses <inputBuffer> to creates the <outputBuffer> so that the greatest element will be at the end
+	 * @param firstArg
+	 */
+	private void sortHelper(T firstArg) {
+		T secondArg = null;
 		try {
 			secondArg = this.inputBuffer.get();
 		} catch (StoppException e) {
@@ -62,29 +70,49 @@ public class BubbleSort {
 			sortHelper(secondArg);
 		} else {
 			this.outputBuffer.put(secondArg);
-			this.bubbled = true;
+			if (!bubbled) {
+				this.bubbled = true;
+				nextBubbleSort = new BubbleSort<>(this.outputBuffer);
+			}
 			sortHelper(firstArg);
 		}
 	}
 
-	public Buffer<Comparable> getInputBuffer() {
-		return inputBuffer;
-	}
-
-	public void setInputBuffer(Buffer<Comparable> inputBuffer) {
-		this.inputBuffer = inputBuffer;
-	}
-
-	public Buffer<Comparable> getOutputBuffer() {
-		return outputBuffer;
-	}
-
-	public void setOutputBuffer(Buffer<Comparable> outputBuffer) {
-		this.outputBuffer = outputBuffer;
+	/**
+	 * Returns the next element that is available in <resultBuffer>
+	 * @return
+	 * @throws StoppException
+	 */
+	public T getNextElement() throws StoppException {
+		return this.resultBuffer.get();
 	}
 	
-	public Comparable getNextElement() throws StoppException{
-		return this.outputBuffer.get();
+	/**
+	 * Writes all elements of <outputBuffer> in <resultBuffer>.
+	 */
+	private void adaptResultFromOutput() {
+		while (true) {
+			try {
+				this.resultBuffer.put(this.outputBuffer.get());
+			} catch (StoppException e) {
+				this.resultBuffer.stopp();
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Writes the elements of the started thread resultBuffer in this.resultBuffer.
+	 */
+	private void adaptResultFromNextThread() {
+		while (true) {
+			try {
+				this.resultBuffer.put(nextBubbleSort.resultBuffer.get());
+			} catch (StoppException e) {
+				this.resultBuffer.stopp();
+				return;
+			}
+		}
 	}
 
 }

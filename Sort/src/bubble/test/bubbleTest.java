@@ -13,10 +13,10 @@ import bubble.Buffer.StoppException;
 public class bubbleTest {
 
 	@Test
-	public void bubbleTest1(){
-		
-		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
-		
+	public void bubbleTest1() throws StoppException {
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		BubbleSort<Integer> toSort = new BubbleSort<>(inputBuffer);
+
 		inputBuffer.put(0);
 		inputBuffer.put(2);
 		inputBuffer.put(5);
@@ -30,130 +30,83 @@ public class bubbleTest {
 		inputBuffer.put(7);
 		inputBuffer.put(4);
 		inputBuffer.stopp();
-		
-		BubbleSort toSort = new BubbleSort(inputBuffer);
-//		toSort.sort();
-		
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			assertEquals(0,toSort.getOutputBuffer().get());
-			assertEquals(0,toSort.getOutputBuffer().get());
-			assertEquals(1,toSort.getOutputBuffer().get());
-			assertEquals(2,toSort.getOutputBuffer().get());
-			assertEquals(3,toSort.getOutputBuffer().get());
-			assertEquals(4,toSort.getOutputBuffer().get());
-			assertEquals(4,toSort.getOutputBuffer().get());
-			assertEquals(5,toSort.getOutputBuffer().get());
-			assertEquals(6,toSort.getOutputBuffer().get());
-			assertEquals(7,toSort.getOutputBuffer().get());
-			assertEquals(8,toSort.getOutputBuffer().get());
-			assertEquals(9,toSort.getOutputBuffer().get());
-		} catch (StoppException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		assertEquals(Integer.valueOf(0), toSort.getNextElement());
+		assertEquals(0, toSort.getNextElement().intValue());
+		assertEquals(1, toSort.getNextElement().intValue());
+		assertEquals(2, toSort.getNextElement().intValue());
+		assertEquals(3, toSort.getNextElement().intValue());
+		assertEquals(4, toSort.getNextElement().intValue());
+		assertEquals(4, toSort.getNextElement().intValue());
+		assertEquals(5, toSort.getNextElement().intValue());
+		assertEquals(6, toSort.getNextElement().intValue());
+		assertEquals(7, toSort.getNextElement().intValue());
+		assertEquals(8, toSort.getNextElement().intValue());
+		assertEquals(9, toSort.getNextElement().intValue());
 
 	}
 
 	@Test
-	public void bubbleTest2(){
-		
+	public void bubbleTest2() throws StoppException {
 		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
 		BubbleSort toSort = new BubbleSort(inputBuffer);
-		
+
 		inputBuffer.put(0);
 		inputBuffer.put(2);
 		inputBuffer.put(5);
 		inputBuffer.stopp();
-		
-//		toSort.sort();
-		
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			assertEquals(0,toSort.getNextElement());
-			assertEquals(2,toSort.getNextElement());
-			assertEquals(5,toSort.getNextElement());
-		} catch (StoppException e) {
-			System.out.println("stopped");
-		}
+
+		assertEquals(0, toSort.getNextElement());
+		assertEquals(2, toSort.getNextElement());
+		assertEquals(5, toSort.getNextElement());
 	}
-	
+
 	@Test
-	public void bubbleTest3(){
+	public void bubbleTest3() throws StoppException {
 		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
-		
+		BubbleSort toSort = new BubbleSort(inputBuffer);
+
 		inputBuffer.put(0);
 		inputBuffer.put(5);
 		inputBuffer.put(2);
 		inputBuffer.stopp();
-		
-		BubbleSort toSort = new BubbleSort(inputBuffer);
-//		toSort.sort();
-		
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			assertEquals(0,toSort.getOutputBuffer().get());
-			assertEquals(2,toSort.getOutputBuffer().get());
-			assertEquals(5,toSort.getOutputBuffer().get());
-		} catch (StoppException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		assertEquals(0, toSort.getNextElement());
+		assertEquals(2, toSort.getNextElement());
+		assertEquals(5, toSort.getNextElement());
 	}
-	
+
 	@Test
-	public void bubbleTest4(){
+	public void bubbleTest4() throws StoppException {
 		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
 		BubbleSort toSort = new BubbleSort(inputBuffer);
-		
+
 		inputBuffer.put(0);
 		inputBuffer.put(2);
 		inputBuffer.put(5);
 		inputBuffer.put(3);
 		inputBuffer.put(1);
+		inputBuffer.put(1);
 		inputBuffer.put(4);
 		inputBuffer.stopp();
-		
-//		toSort.sort();
-		
-		try {
-			Thread.sleep(200);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		try {
-			assertEquals(0,toSort.getOutputBuffer().get());
-			assertEquals(1,toSort.getOutputBuffer().get());
-			assertEquals(2,toSort.getOutputBuffer().get());
-			assertEquals(3,toSort.getOutputBuffer().get());
-			assertEquals(4,toSort.getOutputBuffer().get());
-			assertEquals(5,toSort.getOutputBuffer().get());
-		} catch (StoppException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+		assertEquals(0, toSort.getNextElement());
+		assertEquals(1, toSort.getNextElement());
+		assertEquals(1, toSort.getNextElement());
+		assertEquals(2, toSort.getNextElement());
+		assertEquals(3, toSort.getNextElement());
+		assertEquals(4, toSort.getNextElement());
+		assertEquals(5, toSort.getNextElement());
 	}
 	
-	
+	@Test
+	public void bubbleTest5() throws StoppException {
+		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
+		BubbleSort toSort = new BubbleSort(inputBuffer);
+
+		inputBuffer.put(0);
+		inputBuffer.stopp();
+
+		assertEquals(0, toSort.getNextElement());
+	}
 }
