@@ -1,24 +1,19 @@
 package model;
 
-import model.AbstractBuffer.StoppException;
+import model.Buffer.StoppException;
 
-public abstract class Process implements ArithmetischerAusdruck{
+public abstract class Process{
 
-	@Override
-	public boolean contains(ArithmetischerAusdruck ar1) {
-		return false; //TODO
-	}
-
-	private final AbstractBuffer<Integer> streamOne;
-	private final AbstractBuffer<Integer> streamTwo;
-	private AbstractBuffer<Integer> streamResult;
+	private final Buffer<Integer> streamOne;
+	private final Buffer<Integer> streamTwo;
+	private Buffer<Integer> streamResult;
 	private final Thread thread;
 
-	public Process(AbstractBuffer<Integer> streamOne, AbstractBuffer<Integer> streamTwo) {
+	public Process(Buffer<Integer> streamOne, Buffer<Integer> streamTwo) {
 		super();
 		this.streamOne = streamOne;
 		this.streamTwo = streamTwo;
-		this.streamResult = new Buffer<Integer>();
+		this.streamResult = new Buffer<Integer>(100);
 		this.thread = new Thread(new Runnable() {
 
 			@Override
@@ -37,24 +32,24 @@ public abstract class Process implements ArithmetischerAusdruck{
 			}
 		});
 	}
-
+	
 	protected void startThread() {
 		this.thread.start();
 	}
 
-	public AbstractBuffer<Integer> getStreamOne() {
+	public Buffer<Integer> getStreamOne() {
 		return streamOne;
 	}
 
-	public AbstractBuffer<Integer> getStreamTwo() {
+	public Buffer<Integer> getStreamTwo() {
 		return streamTwo;
 	}
 
-	public AbstractBuffer<Integer> getStreamResult() {
+	public Buffer<Integer> getStreamResult() {
 		return this.streamResult;
 	}
 	
-	public void setStreamResult(AbstractBuffer<Integer> streamResult) {
+	public void setStreamResult(Buffer<Integer> streamResult) {
 		this.streamResult = streamResult;
 	}
 

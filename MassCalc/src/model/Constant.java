@@ -1,20 +1,19 @@
 package model;
 
-public class Constant implements ArithmetischerAusdruck{
-	
-	BufferConstant<Integer> streamResult;
-	
-	public Constant(int value) {
-		streamResult = new BufferConstant<Integer>();
-		this.streamResult.put(value);
-	}
+import model.Buffer.StoppException;
 
-	public BufferConstant<Integer> getStreamResult() {
-		return streamResult;
+public class Constant extends Process {
+
+	private int value;
+
+	public Constant(int value) {
+		super(new Buffer<Integer>(0), new Buffer<Integer>(0));
+		this.value = value;
+		this.startThread();
 	}
 
 	@Override
-	public boolean contains(ArithmetischerAusdruck ar1) {
-		return this.equals(ar1);
+	public void calculate() throws DivideByZeroException, StoppException {
+		this.getStreamResult().put(value);
 	}
 }

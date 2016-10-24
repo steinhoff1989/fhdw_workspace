@@ -1,10 +1,10 @@
 package model;
 
-import model.AbstractBuffer.StoppException;
+import model.Buffer.StoppException;
 
 public final class Add extends Process {
 
-	public Add(AbstractBuffer<Integer> streamOne, AbstractBuffer<Integer> streamTwo) {
+	public Add(Buffer<Integer> streamOne, Buffer<Integer> streamTwo) {
 		super(streamOne, streamTwo);
 		this.startThread();
 	}

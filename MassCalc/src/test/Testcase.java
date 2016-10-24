@@ -5,13 +5,14 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import model.AbstractBuffer.StoppException;
 import model.Add;
 import model.Buffer;
+import model.Buffer.StoppException;
 import model.Constant;
 import model.Divide;
 import model.DivideByZeroException;
 import model.Multiply;
+import model.Vervielfältiger;
 import model.Subtract;
 
 public class Testcase {
@@ -19,8 +20,8 @@ public class Testcase {
 	@Test
 	public void testStop1() throws DivideByZeroException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 
 		streamOne.stopp();
 		streamTwo.put(9);
@@ -37,8 +38,8 @@ public class Testcase {
 	@Test
 	public void testStop2() throws DivideByZeroException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 
 		streamOne.put(1);
 		streamOne.put(2);
@@ -63,8 +64,8 @@ public class Testcase {
 	@Test
 	public void testStop3() throws DivideByZeroException {
 		
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 		
 		streamOne.put(1);
 		streamOne.stopp();
@@ -88,8 +89,8 @@ public class Testcase {
 	@Test
 	public void testStop4() throws DivideByZeroException {
 		
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 		
 		streamOne.stopp();
 		streamOne.put(2);
@@ -107,8 +108,8 @@ public class Testcase {
 	@Test
 	public void testAddSimple() throws StoppException, DivideByZeroException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 
 		streamTwo.put(7);
 		streamOne.put(5);
@@ -120,10 +121,10 @@ public class Testcase {
 	@Test
 	public void testAddSimple2() throws StoppException, DivideByZeroException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
-		Buffer<Integer> streamThree = new Buffer<Integer>();
-		Buffer<Integer> streamFour = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
+		Buffer<Integer> streamThree = new Buffer<Integer>(100);
+		Buffer<Integer> streamFour = new Buffer<Integer>(100);
 
 		streamTwo.put(7);
 		streamOne.put(5);
@@ -141,8 +142,8 @@ public class Testcase {
 	@Test
 	public void testMultiplySimple() throws StoppException, DivideByZeroException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 
 		streamTwo.put(7);
 		streamOne.put(5);
@@ -156,8 +157,8 @@ public class Testcase {
 	@Test
 	public void testDivideSimple() throws StoppException, DivideByZeroException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 
 		streamOne.put(35);
 		streamTwo.put(5);
@@ -170,8 +171,8 @@ public class Testcase {
 	@Test
 	public void testDividedByZeroException1() throws StoppException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 
 		streamOne.put(35);
 		streamTwo.put(0);
@@ -187,9 +188,9 @@ public class Testcase {
 	
 	@Test
 	public void testDividedByZeroException2() throws StoppException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
-		Buffer<Integer> streamThree = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
+		Buffer<Integer> streamThree = new Buffer<Integer>(100);
 
 		streamOne.put(35);
 		streamTwo.put(35);
@@ -209,8 +210,8 @@ public class Testcase {
 	@Test
 	public void testSubtractSimple() throws StoppException, DivideByZeroException {
 
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 
 		streamOne.put(35);
 		streamTwo.put(34);
@@ -222,7 +223,7 @@ public class Testcase {
 
 	@Test
 	public void testAddConstant1() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
 		Constant constant5 = new Constant(5);
 
 		streamOne.put(5);
@@ -235,7 +236,7 @@ public class Testcase {
 	
 	@Test
 	public void testAddConstant2() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
 		Constant constant5 = new Constant(5);
 
 		streamOne.put(5);
@@ -248,9 +249,36 @@ public class Testcase {
 		assertEquals((Integer) 14, add1.getStreamResult().get());
 	}
 	
+//	@Test
+//	public void testAddConstant3() throws StoppException, DivideByZeroException {
+//		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+//		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
+//		
+//		streamOne.put(4);
+//		streamOne.put(5);
+//		streamOne.put(6);
+//		streamTwo.put(1);
+//		streamTwo.put(2);
+//		streamTwo.put(3);
+//		
+//		Multiply mul1 = new Multiply(streamOne, streamTwo);
+//
+//		Constant constant5 = new Constant(5);
+//		SavedResult savedBuffer = new SavedResult(mul1);
+//		
+//		Add add1 = new Add(savedBuffer.getResultStream(), constant5);
+//		Multiply mul2 = new Multiply(add1, savedBuffer);
+//		
+//
+//
+//		assertEquals((Integer) 10, add1.getStreamResult().get());
+//		assertEquals((Integer) 12, add1.getStreamResult().get());
+//		assertEquals((Integer) 14, add1.getStreamResult().get());
+//	}
+	
 	@Test
 	public void testSubtractConstant1() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
 		Constant constant5 = new Constant(5);
 
 		streamOne.put(5);
@@ -263,7 +291,7 @@ public class Testcase {
 	
 	@Test
 	public void testMultiplyConstant1() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
 		Constant constant5 = new Constant(5);
 
 		streamOne.put(5);
@@ -276,7 +304,7 @@ public class Testcase {
 	
 	@Test
 	public void testDivideConstant1() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
 		Constant constant5 = new Constant(5);
 
 		streamOne.put(5);
@@ -291,8 +319,8 @@ public class Testcase {
 	
 	@Test
 	public void testParallel1() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 		Constant constant5 = new Constant(5);
 		Constant constant4 = new Constant(4);
 
@@ -314,8 +342,8 @@ public class Testcase {
 	
 //	@Test
 //	public void testParallel2() throws StoppException {
-//		Buffer<Integer> streamOne = new Buffer<Integer>();
-//		Buffer<Integer> streamTwo = new Buffer<Integer>();
+//		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+//		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
 //		Constant constant5 = new Constant(5);
 //
 //		streamOne.put(1);
@@ -336,9 +364,9 @@ public class Testcase {
 	
 	@Test
 	public void testParallel3() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
-		Buffer<Integer> streamTwo = new Buffer<Integer>();
-		Buffer<Integer> streamThree = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamTwo = new Buffer<Integer>(100);
+		Buffer<Integer> streamThree = new Buffer<Integer>(100);
 		Constant constant5 = new Constant(5);
 
 		streamOne.put(1);
@@ -363,7 +391,7 @@ public class Testcase {
 	
 	@Test
 	public void testNegative1() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
 		Constant constantNeg5 = new Constant(-5);
 
 		streamOne.put(1);
@@ -378,7 +406,7 @@ public class Testcase {
 	
 	@Test
 	public void testNegative2() throws StoppException, DivideByZeroException {
-		Buffer<Integer> streamOne = new Buffer<Integer>();
+		Buffer<Integer> streamOne = new Buffer<Integer>(100);
 		Constant constantNeg5 = new Constant(-5);
 		Constant constantNeg1 = new Constant(-1);
 
@@ -393,5 +421,54 @@ public class Testcase {
 		assertEquals(new Integer(4), mul1.getStreamResult().get());
 		assertEquals(new Integer(3), mul1.getStreamResult().get());
 		assertEquals(new Integer(2), mul1.getStreamResult().get());
+	}
+	
+	@Test
+	public void zwischenergebnisTest1() throws DivideByZeroException, StoppException {
+		Buffer<Integer> streamAddOne = new Buffer<Integer>(100);
+		Buffer<Integer> streamAddTwo = new Buffer<Integer>(100);
+		Add x = new Add(streamAddOne,streamAddTwo);
+		
+		Buffer<Integer> streamAddThree = new Buffer<Integer>(100);
+		Buffer<Integer> streamAddFour = new Buffer<Integer>(100);
+		Add y = new Add(streamAddThree,streamAddFour);
+		
+		Multiply m = new Multiply(x.getStreamResult(),y.getStreamResult());
+		
+		Vervielfältiger z = new Vervielfältiger(m.getStreamResult(), 2);
+				
+		streamAddOne.put(1);
+		streamAddOne.put(2);
+		streamAddOne.put(3);
+		streamAddOne.put(4);
+		streamAddOne.stopp();
+		
+		streamAddTwo.put(5);//6
+		streamAddTwo.put(6);//8
+		streamAddTwo.put(7);//10
+		streamAddTwo.put(8);//12
+		streamAddTwo.stopp();
+		
+		streamAddThree.put(9);
+		streamAddThree.put(9);
+		streamAddThree.put(8);
+		streamAddThree.put(8);
+		streamAddThree.stopp();
+		
+		streamAddFour.put(7);//16
+		streamAddFour.put(5);//14
+		streamAddFour.put(5);//13
+		streamAddFour.put(7);//15
+		streamAddFour.stopp();
+		
+		Constant fuenf = new Constant(5);
+		
+		Add a1 = new Add(z.getBufferCopy(0),fuenf.getStreamResult());
+		Multiply m1 = new Multiply(a1.getStreamResult(),z.getBufferCopy(1));
+		
+		assertEquals(Integer.valueOf(9696), m1.getStreamResult().get());
+		assertEquals(Integer.valueOf(13104), m1.getStreamResult().get());
+		assertEquals(Integer.valueOf(17550), m1.getStreamResult().get());
+		assertEquals(Integer.valueOf(33300), m1.getStreamResult().get());
 	}
 }

@@ -1,10 +1,10 @@
 package model;
 
-import model.AbstractBuffer.StoppException;
+import model.Buffer.StoppException;
 
 public class Subtract extends Process{
 
-	public Subtract(AbstractBuffer<Integer> streamOne, AbstractBuffer<Integer> streamTwo) {
+	public Subtract(Buffer<Integer> streamOne, Buffer<Integer> streamTwo) {
 		super(streamOne, streamTwo);
 		this.startThread();
 	}

@@ -1,10 +1,10 @@
 package model;
 
-import model.AbstractBuffer.StoppException;
+import model.Buffer.StoppException;
 
 public class Multiply extends Process{
 
-	public Multiply(AbstractBuffer<Integer> streamOne, AbstractBuffer<Integer> streamTwo) {
+	public Multiply(Buffer<Integer> streamOne, Buffer<Integer> streamTwo) {
 		super(streamOne, streamTwo);
 		this.startThread();
 	}
