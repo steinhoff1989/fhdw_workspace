@@ -1,4 +1,4 @@
-package lockAndBuffer;
+package model;
 
 public interface AbstractLock {
 

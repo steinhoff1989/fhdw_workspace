@@ -9,11 +9,13 @@ public class Vervielfältiger extends Process {
 
 	private int numberOfCopies;
 	private List<Buffer<Integer>> bufferCopies;
+	private int index;
 
 	public Vervielfältiger(Buffer<Integer> streamOne, int numberOfCopies) {
 		super(streamOne, new Buffer<Integer>(100));
 		this.numberOfCopies = numberOfCopies;
 		this.bufferCopies = new ArrayList<Buffer<Integer>>();
+		this.index = 0;
 		for (int i = 0; i < numberOfCopies; i++) {
 			this.bufferCopies.add(new Buffer<Integer>(100));
 		}
@@ -40,6 +42,15 @@ public class Vervielfältiger extends Process {
 
 	public Buffer<Integer> getBufferCopy(final int index) {
 		return bufferCopies.get(index);
+	}
+
+	public Buffer<Integer> getNextBufferCopy() throws NoMoreBufferCopyAvailableException {
+		if (this.index == this.numberOfCopies) {
+			throw new NoMoreBufferCopyAvailableException("All " + this.numberOfCopies + " copies of this Vervielfältiger already used!");
+		}
+		Buffer<Integer> bufferAtIndex = this.getBufferCopy(index);
+		index++;
+		return bufferAtIndex;
 	}
 
 }
