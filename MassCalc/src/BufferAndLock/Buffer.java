@@ -1,4 +1,6 @@
-package model;
+package BufferAndLock;
+
+import exceptions.DivideByZeroException;
 
 public class Buffer<E> {
 	public static <E> Buffer<E> create(int capacity) {
@@ -65,7 +67,7 @@ public class Buffer<E> {
 	private void put(BufferEntry<E> value) {
 		mutex.lock();
 		if (this.isFull()) {
-			System.out.println("full");
+//			System.out.println("full");
 			this.waitingForNotFull++;
 			this.mutex.unlock();
 			writing.lock();

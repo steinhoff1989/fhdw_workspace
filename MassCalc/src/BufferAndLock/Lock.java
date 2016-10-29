@@ -1,4 +1,4 @@
-package model;
+package BufferAndLock;
 
 public class Lock implements AbstractLock {
 

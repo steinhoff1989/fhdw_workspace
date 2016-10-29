@@ -1,11 +1,11 @@
-package model;
+package exceptions;
 
 @SuppressWarnings("serial")
-public class NoMoreBufferCopyAvailableException extends Exception {
+public class NoMoreVariablesAvailableException extends Exception {
 
 	private String message;
 
-	public NoMoreBufferCopyAvailableException(String message) {
+	public NoMoreVariablesAvailableException(String message) {
 		super();
 		this.message = message;
 	}
