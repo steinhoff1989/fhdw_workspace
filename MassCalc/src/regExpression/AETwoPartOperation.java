@@ -2,22 +2,17 @@ package regExpression;
 
 import BufferAndLock.Buffer;
 import exceptions.NoMoreVariablesAvailableException;
+import model.Process;
 
 public abstract class AETwoPartOperation extends ArithmeticExpression{
 
 	private final ArithmeticExpression reg1;
 	private final ArithmeticExpression reg2;
-	private final StructureManager regExpManager;
 	
 	protected AETwoPartOperation(ArithmeticExpression reg1, ArithmeticExpression reg2) {
 		super();
 		this.reg1 = reg1;
 		this.reg2 = reg2;
-		this.regExpManager = StructureManager.getInstance();
-	}
-	
-	public StructureManager getRegExpManager() {
-		return regExpManager;
 	}
 
 	public ArithmeticExpression getReg1() {
@@ -39,13 +34,24 @@ public abstract class AETwoPartOperation extends ArithmeticExpression{
 	@Override
 	public Buffer<Integer> calculate() throws NoMoreVariablesAvailableException {
 		this.analyseStructure();
-		return this.getRegExpManager().getVariable(this).getResults();
+		Buffer<Integer> result = this.getRegExpManager().getProcess(this).getResults();
+		return result;
 	}
 	
 	@Override
-	public boolean accept(AEVisitor regularExpressionVisitor) {
-		return regularExpressionVisitor.handle(this);
+	public Boolean acceptBoolean(AEVisitor regularExpressionVisitor) {
+		return regularExpressionVisitor.handleBoolean(this);
 	}
 	
+	@Override
+	public Process acceptProcess(AEVisitor regularExpressionVisitor) throws NoMoreVariablesAvailableException {
+		return regularExpressionVisitor.handleProcess(this);
+	}
+
+	/**
+	 * Returns the result of the passed regTwoPartOperationVisitor handle method for <this> two part operation arithmeticExpresion
+	 * @param regTwoPartOperationVisitor: The visitor object who knows how <this> two part operation 
+	 * 		arithmetical expression has to be treated.
+	 */
 	public abstract boolean accept(AETwoPartOperationVisitor regTwoPartOperationVisitor);
 }

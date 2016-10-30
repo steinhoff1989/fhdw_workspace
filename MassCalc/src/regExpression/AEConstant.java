@@ -4,43 +4,46 @@ import BufferAndLock.Buffer;
 import exceptions.NoMoreVariablesAvailableException;
 import model.Constant;
 import model.Process;
-import model.Variable;
 
 public class AEConstant extends ArithmeticExpression {
 
 	private final int value;
 
+	/**
+	 * Creates a constant ArithmeticExpression object, that represents <value>
+	 * @param value: The value which this Constant arithmetical expression is representing
+	 */
 	public AEConstant(int value) {
 		super();
 		this.value = value;
 	}
-
-//	@Override
-//	public Process toProcess() {
-//		this.addExpressionsToRegularExpressionManager();
-//		return null;
-//	}
-
-//	@Override
-//	public void addExpressionsToRegularExpressionManager() {
-//		this.getRegExpManager().add(this);
-//	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ArithmeticExpression) {
 			ArithmeticExpression regExp = (ArithmeticExpression)obj;
 			
-			return regExp.accept(new AEVisitor() {
+			return regExp.acceptBoolean(new AEVisitor() {
 
 				@Override
-				public boolean handle(AEConstant regConstant) {
+				public Boolean handleBoolean(AEConstant regConstant) {
 					return AEConstant.this.value == regConstant.getValue();
 				}
 
 				@Override
-				public boolean handle(AETwoPartOperation regTwoPartOperation) {
+				public Boolean handleBoolean(AETwoPartOperation regTwoPartOperation) {
 					return false;
+				}
+
+				@Override
+				public Process handleProcess(AEConstant regConstant) throws NoMoreVariablesAvailableException {
+					throw new Error();
+				}
+
+				@Override
+				public Process handleProcess(AETwoPartOperation regTwoPartOperation)
+						throws NoMoreVariablesAvailableException {
+					throw new Error();
 				}
 			});
 		}
@@ -52,13 +55,23 @@ public class AEConstant extends ArithmeticExpression {
 	}
 
 	@Override
-	public boolean accept(AEVisitor regularExpressionVisitor) {
-		return regularExpressionVisitor.handle(this);
+	public int hashCode() {
+		return this.value;
+	}
+
+	@Override
+	public Boolean acceptBoolean(AEVisitor regularExpressionVisitor) {
+		return regularExpressionVisitor.handleBoolean(this);
+	}
+
+	@Override
+	public Process acceptProcess(AEVisitor regularExpressionVisitor) throws NoMoreVariablesAvailableException {
+		return regularExpressionVisitor.handleProcess(this);
 	}
 
 	@Override
 	public Buffer<Integer> calculate() throws NoMoreVariablesAvailableException {
-		return this.getRegExpManager().getVariable(this).getResults();
+		return this.getRegExpManager().getProcess(this).getResults();
 	}
 
 	@Override
@@ -71,8 +84,5 @@ public class AEConstant extends ArithmeticExpression {
 		return new Constant(value);
 	}
 
-	@Override
-	public Variable getVariable(int i) throws NoMoreVariablesAvailableException {
-		return new Variable(this.getProcess().getResults(), i);
-	}
+
 }

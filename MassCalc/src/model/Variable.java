@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BufferAndLock.Buffer;
+import BufferAndLock.Lock;
 import BufferAndLock.Buffer.StoppException;
 import exceptions.DivideByZeroException;
 import exceptions.NoMoreVariablesAvailableException;
@@ -47,7 +48,7 @@ public class Variable extends Process {
 			}
 		}
 	}
-
+	
 	/**
 	 * @return Returns the next element of <bufferCopies>
 	 * @throws NoMoreVariablesAvailableException

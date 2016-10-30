@@ -1,15 +1,17 @@
 package regExpression;
 
-import BufferAndLock.Buffer;
 import exceptions.NoMoreVariablesAvailableException;
-import model.Multiply;
 import model.Process;
 import model.Subtract;
-import model.Variable;
 
 public class AESubtract extends AETwoPartOperation {
 
-	protected AESubtract(ArithmeticExpression reg1, ArithmeticExpression reg2) {
+	/**
+	 * Creates an arithmeticExpression that represents the subtraction of <reg1> by <reg2>
+	 * @param reg1: represents the minuend
+	 * @param reg2: represents the subtrahend
+	 */
+	public AESubtract(ArithmeticExpression reg1, ArithmeticExpression reg2) {
 		super(reg1, reg2);
 	}
 	
@@ -22,15 +24,15 @@ public class AESubtract extends AETwoPartOperation {
 	public boolean equals(Object obj) {
 		if (obj instanceof ArithmeticExpression) {
 			ArithmeticExpression regExp = (ArithmeticExpression) obj;
-			return regExp.accept(new AEVisitor() {
+			return regExp.acceptBoolean(new AEVisitor() {
 
 				@Override
-				public boolean handle(AEConstant regConstant) {
+				public Boolean handleBoolean(AEConstant regConstant) {
 					return false;
 				}
 
 				@Override
-				public boolean handle(AETwoPartOperation regTwoPartOperation) {
+				public Boolean handleBoolean(AETwoPartOperation regTwoPartOperation) {
 					return regTwoPartOperation.accept(new AETwoPartOperationVisitor() {
 
 						@Override
@@ -55,6 +57,17 @@ public class AESubtract extends AETwoPartOperation {
 						}
 					});
 				}
+
+				@Override
+				public Process handleProcess(AEConstant regConstant) throws NoMoreVariablesAvailableException {
+					throw new Error();
+				}
+
+				@Override
+				public Process handleProcess(AETwoPartOperation regTwoPartOperation)
+						throws NoMoreVariablesAvailableException {
+					throw new Error();
+				}
 			});
 		}
 		return false;
@@ -62,13 +75,12 @@ public class AESubtract extends AETwoPartOperation {
 	
 	@Override
 	Process getProcess() throws NoMoreVariablesAvailableException {
-		return new Subtract(this.getReg1().getProcess().getResults(), this.getReg2().getProcess().getResults());
+		return new Subtract(this.getRegExpManager().getProcess(this.getReg1()).getResults(), this.getRegExpManager().getProcess(this.getReg2()).getResults());
 	}
 
 	@Override
-	public Variable getVariable(int i) throws NoMoreVariablesAvailableException {
-		return new Variable(this.getProcess().getResults(), i);
+	public int hashCode() {
+		return (this.getReg1().hashCode() - this.getReg2().hashCode());
 	}
-
 
 }

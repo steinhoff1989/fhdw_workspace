@@ -3,26 +3,68 @@ package regExpression;
 import BufferAndLock.Buffer;
 import exceptions.NoMoreVariablesAvailableException;
 import model.Process;
-import model.Variable;
 
 public abstract class ArithmeticExpression {
 
-	final private StructureManager regExpManager;
+	final private StructureManager structureManager;
 	
+	/**
+	 * Creates an ArithmeticExpression object and saves a singleton-reference to a manager object
+	 */
 	public ArithmeticExpression() {
 		super();
-		this.regExpManager = StructureManager.getInstance();
+		this.structureManager = StructureManager.getInstance();
 	}
 	
+	/**
+	 * Calculates the result of the represented ArithmeticExpression object.
+	 * @return returns a buffer that hold all Integer results
+	 * @throws NoMoreVariablesAvailableException if there is no more variable available to calculate the inner
+	 * 			structure of this arithmetic expression.
+	 *			 	
+	 */
 	public abstract Buffer<Integer> calculate() throws NoMoreVariablesAvailableException;
-	abstract void analyseStructure();
-	abstract Process getProcess() throws NoMoreVariablesAvailableException;
-	public abstract boolean equals(Object obj);
-	public abstract boolean accept(AEVisitor regularExpressionVisitor);
 	
-	public StructureManager getRegExpManager() {
-		return regExpManager;
-	}
+	/**
+	 * analyzes the structure of <this> arithmetic expression and announce it to the manager.
+	 */
+	abstract void analyseStructure();
 
-	public abstract Variable getVariable(int i) throws NoMoreVariablesAvailableException;
+	/**
+	 * Returns the representing process of <this> arithmetic expression
+	 * @throws NoMoreVariablesAvailableException if there is no variable available to calculate the child
+	 * 			structure of this arithmetic expression.
+	 */
+	abstract Process getProcess() throws NoMoreVariablesAvailableException;
+	
+	public abstract boolean equals(Object obj);
+	//public abstract <T> T accept(AEVisitor<T> regularExpressionVisitor) throws NoMoreVariablesAvailableException;
+
+	/**
+	 * Returns the result of the passed regularExpressionVisitors handle method for <this> arithmeticExpresion
+	 * @param regularExpressionVisitor: The visitor object who knows how <this> arithmetical expression has to
+	 * 		be treated.
+	 * @throws NoMoreVariablesAvailableException if there is no variable available to calculate the child
+	 * 			structure of this arithmetic expression.
+	 */
+	public abstract Process acceptProcess(AEVisitor regularExpressionVisitor) throws NoMoreVariablesAvailableException;
+	
+	/**
+	 * Returns the result of the passed regularExpressionVisitors handle method for <this> arithmeticExpresion
+	 * @param regularExpressionVisitor: The visitor object who knows how <this> arithmetical expression has to
+	 * 		be treated.
+	 */
+	public abstract Boolean acceptBoolean(AEVisitor regularExpressionVisitor);
+	
+	/**
+	 * Calculates a unique hashCode for this type of arithmetic expression and returns the result.
+	 */
+	public abstract int hashCode();
+	
+	/**
+	 * Returns the scrutureManager of this arithmetic expression 
+	 */
+	public StructureManager getRegExpManager() {
+		return structureManager;
+	}
 }
