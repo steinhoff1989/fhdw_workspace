@@ -8,6 +8,10 @@ public class Buffer<E> {
 	public static class StoppException extends Exception {
 
 	}
+	
+	public static class DivideByZeroException extends Exception{
+		
+	}
 
 	protected interface BufferEntry<E> {
 		E getWrapped() throws StoppException;
