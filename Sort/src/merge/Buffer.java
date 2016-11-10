@@ -52,7 +52,7 @@ public class Buffer<E> {
 		this.notify();
 	}
 
-	public E get() throws StoppException {
+	synchronized public E get() throws StoppException {
 		while (this.isEmpty()) {
 			try {
 				this.wait();

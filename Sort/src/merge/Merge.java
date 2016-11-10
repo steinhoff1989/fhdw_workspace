@@ -2,76 +2,92 @@ package merge;
 
 import merge.Buffer.StoppException;
 
-public class Merge<T extends Comparable<T>> extends Process<T>{
+public class Merge<T extends Comparable<T>> extends Process<T> {
 
-	Buffer<T> inputBuffer1;
-	Buffer<T> inputBuffer2;
+	Buffer<T> divLeft;
+	Buffer<T> divRight;
 	Buffer<T> resultBuffer;
+
+	Buffer<T> singleBufferLeft;
+	Buffer<T> singleBufferRight;
 	
-	public Merge(Buffer<T> inputBuffer1, Buffer<T> inputBuffer2){
-		this.inputBuffer1 = inputBuffer1;
-		this.inputBuffer2 = inputBuffer2;
-		this.resultBuffer = new Buffer<T>();
+	
+	public Merge(Buffer<T> divLeft, Buffer<T> divRight, Buffer<T> resultBuffer) {
+		this.divLeft = divLeft;
+		this.divRight = divRight;
+		this.resultBuffer = resultBuffer;
+		this.singleBufferLeft = new Buffer<T>();
+		this.singleBufferRight = new Buffer<T>();
+		
+		this.singleBufferLeft.stopp();
+		this.singleBufferRight.stopp();
+		
 		this.startThread();
 	}
-	
+
 	@Override
 	public void calculate() {
-		this.merge(inputBuffer1, inputBuffer2);
+		this.merge(divLeft, divRight);
 	}
 
 	private void merge(Buffer<T> firstBuffer, Buffer<T> secondBuffer) {
 		try {
-			T first = firstBuffer.get();
+			T first;
 			try {
-				T second = secondBuffer.get();
-				if(first.compareTo(second)<0){
-					this.resultBuffer.put(first);
-					Buffer<T> singleBuffer = new Buffer<T>();
-					singleBuffer.put(second);
-					singleBuffer.stopp();
-					
-					this.merge(singleBuffer, firstBuffer);
+				first = this.singleBufferLeft.get();
+			} catch (StoppException e2) {
+				first = firstBuffer.get();
+			}
+			try {
+				T second;
+				try {
+					second = this.singleBufferRight.get();
+				} catch (StoppException e2) {
+					second = secondBuffer.get();
 				}
-				else{
+				if (first.compareTo(second) < 0) {
+					this.resultBuffer.put(first);
+					
+					singleBufferRight = new Buffer<T>();
+					singleBufferRight.put(second);
+					singleBufferRight.stopp();
+
+//					this.resultBuffer.put(new Merge<T>(firstBuffer, singleBuffer).resultBuffer.get());
+//					this.merge(singleBuffer, firstBuffer);
+				} else {
 					this.resultBuffer.put(second);
 
-					Buffer<T> singleBuffer = new Buffer<T>();
-					singleBuffer.put(first);
-					singleBuffer.stopp();
+//					Buffer<T> singleBuffer = new Buffer<T>();
+//					singleBuffer.put(first);
+//					singleBuffer.stopp();
+
+					singleBufferLeft = new Buffer<T>();
+					singleBufferLeft.put(first);
+					singleBufferLeft.stopp();
 					
-					this.merge(singleBuffer, secondBuffer);
+//					this.merge(singleBuffer, secondBuffer);
 				}
 			} catch (StoppException e) {
 				this.resultBuffer.put(first);
 
-				this.merge(firstBuffer, secondBuffer);
+//				this.merge(firstBuffer, secondBuffer);
 			}
 		} catch (StoppException e) {
 			try {
-				T second = secondBuffer.get();
+				T second;
+				try {
+					second = this.singleBufferRight.get();
+				} catch (StoppException e2) {
+					second = secondBuffer.get();
+				}
+//				second = secondBuffer.get();
 				this.resultBuffer.put(second);
-				
-				this.merge(firstBuffer, secondBuffer);
-			} catch (StoppException e1) {
-			}
-			
-			}
-	}
-//	private void mergeHelper(MergeSort<T> tempSort, T element){
-//			try {
-//				T first = tempSort.resultBuffer.get();
-//				if(first.compareTo(element) < 0){
-//					this.resultBuffer.put(first);
-//					mergeHelper(tempSort, element);
-//				}else{
-//					this.resultBuffer.put(element);
-//					mergeHelper(tempSort1, first);
-//				}
-//			} catch (StoppException e) {
-//				this.resultBuffer.put(element);
-//				this.resultBuffer.stopp();
-//			}
-//	}
 
+//				this.merge(firstBuffer, secondBuffer);
+			} catch (StoppException e1) {
+			this.resultBuffer.stopp();
+			this.stopThread();
+			}
+		}
+	}
 }

@@ -14,19 +14,23 @@ public class MergeTest {
 	public void test8Var() throws StoppException {
 		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
+		
 		inputBuffer.put(2);
 		inputBuffer.put(3);
+		
 		inputBuffer.put(5);
 		inputBuffer.put(1);
+		
 		inputBuffer.put(0);
 		inputBuffer.put(7);
+		
 		inputBuffer.put(9);
 		inputBuffer.put(4);
 		inputBuffer.stopp();
 		
 		Sort<Integer> ms = new Sort<>(inputBuffer);
 		
-		ms.calculate();
+		ms.sort();
 		
 		assertEquals(0, ms.getResultBuffer().get().intValue());
 		assertEquals(1, ms.getResultBuffer().get().intValue());
@@ -36,6 +40,81 @@ public class MergeTest {
 		assertEquals(5, ms.getResultBuffer().get().intValue());
 		assertEquals(7, ms.getResultBuffer().get().intValue());
 		assertEquals(9, ms.getResultBuffer().get().intValue());
+	}
+	
+	@Test
+	public void test10Var() throws StoppException {
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		
+		inputBuffer.put(2);
+		inputBuffer.put(3);
+		inputBuffer.put(5);
+		inputBuffer.put(1);
+		inputBuffer.put(0);
+		inputBuffer.put(7);
+		inputBuffer.put(9);
+		inputBuffer.put(4);
+		inputBuffer.put(10);
+		inputBuffer.put(7);
+		inputBuffer.stopp();
+		
+		Sort<Integer> ms = new Sort<>(inputBuffer);
+		
+		ms.sort();
+		
+		assertEquals(0, ms.getResultBuffer().get().intValue());
+		assertEquals(1, ms.getResultBuffer().get().intValue());
+		assertEquals(2, ms.getResultBuffer().get().intValue());
+		assertEquals(3, ms.getResultBuffer().get().intValue());
+		assertEquals(4, ms.getResultBuffer().get().intValue());
+		assertEquals(5, ms.getResultBuffer().get().intValue());
+		assertEquals(7, ms.getResultBuffer().get().intValue());
+		assertEquals(7, ms.getResultBuffer().get().intValue());
+		assertEquals(9, ms.getResultBuffer().get().intValue());
+		assertEquals(10, ms.getResultBuffer().get().intValue());
+	}
+	
+	@Test
+	public void test15Var() throws StoppException {
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		
+		
+		inputBuffer.put(2);
+		inputBuffer.put(17);
+		inputBuffer.put(101);
+		inputBuffer.put(23);
+		inputBuffer.put(2);
+		inputBuffer.put(39);
+		inputBuffer.put(31);
+		inputBuffer.put(5);
+		inputBuffer.put(18);
+		inputBuffer.put(5);
+		inputBuffer.put(18);
+		inputBuffer.put(54);
+		inputBuffer.put(81);
+		inputBuffer.put(56);
+		inputBuffer.put(100);
+		inputBuffer.stopp();
+		
+		Sort<Integer> ms = new Sort<>(inputBuffer);
+		
+		ms.sort();
+		
+		assertEquals(2, ms.getResultBuffer().get().intValue());
+		assertEquals(2, ms.getResultBuffer().get().intValue());
+		assertEquals(5, ms.getResultBuffer().get().intValue());
+		assertEquals(5, ms.getResultBuffer().get().intValue());
+		assertEquals(17, ms.getResultBuffer().get().intValue());
+		assertEquals(18, ms.getResultBuffer().get().intValue());
+		assertEquals(18, ms.getResultBuffer().get().intValue());
+		assertEquals(23, ms.getResultBuffer().get().intValue());
+		assertEquals(31, ms.getResultBuffer().get().intValue());
+		assertEquals(39, ms.getResultBuffer().get().intValue());
+		assertEquals(54, ms.getResultBuffer().get().intValue());
+		assertEquals(56, ms.getResultBuffer().get().intValue());
+		assertEquals(81, ms.getResultBuffer().get().intValue());
+		assertEquals(100, ms.getResultBuffer().get().intValue());
+		assertEquals(101, ms.getResultBuffer().get().intValue());
 	}
 
 	@Test
@@ -47,7 +126,7 @@ public class MergeTest {
 		
 		Sort<Integer> ms = new Sort<>(inputBuffer);
 		
-		ms.calculate();
+		ms.sort();
 		
 		assertEquals(2, ms.getResultBuffer().get().intValue());
 	}
@@ -62,7 +141,7 @@ public class MergeTest {
 		
 		Sort<Integer> ms = new Sort<>(inputBuffer);
 		
-		ms.calculate();
+		ms.sort();
 		
 		assertEquals(2, ms.getResultBuffer().get().intValue());
 		assertEquals(3, ms.getResultBuffer().get().intValue());
@@ -78,7 +157,7 @@ public class MergeTest {
 		
 		Sort<Integer> ms = new Sort<>(inputBuffer);
 		
-		ms.calculate();
+		ms.sort();
 		
 		assertEquals(2, ms.getResultBuffer().get().intValue());
 		assertEquals(3, ms.getResultBuffer().get().intValue());
@@ -94,7 +173,7 @@ public class MergeTest {
 		
 		Sort<Integer> ms = new Sort<>(inputBuffer);
 		
-		ms.calculate();
+		ms.sort();
 		
 		assertEquals(0, ms.getResultBuffer().get().intValue());
 		assertEquals(2, ms.getResultBuffer().get().intValue());
@@ -112,7 +191,7 @@ public class MergeTest {
 		
 		Sort<Integer> ms = new Sort<>(inputBuffer);
 		
-		ms.calculate();
+		ms.sort();
 		
 		assertEquals(0, ms.getResultBuffer().get().intValue());
 		assertEquals(2, ms.getResultBuffer().get().intValue());
@@ -133,7 +212,7 @@ public class MergeTest {
 		
 		Sort<Integer> ms = new Sort<>(inputBuffer);
 		
-		ms.calculate();
+		ms.sort();
 		
 		assertEquals(0, ms.getResultBuffer().get().intValue());
 		assertEquals(2, ms.getResultBuffer().get().intValue());

@@ -2,52 +2,74 @@ package merge;
 
 import merge.Buffer.StoppException;
 
-public class Sort<T extends Comparable<T>>{
+public class Sort<T extends Comparable<T>> {
 
 	Buffer<T> inputBuffer;
 	Buffer<T> resultBuffer;
-	
-	public Sort(Buffer<T> inputBuffer){
+	Divide<T> div;
+	Merge<T> merge;
+
+	public Sort(Buffer<T> inputBuffer) {
 		this.inputBuffer = inputBuffer;
 		this.resultBuffer = new Buffer<T>();
-//		this.startThread();
 	}
-	
-//	@Override
-//	public void calculate() {
-//		this.sort();
-//	}
+
+	// @Override
+	// public void calculate() {
+	// this.sort();
+	// }
 
 	public void sort() {
-		Divide<T> div = new Divide<T>(inputBuffer);
-		Merge<T> merge;
-		if(div.isNeedSplit()){
-			Sort<T> sortLeft = new Sort<T>(div.resultBuffer1);
-			Sort<T> sortRight = new Sort<T>(div.resultBuffer2);
-			merge = new Merge<T>(sortLeft.resultBuffer, sortRight.resultBuffer);
-		}else{
-			merge = new Merge<T>(div.resultBuffer1, div.resultBuffer2);
+		if (this.inputBuffer.size() <= 2) {
+			try {
+				this.resultBuffer.put(this.inputBuffer.get());
+				this.resultBuffer.put(this.inputBuffer.get());
+			} catch (StoppException e) {
+				this.resultBuffer.stopp();
+			}
+		} else {
+			div = new Divide<T>(inputBuffer);
+			merge = new Merge<T>(div.sortLeft.resultBuffer, div.sortRight.resultBuffer, this.resultBuffer);
+//			this.resultBuffer = merge.sortedBuffer;
 		}
-//		this.resultBuffer.p
+		// if (this.inputBuffer.size() <= 2) {
+		// this.resultBuffer = this.inputBuffer;
+		// } else {
+		// div = new Divide<T>(inputBuffer);
+		// merge = new Merge<T>(div.sortLeft.resultBuffer,
+		// div.sortRight.resultBuffer);
+		// this.resultBuffer = merge.sortedBuffer;
+		// this.stopThread();
+		// }
+		// if(div.isNeedSplit()){//dirty
+		// Sort<T> sortLeft = new Sort<T>(div.divLeft);
+		// Sort<T> sortRight = new Sort<T>(div.divRight);
+		// merge = new Merge<T>(sortLeft.sortedBuffer, sortRight.sortedBuffer);
+		// }else{
+		// merge = new Merge<T>(div.divLeft, div.divRight);
+		//
+		// this.sortedBuffer = merge.getResultBuffer();
+		// }
+		// this.resultBuffer.p
 	}
-	
-//	private void sort(){
-//		if(this.inputBuffer.size() >2){
-//			Divide<T> divided = new Divide<>(this.inputBuffer);
-//			Merge<T> merged = new Merge<T>(divided.resultBuffer1, divided.resultBuffer2);
-//			this.resultBuffer = merged.resultBuffer;
-//		}
-//		else{ 
-//			try {
-//			this.resultBuffer.put(this.inputBuffer.get());
-//			this.resultBuffer.put(this.inputBuffer.get());
-//		} catch (StoppException e) {
-//			this.resultBuffer.stopp();
-//			this.stopThread();
-//			}
-//		}
-//	}
 
+	// private void sort(){
+	// if(this.inputBuffer.size() >2){
+	// Divide<T> divided = new Divide<>(this.inputBuffer);
+	// Merge<T> merged = new Merge<T>(divided.resultBuffer1,
+	// divided.resultBuffer2);
+	// this.resultBuffer = merged.resultBuffer;
+	// }
+	// else{
+	// try {
+	// this.resultBuffer.put(this.inputBuffer.get());
+	// this.resultBuffer.put(this.inputBuffer.get());
+	// } catch (StoppException e) {
+	// this.resultBuffer.stopp();
+	// this.stopThread();
+	// }
+	// }
+	// }
 
 	public Buffer<T> getResultBuffer() {
 		return resultBuffer;

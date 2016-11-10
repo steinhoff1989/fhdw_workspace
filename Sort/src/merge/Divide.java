@@ -5,14 +5,20 @@ import merge.Buffer.StoppException;
 public class Divide<T extends Comparable<T>> extends Process<T> {
 
 	Buffer<T> inputBuffer;
-	Buffer<T> resultBuffer1;
-	Buffer<T> resultBuffer2;
+	Buffer<T> divLeft;
+	Buffer<T> divRight;
 	private boolean needSplit = false;
+	Sort<T> sortLeft;
+	Sort<T> sortRight;
 
 	public Divide(Buffer<T> inputBuffer) {
 		this.inputBuffer = inputBuffer;
-		this.resultBuffer1 = new Buffer<T>();
-		this.resultBuffer2 = new Buffer<T>();
+		this.divLeft = new Buffer<T>();
+		this.divRight = new Buffer<T>();
+		
+		sortLeft = new Sort<T>(divLeft);
+		sortRight = new Sort<T>(divRight);
+		
 		this.startThread();
 	}
 
@@ -24,14 +30,16 @@ public class Divide<T extends Comparable<T>> extends Process<T> {
 	private void divide() {
 		try {
 			T left = this.inputBuffer.get();
-			this.resultBuffer1.put(left);
+			this.divLeft.put(left);
 			
 			T right = this.inputBuffer.get();
-			this.resultBuffer2.put(right);
-			this.needSplit = true;
+			this.divRight.put(right);
 		} catch (StoppException e) {
-			this.resultBuffer1.stopp();
-			this.resultBuffer2.stopp();
+			this.divLeft.stopp();
+			this.divRight.stopp();
+			sortLeft.sort();
+			sortRight.sort();
+			this.stopThread();
 		}
 		
 //		if(isNeedSplit()){
