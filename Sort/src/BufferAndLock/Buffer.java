@@ -1,144 +1,81 @@
 package BufferAndLock;
 
+import java.util.LinkedList;
+import java.util.List;
 
 public class Buffer<E> {
-	public static <E> Buffer<E> create(int capacity) {
-		return new Buffer<E> (capacity);
-	}
-	@SuppressWarnings("serial")
-	public static class StoppException extends Exception {}
 
-	private abstract class BufferEntry<T> {
-		abstract T getWrapped() throws StoppException, DivideByZeroException;
+	public static class StoppException extends Exception {
+
 	}
-	private class Stopp<T> extends BufferEntry<T>{
-		Stopp(){}
+	
+	public static class DivideByZeroException extends Exception {
+
+	}
+
+	protected interface BufferEntry<E> {
+		E getWrapped() throws StoppException;
+	}
+
+	private class Stopp<E> implements BufferEntry<E> {
+		Stopp() {
+		}
+
 		@Override
-		T getWrapped() throws StoppException {
+		public E getWrapped() throws StoppException {
 			throw new StoppException();
 		}
 	}
-	private class Wrapped<T> extends BufferEntry<T> {
-		final private T wrapped;
-		Wrapped(T toBeWrapped){
+
+	private class Wrapped<E> implements BufferEntry<E> {
+		final private E wrapped;
+
+		Wrapped(E toBeWrapped) {
 			this.wrapped = toBeWrapped;
 		}
+
 		@Override
-		public T getWrapped() {
+		public E getWrapped() {
 			return this.wrapped;
 		}
 	}
-	
-	private class DividedByZero<T> extends BufferEntry<T> {
-		DividedByZero() {
-		}
 
-		@Override
-		public T getWrapped() throws DivideByZeroException {
-			throw new DivideByZeroException();
-		}
-	}
-	
-	public Buffer(int capacity){
-		this.internalCapacity = (capacity <= 0 ? 1 : capacity) + 1;
-		this.myBuffer = new Object[this.internalCapacity];
-		this.first = 0;
-		this.behindLast = 0;
-	}
-	
-	private Lock mutex = new Lock(false);
-	private Lock reading = new Lock(true);
-	private int waitingForNotEmpty = 0;
-	private Lock writing = new Lock(true);
-	private int waitingForNotFull = 0;
+	protected List<BufferEntry<E>> implementingList;
 
-	private Object[] myBuffer;
-	private int first;
-	private int behindLast;
-	private int internalCapacity;
-	
-	private Lock writingUnlockFinished = new Lock(true);
-	private Lock readingUnlockFinished = new Lock(true);
-	
-	public void put(E value) {
-		this.put(new Wrapped<E>(value));
+	public Buffer() {
+		this.implementingList = new LinkedList<BufferEntry<E>>();
 	}
-	private void put(BufferEntry<E> value) {
-		mutex.lock();
-		if (this.isFull()) {
-//			System.out.println("full");
-			this.waitingForNotFull++;
-			this.mutex.unlock();
-			writing.lock();
-			this.writingUnlockFinished.unlock();
-			this.mutex.lock();
-		}
-		this.addNextEntry(value);
-		if (waitingForNotEmpty > 0) {
-			this.waitingForNotEmpty--;
-			reading.unlock();
-			this.readingUnlockFinished.lock();
-		}
-		mutex.unlock();
+	
+	// hinten rein
+	synchronized public void put(E value) {
+		this.implementingList.add(new Wrapped<E>(value));
+		this.notify();
 	}
-	public E get() throws StoppException, DivideByZeroException {
-		mutex.lock();
-		if (this.isEmpty()){
-			this.waitingForNotEmpty++;
-			mutex.unlock();
-			reading.lock();
-			this.readingUnlockFinished.unlock();
-			mutex.lock();
-		}
-		E result = null;
-		try{
-			result = this.getNextEntry().getWrapped();
-		}
-		finally{
-			if (this.waitingForNotFull > 0){
-				this.waitingForNotFull--;
-				writing.unlock();
-				this.writingUnlockFinished.lock();
+
+	synchronized public E get() throws StoppException {
+		while (this.isEmpty()) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-			mutex.unlock();
 		}
+		E result = this.implementingList.get(0).getWrapped();
+
+		this.implementingList.remove(0);
 		return result;
 	}
-	private void addNextEntry(Buffer<E>.BufferEntry<E> wrapped) {
-		this.myBuffer[this.behindLast] = wrapped;
-		this.behindLast = (this.behindLast + 1) % this.internalCapacity;
+
+	synchronized public void stopp() {
+		this.implementingList.add(new Stopp<E>());
+		this.notify();
 	}
-	private Buffer<E>.BufferEntry<E> getNextEntry() {
-		@SuppressWarnings("unchecked")
-		BufferEntry<E> result = (Buffer<E>.BufferEntry<E>) this.myBuffer[this.first];
-		this.first = (this.first + 1) % this.internalCapacity;
-		return result;
-	}
-	public void stopp(){
-		this.put(new Stopp<E>());
-	}
-	public void dividedByZero() {
-//		this.implementingList.add(new DividedByZero<E>());
-//		this.notify();
-		this.put(new DividedByZero<E>());;
-	}
-	private boolean isEmpty(){
-		return this.first == this.behindLast;
-	}
-	private boolean isFull(){
-		return (this.behindLast + 1) % this.internalCapacity == this.first;
+
+	public boolean isEmpty() {
+		return this.implementingList.isEmpty();
 	}
 	public int size(){
-		this.mutex.lock();
-		int result = this.first <= this.behindLast 
-						? this.behindLast - this.first
-						: this.behindLast + (this.internalCapacity - this.first)				;
-		this.mutex.unlock();
-		return result;
+		return this.implementingList.size();
 	}
+
 }
-
-
-
-
-

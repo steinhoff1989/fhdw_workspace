@@ -10,7 +10,7 @@ public class InsertionSort<T extends Comparable<T>> extends Process<T>{
 	public InsertionSort(Buffer<T> toSort) {
 		super();
 		this.insertBuffer = toSort;
-		this.resultBuffer = new Buffer<T>(50);
+		this.resultBuffer = new Buffer<T>();
 	}
 
 	@Override

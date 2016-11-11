@@ -12,7 +12,7 @@ public class InsertionTest {
 
 	@Test
 	public void test8Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(3);
@@ -43,7 +43,7 @@ public class InsertionTest {
 
 	@Test
 	public void test10Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(3);
@@ -75,7 +75,7 @@ public class InsertionTest {
 
 	@Test
 	public void test15Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(17);
@@ -117,7 +117,7 @@ public class InsertionTest {
 
 	@Test
 	public void test1Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.stopp();
@@ -131,7 +131,7 @@ public class InsertionTest {
 
 	@Test
 	public void test2VarSorted() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(3);
@@ -147,7 +147,7 @@ public class InsertionTest {
 
 	@Test
 	public void test2VarUnsorted() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
@@ -163,7 +163,7 @@ public class InsertionTest {
 
 	@Test
 	public void test3Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
@@ -181,7 +181,7 @@ public class InsertionTest {
 
 	@Test
 	public void test4Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
@@ -202,7 +202,7 @@ public class InsertionTest {
 
 	@Test
 	public void test5Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>(20);
+		Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
