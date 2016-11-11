@@ -25,6 +25,7 @@ public class QuickSort<T extends Comparable<T>> extends Process<T> {
 
 	@Override
 	public void calculate() {
+		//How to do it better?
 		if(referenceElement == null){
 			try {
 				this.referenceElement = insertBuffer.get();
