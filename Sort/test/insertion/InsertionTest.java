@@ -31,14 +31,14 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(0, ms.getResultBuffer().get().intValue());
-		assertEquals(1, ms.getResultBuffer().get().intValue());
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(3, ms.getResultBuffer().get().intValue());
-		assertEquals(4, ms.getResultBuffer().get().intValue());
-		assertEquals(5, ms.getResultBuffer().get().intValue());
-		assertEquals(7, ms.getResultBuffer().get().intValue());
-		assertEquals(9, ms.getResultBuffer().get().intValue());
+		assertEquals(0, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(1, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(3, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(4, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(5, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(7, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(9, ms.getSortedResultBuffer().get().intValue());
 	}
 
 	@Test
@@ -61,16 +61,16 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(0, ms.getResultBuffer().get().intValue());
-		assertEquals(1, ms.getResultBuffer().get().intValue());
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(3, ms.getResultBuffer().get().intValue());
-		assertEquals(4, ms.getResultBuffer().get().intValue());
-		assertEquals(5, ms.getResultBuffer().get().intValue());
-		assertEquals(7, ms.getResultBuffer().get().intValue());
-		assertEquals(7, ms.getResultBuffer().get().intValue());
-		assertEquals(9, ms.getResultBuffer().get().intValue());
-		assertEquals(10, ms.getResultBuffer().get().intValue());
+		assertEquals(0, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(1, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(3, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(4, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(5, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(7, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(7, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(9, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(10, ms.getSortedResultBuffer().get().intValue());
 	}
 
 	@Test
@@ -98,21 +98,21 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(5, ms.getResultBuffer().get().intValue());
-		assertEquals(5, ms.getResultBuffer().get().intValue());
-		assertEquals(17, ms.getResultBuffer().get().intValue());
-		assertEquals(18, ms.getResultBuffer().get().intValue());
-		assertEquals(18, ms.getResultBuffer().get().intValue());
-		assertEquals(23, ms.getResultBuffer().get().intValue());
-		assertEquals(31, ms.getResultBuffer().get().intValue());
-		assertEquals(39, ms.getResultBuffer().get().intValue());
-		assertEquals(54, ms.getResultBuffer().get().intValue());
-		assertEquals(56, ms.getResultBuffer().get().intValue());
-		assertEquals(81, ms.getResultBuffer().get().intValue());
-		assertEquals(100, ms.getResultBuffer().get().intValue());
-		assertEquals(101, ms.getResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(5, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(5, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(17, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(18, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(18, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(23, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(31, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(39, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(54, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(56, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(81, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(100, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(101, ms.getSortedResultBuffer().get().intValue());
 	}
 
 	@Test
@@ -126,7 +126,7 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(2, ms.getResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
 	}
 
 	@Test
@@ -141,8 +141,8 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(3, ms.getResultBuffer().get().intValue());
+		assertEquals(2, ms.sortedResultBuffer.get().intValue());
+		assertEquals(3, ms.sortedResultBuffer.get().intValue());
 	}
 
 	@Test
@@ -157,8 +157,8 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(3, ms.getResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(3, ms.getSortedResultBuffer().get().intValue());
 	}
 
 	@Test
@@ -174,9 +174,9 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(0, ms.getResultBuffer().get().intValue());
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(3, ms.getResultBuffer().get().intValue());
+		assertEquals(0, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(3, ms.getSortedResultBuffer().get().intValue());
 	}
 
 	@Test
@@ -193,10 +193,10 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(0, ms.getResultBuffer().get().intValue());
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(3, ms.getResultBuffer().get().intValue());
-		assertEquals(9, ms.getResultBuffer().get().intValue());
+		assertEquals(0, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(3, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(9, ms.getSortedResultBuffer().get().intValue());
 
 	}
 
@@ -215,11 +215,11 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(0, ms.getResultBuffer().get().intValue());
-		assertEquals(2, ms.getResultBuffer().get().intValue());
-		assertEquals(3, ms.getResultBuffer().get().intValue());
-		assertEquals(5, ms.getResultBuffer().get().intValue());
-		assertEquals(9, ms.getResultBuffer().get().intValue());
+		assertEquals(0, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(3, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(5, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(9, ms.getSortedResultBuffer().get().intValue());
 
 	}
 }
