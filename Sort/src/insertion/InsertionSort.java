@@ -5,13 +5,13 @@ import BufferAndLock.Buffer.StoppException;
 
 public class InsertionSort<T extends Comparable<T>> extends Process<T>{
 	
-	Buffer<T> toSortBuffer;
-	Buffer<T> lastThreadSortedBuffer;
-	Buffer<T> resultBuffer;
+	private Buffer<T> toSortBuffer;
+	private Buffer<T> lastThreadSortedBuffer;
+	private Buffer<T> resultBuffer;
 	
-	Buffer<T> sortedResultBuffer;
+	private Buffer<T> sortedResultBuffer;
 	
-	T element;
+	private T element;
 
 	public InsertionSort(Buffer<T> toSort) {
 		this.toSortBuffer = toSort;
@@ -21,7 +21,7 @@ public class InsertionSort<T extends Comparable<T>> extends Process<T>{
 		this.sortedResultBuffer = new Buffer<T>();
 	}
 	
-	public InsertionSort(Buffer<T> toSort, Buffer<T> sortedBuffer, Buffer<T> sortedResultBuffer) {
+	private InsertionSort(Buffer<T> toSort, Buffer<T> sortedBuffer, Buffer<T> sortedResultBuffer) {
 		this.toSortBuffer = toSort;
 		this.lastThreadSortedBuffer = sortedBuffer;
 		this.resultBuffer = new Buffer<T>();
@@ -30,10 +30,10 @@ public class InsertionSort<T extends Comparable<T>> extends Process<T>{
 
 	@Override
 	public void calculate() {
-		if(element == null){
+		if(this.element == null){
 			try {
 				this.element = this.toSortBuffer.get();
-				InsertionSort<T> nextStep = new InsertionSort<T>(toSortBuffer, resultBuffer, this.sortedResultBuffer);
+				InsertionSort<T> nextStep = new InsertionSort<T>(this.toSortBuffer, this.resultBuffer, this.sortedResultBuffer);
 				nextStep.startThread();
 			} catch (StoppException e) {
 				copySortedBufferToResultBuffer();

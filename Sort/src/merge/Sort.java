@@ -4,10 +4,10 @@ import merge.Buffer.StoppException;
 
 public class Sort<T extends Comparable<T>> {
 
-	Buffer<T> inputBuffer;
-	Buffer<T> resultBuffer;
-	Divide<T> div;
-	Merge<T> merge;
+	private Buffer<T> inputBuffer;
+	private Buffer<T> resultBuffer;
+	private Divide<T> div;
+	private Merge<T> merge;
 
 	public Sort(Buffer<T> inputBuffer) {
 		this.inputBuffer = inputBuffer;
@@ -28,8 +28,8 @@ public class Sort<T extends Comparable<T>> {
 				this.resultBuffer.stopp();
 			}
 		} else {
-			div = new Divide<T>(inputBuffer);
-			merge = new Merge<T>(div.sortLeft.resultBuffer, div.sortRight.resultBuffer, this.resultBuffer);
+			this.div = new Divide<T>(this.inputBuffer);
+			this.merge = new Merge<T>(this.div.sortLeft.resultBuffer, this.div.sortRight.resultBuffer, this.resultBuffer);
 //			this.resultBuffer = merge.sortedBuffer;
 		}
 		// if (this.inputBuffer.size() <= 2) {
@@ -72,7 +72,7 @@ public class Sort<T extends Comparable<T>> {
 	// }
 
 	public Buffer<T> getResultBuffer() {
-		return resultBuffer;
+		return this.resultBuffer;
 	}
 
 }

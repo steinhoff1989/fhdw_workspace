@@ -141,8 +141,8 @@ public class InsertionTest {
 
 		ms.startThread();
 
-		assertEquals(2, ms.sortedResultBuffer.get().intValue());
-		assertEquals(3, ms.sortedResultBuffer.get().intValue());
+		assertEquals(2, ms.getSortedResultBuffer().get().intValue());
+		assertEquals(3, ms.getSortedResultBuffer().get().intValue());
 	}
 
 	@Test

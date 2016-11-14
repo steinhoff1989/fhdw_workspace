@@ -26,13 +26,13 @@ public class QuickSort<T extends Comparable<T>> extends Process<T> {
 	@Override
 	public void calculate() {
 		//How to do it better?
-		if(referenceElement == null){
+		if(this.referenceElement == null){
 			try {
-				this.referenceElement = insertBuffer.get();
-				sortLeftList = new QuickSort<T>(this.leftList);
-				sortLeftList.startThread();
-				sortRightList = new QuickSort<T>(this.rightList);
-				sortRightList.startThread();
+				this.referenceElement = this.insertBuffer.get();
+				this.sortLeftList = new QuickSort<T>(this.leftList);
+				this.sortLeftList.startThread();
+				this.sortRightList = new QuickSort<T>(this.rightList);
+				this.sortRightList.startThread();
 			} catch (StoppException e) {
 				this.resultBuffer.stopp();
 				this.stopThread();
@@ -42,7 +42,7 @@ public class QuickSort<T extends Comparable<T>> extends Process<T> {
 		
 		try {
 			T nextElement = this.insertBuffer.get();
-			if (nextElement.compareTo(referenceElement) <= 0) {
+			if (nextElement.compareTo(this.referenceElement) <= 0) {
 				this.leftList.put(nextElement);
 
 			} else {
