@@ -17,8 +17,8 @@ public class InsertionSort<T extends Comparable<T>> extends Process<T>{
 		this.toSortBuffer = toSort;
 		this.resultBuffer = new Buffer<T>();
 		this.lastThreadSortedBuffer = new Buffer<T>();
-		this.sortedResultBuffer = new Buffer<T>();
 		this.lastThreadSortedBuffer.stopp();
+		this.sortedResultBuffer = new Buffer<T>();
 	}
 	
 	public InsertionSort(Buffer<T> toSort, Buffer<T> sortedBuffer, Buffer<T> sortedResultBuffer) {

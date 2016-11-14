@@ -1,18 +1,13 @@
-package bubble.test;
+package bubble;
 
 import static org.junit.Assert.assertEquals;
-
-import java.util.Random;
 
 import org.junit.Test;
 
 import BufferAndLock.DivideByZeroException;
-import bubble.BubbleSort;
-import bubble.Buffer;
 import bubble.Buffer.StoppException;
-import quick.QuickSort;
 
-public class bubbleTest {
+public class BubbleTest {
 
 	@Test
 	public void bubbleTest1() throws StoppException {
@@ -100,7 +95,7 @@ public class bubbleTest {
 		assertEquals(4, toSort.getNextElement());
 		assertEquals(5, toSort.getNextElement());
 	}
-	
+
 	@Test
 	public void bubbleTest5() throws StoppException {
 		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
@@ -111,7 +106,7 @@ public class bubbleTest {
 
 		assertEquals(0, toSort.getNextElement());
 	}
-	
+
 	@Test
 	public void test15Var() throws StoppException, DivideByZeroException {
 		Buffer<Integer> inputBuffer = new Buffer<Integer>();
