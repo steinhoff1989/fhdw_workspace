@@ -16,7 +16,6 @@ public class Configuration extends Process{
 		this.myAutomat = myAutomat;
 		this.currentState = currentState;
 		this.output = output;
-//		Manager.getTheInstance().newThreadCreated(this);
 	}
 
 	public void step(final String input){

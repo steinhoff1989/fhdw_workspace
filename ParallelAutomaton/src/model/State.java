@@ -4,13 +4,11 @@ public class State {
 
 	Automat automat;
 	
-	public State(Automat automat) {
+	/**
+	 * Represents a State for the given <automat>
+	 * @param automat
+	 */
+	public State(final Automat automat) {
 		this.automat = automat;
 	}
-
-	public void add(char c, State s)
-	{
-		throw new UnsupportedOperationException();
-	}
-	
 }

@@ -8,7 +8,6 @@ public class Output implements WrappedElement {
 		this.output = output;
 	}
 
-	@Override
 	public String getWrapped() throws NotRecognizedException {
 		return this.output;
 	}

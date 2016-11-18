@@ -10,26 +10,23 @@ public class Automat {
 	private final State endzustand;
 	private final Set<Transition> transitions;
 	
+	/**
+	 * Creates an automat object with a fixed anfangszustand and endzustand
+	 */
 	public Automat(){
 		this.anfangszustand = new State(this);
 		this.endzustand = new State(this);
 		this.transitions = new HashSet<Transition>();
 	}
 
-	public State getAnfangszustand() {
-		return this.anfangszustand;
-	}
 
-	public State getEndzustand() {
-		return this.endzustand;
-	}
-
-//	public boolean recognizes(final String input){
-//		Manager.getTheInstance().getOutput();
-//		
-////		return configuration.isEndConfiguration();
-//	}
-
+	/**
+	 * Calculates one possible output that can be created with the given <input>
+	 * @param input: the input for the automat from with one possible output will be returned.
+	 * @return
+	 * @throws NotRecognizedException if <input> is not an accepted input of the automat.
+	 * @throws InterruptedException if a thread gets interrupted from outside.
+	 */
 	public String run(final String input) throws NotRecognizedException, InterruptedException {
 		final Configuration configuration = new Configuration(this, this.anfangszustand, input,"");
 		Manager.getTheInstance().newThreadCreated(configuration);
@@ -38,10 +35,20 @@ public class Automat {
 		return Manager.getTheInstance().getOutput();
 	}
 
+	/**
+	 * Adds an Transition object to automatons set of transitions
+	 * @param transition: The transition object that will be added.
+	 */
 	public void addTransition(final Transition transition){
 		this.transitions.add(transition);
 	}
 	
+	/**
+	 * Calculates all possible Transitions from <state> with the input character <input>
+	 * @param input: The character for which all possible transitions from <state> will be calculated.
+	 * @param state: The state from which all Transitions with given <input> will be calculated.
+	 * @return
+	 */
 	public Set<Transition> getPossibleTransitions(final char input, final State state){
 		final Set<Transition> possibleTransitions = new HashSet<Transition>();
 		
@@ -55,5 +62,12 @@ public class Automat {
 		return possibleTransitions;
 		
 	}
+
+	public State getAnfangszustand() {
+		return this.anfangszustand;
+	}
 	
+	public State getEndzustand() {
+		return this.endzustand;
+	}
 }
