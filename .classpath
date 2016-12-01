@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="calculator/src"/>
+	<classpathentry kind="src" path="calculator/test"/>
+	<classpathentry kind="src" path="concurrentObserver/src"/>
+	<classpathentry kind="src" path="EndlicheAutomaten/src"/>
+	<classpathentry kind="src" path="EndlicheAutomaten/test"/>
+	<classpathentry kind="src" path="Fraction/src"/>
+	<classpathentry kind="src" path="Fraction/test"/>
+	<classpathentry kind="src" path="kryptographie/kryptographie/src"/>
+	<classpathentry kind="src" path="kryptographie/kryptographie/test"/>
+	<classpathentry kind="src" path="LGEditor/src"/>
+	<classpathentry kind="src" path="LpartsList/src"/>
+	<classpathentry kind="src" path="MassCalc/src"/>
+	<classpathentry kind="src" path="observer20161017/src"/>
+	<classpathentry kind="src" path="regulaereAusdruecke/src"/>
+	<classpathentry kind="src" path="transaction/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="EndlicheAutomaten/bin"/>
+</classpath>
