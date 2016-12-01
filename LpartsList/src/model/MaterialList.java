@@ -11,15 +11,16 @@ public class MaterialList{
 	Map<String, QuantifiedComponent> quantifiedComponentMap;
 	
 	public MaterialList(){
-		quantifiedComponentMap = new HashMap<String, QuantifiedComponent>();
+		this.quantifiedComponentMap = new HashMap<String, QuantifiedComponent>();
 	}
 	
-	public void addMaterial(QuantifiedComponent material){
-		if(quantifiedComponentMap.containsKey(material.getComponent().getName())){
-			QuantifiedComponent component = quantifiedComponentMap.get(material.getComponent().getName());
+	public void addMaterial(final QuantifiedComponent material){
+		if(this.quantifiedComponentMap.containsKey(material.getComponent().getName())){
+			final QuantifiedComponent component = this.quantifiedComponentMap.get(material.getComponent().getName());
 			component.addQuantity(material.getQuantity());
 		}else{
-			quantifiedComponentMap.put(material.getComponent().getName(), material);
+			this.quantifiedComponentMap.put(material.getComponent().getName(),
+					QuantifiedComponent.createQuantifiedComponent(material.getQuantity(), material.getComponent()));
 		}
 	}
 	
@@ -38,13 +39,13 @@ public class MaterialList{
 //	}
 
 	public List<QuantifiedComponent> toList() {
-		return new ArrayList<QuantifiedComponent>(quantifiedComponentMap.values());
+		return new ArrayList<QuantifiedComponent>(this.quantifiedComponentMap.values());
 	}
 
-	public void add(List<QuantifiedComponent> materialList) {
-		Iterator<QuantifiedComponent> iterator = materialList.iterator();
+	public void add(final List<QuantifiedComponent> materialList) {
+		final Iterator<QuantifiedComponent> iterator = materialList.iterator();
 		while(iterator.hasNext()){
-			QuantifiedComponent current = iterator.next();
+			final QuantifiedComponent current = iterator.next();
 			this.addMaterial(current);
 		}
 	}

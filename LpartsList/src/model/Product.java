@@ -10,7 +10,7 @@ public class Product extends ComponentCommon implements Observer{
 
 	private static final String CycleMessage = "Zyklen sind in der Aufbaustruktur nicht erlaubt!";
 
-	public static Product create(final String name, int price) {
+	public static Product create(final String name, final int price) {
 		return new Product(name, price, new HashMap<String, QuantifiedComponent>());
 	}
 	private final HashMap<String,QuantifiedComponent> components;
@@ -27,7 +27,7 @@ public class Product extends ComponentCommon implements Observer{
 			final QuantifiedComponent oldQuantification = this.getComponents().get(partName); 
 			oldQuantification.addQuantity(amount);
 		}else{
-			QuantifiedComponent quantifiedComponent = QuantifiedComponent.createQuantifiedComponent(amount, part);
+			final QuantifiedComponent quantifiedComponent = QuantifiedComponent.createQuantifiedComponent(amount, part);
 			this.getComponents().put(partName, quantifiedComponent);
 			quantifiedComponent.register(this);
 		}
@@ -63,14 +63,15 @@ public class Product extends ComponentCommon implements Observer{
 	}
 
 	public List<QuantifiedComponent> getMaterialList2() {
-		MaterialList result = new MaterialList();
+		final MaterialList result = new MaterialList();
 		
-		Collection<QuantifiedComponent> componentsList = components.values();
-		Iterator<QuantifiedComponent> componentIterator = componentsList.iterator();
+		final Collection<QuantifiedComponent> componentsList = this.components.values();
+		final Iterator<QuantifiedComponent> componentIterator = componentsList.iterator();
 		while (componentIterator.hasNext()){
 			final QuantifiedComponent current = componentIterator.next();
+			final List<QuantifiedComponent> materialListOfQC = current.getComponent().getMaterialList2();
 			for(int i=0; i<current.getQuantity();i++){
-				result.add(current.getComponent().getMaterialList2());
+				result.add(materialListOfQC);
 			}
 		}
 		return result.toList();
@@ -87,15 +88,15 @@ public class Product extends ComponentCommon implements Observer{
 		return Integer.toString(result);
 	}
 
-	public void update(ComponentEvent e) {
+	public void update(final ComponentEvent e) {
 		e.accept(new EventVisitor(){
 
-			public void handlePriceChangedEvent(PriceChangedEvent e) {
-				state.priceChanged(Product.this);
+			public void handlePriceChangedEvent(final PriceChangedEvent e) {
+				Product.this.state.priceChanged(Product.this);
 			}
 
-			public void handleStructureChangedEvent(StructureChangedEvent e) {
-				state.structureChanged(Product.this);
+			public void handleStructureChangedEvent(final StructureChangedEvent e) {
+				Product.this.state.structureChanged(Product.this);
 				
 			}
 			
