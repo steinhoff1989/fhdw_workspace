@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.AmountUnderLimitException;
+
 public class Credit extends Entry{
 
 	public Credit(Transfer transfer){

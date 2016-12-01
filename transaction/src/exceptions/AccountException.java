@@ -1,4 +1,4 @@
-package model;
+package exceptions;
 
 @SuppressWarnings("serial")
 abstract public class AccountException extends Exception {

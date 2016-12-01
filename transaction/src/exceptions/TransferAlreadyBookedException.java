@@ -1,10 +1,9 @@
-package model;
+package exceptions;
 
 @SuppressWarnings("serial")
 public class TransferAlreadyBookedException extends AccountException {
 
-	public TransferAlreadyBookedException(String message) {
+	public TransferAlreadyBookedException(final String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 }

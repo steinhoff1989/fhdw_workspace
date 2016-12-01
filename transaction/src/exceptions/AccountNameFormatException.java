@@ -1,4 +1,4 @@
-package model;
+package exceptions;
 
 @SuppressWarnings("serial")
 public class AccountNameFormatException extends AccountException {
