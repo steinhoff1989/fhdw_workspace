@@ -12,7 +12,7 @@ public class QuickSortTest {
 
 	@Test
 	public void test8Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(3);
@@ -27,7 +27,7 @@ public class QuickSortTest {
 		inputBuffer.put(4);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -43,7 +43,7 @@ public class QuickSortTest {
 
 	@Test
 	public void test10Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(3);
@@ -57,7 +57,7 @@ public class QuickSortTest {
 		inputBuffer.put(7);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -75,7 +75,7 @@ public class QuickSortTest {
 
 	@Test
 	public void test15Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(17);
@@ -94,7 +94,7 @@ public class QuickSortTest {
 		inputBuffer.put(100);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -117,12 +117,12 @@ public class QuickSortTest {
 
 	@Test
 	public void test1Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -131,13 +131,13 @@ public class QuickSortTest {
 
 	@Test
 	public void test2VarSorted() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(3);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -147,13 +147,13 @@ public class QuickSortTest {
 
 	@Test
 	public void test2VarUnsorted() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -163,14 +163,14 @@ public class QuickSortTest {
 
 	@Test
 	public void test3Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
 		inputBuffer.put(0);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -181,7 +181,7 @@ public class QuickSortTest {
 
 	@Test
 	public void test4Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
@@ -189,7 +189,7 @@ public class QuickSortTest {
 		inputBuffer.put(0);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -202,7 +202,7 @@ public class QuickSortTest {
 
 	@Test
 	public void test5Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(3);
 		inputBuffer.put(2);
@@ -211,7 +211,7 @@ public class QuickSortTest {
 		inputBuffer.put(5);
 		inputBuffer.stopp();
 
-		QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
 
 		ms.startThread();
 
@@ -222,5 +222,24 @@ public class QuickSortTest {
 		assertEquals(9, ms.getResultBuffer().get().intValue());
 
 	}
+	@Test
+	public void testSpecial() throws StoppException, DivideByZeroException {
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
+		inputBuffer.put(5);
+		inputBuffer.put(3);
+		inputBuffer.put(1);
+		inputBuffer.put(6);
+		inputBuffer.stopp();
+
+		final QuickSort<Integer> ms = new QuickSort<>(inputBuffer);
+
+		ms.startThread();
+
+		assertEquals(1, ms.getResultBuffer().get().intValue());
+		assertEquals(3, ms.getResultBuffer().get().intValue());
+		assertEquals(5, ms.getResultBuffer().get().intValue());
+		assertEquals(6, ms.getResultBuffer().get().intValue());
+
+	}
 }

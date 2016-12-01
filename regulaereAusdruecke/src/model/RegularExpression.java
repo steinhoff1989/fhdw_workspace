@@ -11,27 +11,30 @@ public abstract class RegularExpression {
 	}
 
 	public abstract Automaton toAutomat();
-	
-	public void setIterated(Boolean iterated) {
+
+	public void setIterated(final Boolean iterated) {
 		this.iterated = iterated;
 	}
 
 	public Boolean getIterated() {
-		return iterated;
+		return this.iterated;
 	}
 
-	public boolean recognize(String input){
-		if(input.equals("")) return true;
-		
-		Automaton automat = this.toAutomat();
-		if(iterated) automat.iterate();
+	public boolean recognize(final String input) {
+		if (input.equals(""))
+			return true;
+
+		final Automaton automat = this.toAutomat();
+		if (this.iterated)
+			automat.iterate();
 		return automat.recognizes(input);
 	}
-	
+
 	public abstract RegularExpression concatenate(RegularExpression regEx);
+
 	public abstract RegularExpression choice(RegularExpression regEx);
 
-	public RegularExpression iterate(){
+	public RegularExpression iterate() {
 		this.iterated = true;
 		return this;
 	}

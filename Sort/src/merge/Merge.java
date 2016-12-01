@@ -11,7 +11,12 @@ public class Merge<T extends Comparable<T>> extends Process<T> {
 	private Buffer<T> singleBufferLeft;
 	private Buffer<T> singleBufferRight;
 	
-	
+	/**
+	 * Creates a new Merge Object and starts a new Thread to get a sorted <resultBuffer>
+	 * @param divLeft
+	 * @param divRight
+	 * @param resultBuffer
+	 */
 	public Merge(final Buffer<T> divLeft, final Buffer<T> divRight, final Buffer<T> resultBuffer) {
 		this.divLeft = divLeft;
 		this.divRight = divRight;
