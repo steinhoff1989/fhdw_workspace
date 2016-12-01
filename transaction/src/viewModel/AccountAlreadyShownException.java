@@ -1,6 +1,6 @@
 package viewModel;
 
-import model.AccountException;
+import exceptions.AccountException;
 
 @SuppressWarnings("serial")
 public class AccountAlreadyShownException extends AccountException {

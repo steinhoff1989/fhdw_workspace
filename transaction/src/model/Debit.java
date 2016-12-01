@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.AmountUnderLimitException;
+
 public class Debit extends Entry{
 
 	public Debit(Transfer transfer){

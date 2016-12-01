@@ -1,5 +1,9 @@
 package model;
 
+import exceptions.AccountException;
+import state.NotCompletedState;
+import state.TransferState;
+
 public abstract class TransferOrTransaction {
 	
 	/** Removes the receiver's <amount> from the receiver's <fromAccount> (debit)

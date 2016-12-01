@@ -3,6 +3,11 @@ package model;
 import java.util.Map;
 import java.util.TreeMap;
 
+import exceptions.AccountAlreadyExistsException;
+import exceptions.AccountException;
+import exceptions.AccountNameFormatException;
+import exceptions.AccountNotFoundException;
+
 public class AccountManager {
 	
 	private static AccountManager theAccountManager = null;

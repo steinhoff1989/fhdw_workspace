@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.AmountUnderLimitException;
+
 /** An entry (debit or credit) for an account, typically result of a booking process. */
 public abstract class Entry {
 	

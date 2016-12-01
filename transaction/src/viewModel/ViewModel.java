@@ -5,8 +5,8 @@ import java.util.Enumeration;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
+import exceptions.AccountException;
 import model.Account;
-import model.AccountException;
 import model.AccountManager;
 
 public class ViewModel implements AccountViewManager {

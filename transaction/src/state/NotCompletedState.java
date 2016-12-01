@@ -1,4 +1,9 @@
-package model;
+package state;
+
+import exceptions.AmountUnderLimitException;
+import model.Credit;
+import model.Debit;
+import model.Transfer;
 
 public class NotCompletedState extends TransferState {
 

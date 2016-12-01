@@ -1,19 +1,22 @@
 package view;
 
 
-import javax.swing.JFrame;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
@@ -21,8 +24,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import model.AccountException;
-import viewModel.ViewModel;
+import exceptions.AccountException;
 import viewModel.AccountTransactionFacadeView;
 import viewModel.AccountView;
 import viewModel.EntryView;
@@ -30,36 +32,36 @@ import viewModel.TransactionView;
 import viewModel.TransferOrTransactionView;
 import viewModel.TransferOrTransactionViewVisitor;
 import viewModel.TransferView;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import viewModel.ViewModel;
 
 @SuppressWarnings("serial")
 public class View extends JFrame implements AccountTransactionFacadeView {
 
 	private static final int ViewWidth = 800;
 	private static final int ViewHeight = 600;
-	public View(int offset, String title) {
+	public View(final int offset, final String title) {
 		super();
-		initialize(offset, title);
+		this.initialize(offset, title);
 	}
 
-	private void initialize(int offset, String title) {
+	private void initialize(final int offset, final String title) {
 		this.setBounds(offset, offset, offset + ViewWidth, offset + ViewHeight);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle(title);
 		this.getContentPane().setLayout(new BorderLayout(0, 0));		
-		this.getContentPane().add(getMainSplitPane(), BorderLayout.CENTER);
+		this.getContentPane().add(this.getMainSplitPane(), BorderLayout.CENTER);
 		this.getContentPane().add(this.getMainStatusBar(),BorderLayout.SOUTH);
 		this.getContentPane().addComponentListener(new ComponentListener() {
-			public void componentShown(ComponentEvent e) {}
-			public void componentResized(ComponentEvent e) {
-				adJustDividerLocations();
+			@Override
+			public void componentShown(final ComponentEvent e) {}
+			@Override
+			public void componentResized(final ComponentEvent e) {
+				View.this.adJustDividerLocations();
 			}
-			public void componentMoved(ComponentEvent e) {}
-			public void componentHidden(ComponentEvent e) {}
+			@Override
+			public void componentMoved(final ComponentEvent e) {}
+			@Override
+			public void componentHidden(final ComponentEvent e) {}
 		});
 		
 	}
@@ -68,9 +70,9 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		if (this.mainSplitPane == null) {
 			this.mainSplitPane = new JSplitPane();
 			this.mainSplitPane.setOrientation(JSplitPane.VERTICAL_SPLIT);
-			mainSplitPane.setLeftComponent(getAccountsPanel());
-			mainSplitPane.setRightComponent(getOtherAccountsAndTransactionsPanel());
-			adJustDividerLocations();
+			this.mainSplitPane.setLeftComponent(this.getAccountsPanel());
+			this.mainSplitPane.setRightComponent(this.getOtherAccountsAndTransactionsPanel());
+			this.adJustDividerLocations();
 		}
 		return this.mainSplitPane;
 	}
@@ -80,7 +82,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.accountDetailsPanel = new JPanel();
 			this.accountDetailsPanel.setLayout(new BorderLayout());
 			this.accountDetailsPanel.setBorder(new TitledBorder("Account details"));
-			this.accountDetailsPanel.add(getAccountEntryListScrollPane(), BorderLayout.CENTER);
+			this.accountDetailsPanel.add(this.getAccountEntryListScrollPane(), BorderLayout.CENTER);
 		}
 		return this.accountDetailsPanel;
 	}
@@ -88,7 +90,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 	private JScrollPane getAccountEntryListScrollPane(){
 		if (this.accountEntryListScrollPane == null) {
 			this.accountEntryListScrollPane = new JScrollPane();
-			this.accountEntryListScrollPane.setViewportView(getAccountEntryList());
+			this.accountEntryListScrollPane.setViewportView(this.getAccountEntryList());
 		}
 		return this.accountEntryListScrollPane;
 	}
@@ -106,12 +108,12 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				mainSplitPane.setDividerLocation((double) 0.4);
+				View.this.mainSplitPane.setDividerLocation(0.4);
 				EventQueue.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						accountsSplitPane.setDividerLocation((double) 0.2);
-						transactionsSplitPane.setDividerLocation((double) 0.2);
+						View.this.accountsSplitPane.setDividerLocation(0.2);
+						View.this.transactionsSplitPane.setDividerLocation(0.2);
 					}
 				});
 			}
@@ -164,8 +166,9 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.myAccountList.setModel(this.getViewModel().getMyAccountList());
 			this.myAccountList.setToolTipText("Shows the user's accounts.");
 			this.myAccountList.addListSelectionListener(new ListSelectionListener() {
-				public void valueChanged(ListSelectionEvent e) {
-					myAccountListSelectionChangedAction();
+				@Override
+				public void valueChanged(final ListSelectionEvent e) {
+					View.this.myAccountListSelectionChangedAction();
 				}
 			});
 		}
@@ -223,8 +226,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.clearAccountViewButton.setToolTipText("Clears the list of found accounts.");
 			this.clearAccountViewButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					clearAccountViewAction();
+				public void actionPerformed(final ActionEvent e) {
+					View.this.clearAccountViewAction();
 				}
 			});
 		}
@@ -248,8 +251,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.findAccountButton.setToolTipText("Searches for an acount with name \"Account name\" and lists it under \"Other accounts\", if found.");
 			this.findAccountButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					findAccountAction();
+				public void actionPerformed(final ActionEvent e) {
+					View.this.findAccountAction();
 				}
 			});
 		}
@@ -262,9 +265,9 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.createAccountButton.setToolTipText("Creates an acount with name \"Account name\" and lists it under \"My accounts\".");
 			this.createAccountButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					createAccountAction();
-					getAccountNameInput().grabFocus();
+				public void actionPerformed(final ActionEvent e) {
+					View.this.createAccountAction();
+					View.this.getAccountNameInput().grabFocus();
 				}
 			});
 		}
@@ -292,20 +295,20 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		if (this.transactionsSplitPane == null) {
 			this.transactionsSplitPane = new JSplitPane();
 			this.transactionsSplitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
-			this.transactionsSplitPane.add(getOtherAccountsPanel(),JSplitPane.LEFT);
-			this.transactionsSplitPane.add(getTransactionsAndTransfersPanel(),JSplitPane.RIGHT);
+			this.transactionsSplitPane.add(this.getOtherAccountsPanel(),JSplitPane.LEFT);
+			this.transactionsSplitPane.add(this.getTransactionsAndTransfersPanel(),JSplitPane.RIGHT);
 			this.adJustDividerLocations();
 		}
 		return this.transactionsSplitPane;
 	}
 	private JPanel transactionsAndTransfersPanel = null;
 	private JPanel getTransactionsAndTransfersPanel() {
-		if (transactionsAndTransfersPanel == null) {
+		if (this.transactionsAndTransfersPanel == null) {
 			this.transactionsAndTransfersPanel = new JPanel();
 			this.transactionsAndTransfersPanel.setLayout(new BorderLayout());
 			this.transactionsAndTransfersPanel.setBorder(new TitledBorder("Transfers and transactions"));
 			this.transactionsAndTransfersPanel.add(this.getTransactionsAndTransfersSplitPane(), BorderLayout.CENTER);
-			this.transactionsAndTransfersPanel.add(getTransferToolBar(), BorderLayout.NORTH);
+			this.transactionsAndTransfersPanel.add(this.getTransferToolBar(), BorderLayout.NORTH);
 			this.transactionsAndTransfersPanel.add(this.getBookToolBar(), BorderLayout.SOUTH);
 		}
 		return this.transactionsAndTransfersPanel;
@@ -325,8 +328,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.bookButton.setToolTipText("Books the selected transfer or transaction.");
 			this.bookButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					bookAction();
+				public void actionPerformed(final ActionEvent e) {
+					View.this.bookAction();
 				}
 			});
 		}
@@ -348,7 +351,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.transactionDetailsPanel = new JPanel();
 			this.transactionDetailsPanel.setLayout(new BorderLayout());
 			this.transactionDetailsPanel.setBorder(new TitledBorder("Transaction details"));
-			this.transactionDetailsPanel.add(getTransactionDetailsScrollPane(), BorderLayout.CENTER);
+			this.transactionDetailsPanel.add(this.getTransactionDetailsScrollPane(), BorderLayout.CENTER);
 			this.hideTransactionDetails();
 		}
 		return this.transactionDetailsPanel;
@@ -357,7 +360,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 	private JScrollPane getTransactionDetailsScrollPane() {
 		if (this.transactionDetailsScrollPane == null) {
 			this.transactionDetailsScrollPane = new JScrollPane();
-			this.transactionDetailsScrollPane.setViewportView(getTransactionDetailList());
+			this.transactionDetailsScrollPane.setViewportView(this.getTransactionDetailList());
 		}
 		return this.transactionDetailsScrollPane;
 	}
@@ -375,7 +378,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		if (this.transactionsPanel == null){
 			this.transactionsPanel = new JPanel();
 			this.transactionsPanel.setLayout(new BorderLayout());
-			this.transactionsPanel.add(getTransactionsScrollPane(), BorderLayout.CENTER);
+			this.transactionsPanel.add(this.getTransactionsScrollPane(), BorderLayout.CENTER);
 		}
 		return this.transactionsPanel;
 	}
@@ -383,7 +386,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 	private JScrollPane getTransactionsScrollPane(){
 		if (this.transactionsScrollPane == null) {
 			this.transactionsScrollPane = new JScrollPane();
-			this.transactionsScrollPane.setViewportView(getTransferOrTransactionList());
+			this.transactionsScrollPane.setViewportView(this.getTransferOrTransactionList());
 		}
 		return this.transactionsScrollPane;
 	}
@@ -396,8 +399,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.transferOrTransactionsList.setToolTipText("Shows the created and pending transfers and/or transactions.");
 			this.transferOrTransactionsList.addListSelectionListener(new ListSelectionListener() {
 				@Override
-				public void valueChanged(ListSelectionEvent e) {
-					transferOrTransactionListSelectionChangedAction();
+				public void valueChanged(final ListSelectionEvent e) {
+					View.this.transferOrTransactionListSelectionChangedAction();
 				}
 			});
 		}
@@ -408,12 +411,12 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		if (this.transferToolBar == null) {
 			this.transferToolBar = new JToolBar();
 			this.transferToolBar.add(new JLabel("Amount(€): "));
-			this.transferToolBar.add(getAmountInput());
+			this.transferToolBar.add(this.getAmountInput());
 			this.transferToolBar.add(new JLabel(" Purpose: "));
-			this.transferToolBar.add(getPurposeInput());
-			this.transferToolBar.add(getDebitCreateButton());
-			this.transferToolBar.add(getCreditCreateButton());
-			this.transferToolBar.add(getCreateTransactionButton());
+			this.transferToolBar.add(this.getPurposeInput());
+			this.transferToolBar.add(this.getDebitCreateButton());
+			this.transferToolBar.add(this.getCreditCreateButton());
+			this.transferToolBar.add(this.getCreateTransactionButton());
 		}
 		return this.transferToolBar;
 	}
@@ -424,8 +427,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.createTransactionButton.setToolTipText("Creates a new empty transaction.");
 			this.createTransactionButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					createTransactionAction();
+				public void actionPerformed(final ActionEvent e) {
+					View.this.createTransactionAction();
 				}
 			});
 		}
@@ -454,8 +457,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.debitCreateButton.setToolTipText("Creates a new transfer (if a transaction is selectedwithin the selected transaction).");
 			this.debitCreateButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					debitOrCreditCreateAction(Debit);
+				public void actionPerformed(final ActionEvent e) {
+					View.this.debitOrCreditCreateAction(Debit);
 				}
 			});
 		}
@@ -468,8 +471,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			this.creditCreateButton.setToolTipText("Creates a new transfer (if a transaction is selectedwithin the selected transaction).");
 			this.creditCreateButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
-					debitOrCreditCreateAction(Credit);
+				public void actionPerformed(final ActionEvent e) {
+					View.this.debitOrCreditCreateAction(Credit);
 				}
 			});
 		}
@@ -487,7 +490,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 	private static final long StandardErrorShowTime = 10000;
 	private static final long StandardErrorUpdateInterval = 1000;
 	private long errorShowTime = 0;
-	private synchronized void increaseErrorShowTime(String message) {
+	private synchronized void increaseErrorShowTime(final String message) {
 		this.getMainStatusBar().setText(message);
 		this.errorShowTime = new java.util.Date().getTime() + StandardErrorShowTime;
 		this.getMainStatusBar().setVisible(true);
@@ -506,8 +509,8 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 						synchronized (View.this) {
 							View.this.wait(View.StandardErrorUpdateInterval);
 						}
-						if (new java.util.Date(errorShowTime).before(new java.util.Date())) stopErrorShow();
-					} catch (InterruptedException e) {
+						if (new java.util.Date(View.this.errorShowTime).before(new java.util.Date())) View.this.stopErrorShow();
+					} catch (final InterruptedException e) {
 						return;
 					}
 				}
@@ -519,17 +522,17 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		this.getMainStatusBar().setVisible(false);
 	}
 
-	private void showError(String message) {
+	private void showError(final String message) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				increaseErrorShowTime(message);
+				View.this.increaseErrorShowTime(message);
 			}
 		}). start();
 	}
-	protected void showTransactionDetails(TransactionView transactionView) {
+	protected void showTransactionDetails(final TransactionView transactionView) {
 		this.getTransactionDetailsPanel().setVisible(true);
-		this.getTransactionsAndTransfersSplitPane().setDividerLocation((double) 0.6);
+		this.getTransactionsAndTransfersSplitPane().setDividerLocation(0.6);
 		this.getTransactionsAndTransfersSplitPane().setDividerSize(10);
 		this.getTransactionDetailList().setModel(this.getViewModel().getCurrentTransactionDetails());
 	}
@@ -552,7 +555,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		try {
 			this.getViewModel().createAccount(this.getAccountNameInput().getText());
 			this.getMyAccountList().setSelectedIndex(this.getMyAccountList().getModel().getSize() - 1);
-		} catch (AccountException e) {
+		} catch (final AccountException e) {
 			this.showError(e.getMessage());
 		}
 	}
@@ -560,7 +563,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		try {
 			this.getViewModel().findAccount(this.getAccountNameInput().getText());
 			this.getOtherAccountList().setSelectedIndex(this.getOtherAccountList().getModel().getSize() - 1);
-		} catch (AccountException e) {
+		} catch (final AccountException e) {
 			this.showError(e.getMessage());
 		}
 	}
@@ -568,24 +571,25 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		this.getViewModel().clearOtherAccounts();
 	}
 	protected void myAccountListSelectionChangedAction() {
-		AccountView selected = this.getMyAccountList().getSelectedValue();
+		final AccountView selected = this.getMyAccountList().getSelectedValue();
 		if (selected != null) {
 			this.getViewModel().changeAccountSelection(selected);
 		}
 	}
+	@Override
 	public void updateEntriesOfSelectedAccount(){
 		this.getAccountEntryList().setModel(this.getViewModel().getCurrentAccountEntries());
 	}
 	private static final int Credit = 0;
 	private static final int Debit = 1;
 	
-	protected void debitOrCreditCreateAction(int creditOrDebit) {
-		AccountView myAccount = this.getMyAccountList().getSelectedValue();
+	protected void debitOrCreditCreateAction(final int creditOrDebit) {
+		final AccountView myAccount = this.getMyAccountList().getSelectedValue();
 		if (myAccount == null) {
 			this.showError("Select an account in the your own account list!");
 			return;
 		}
-		AccountView otherAccount = this.getOtherAccountList().getSelectedValue();
+		final AccountView otherAccount = this.getOtherAccountList().getSelectedValue();
 		if (otherAccount == null) {
 			this.showError("Select an account in the list of other accounts!");
 			return;
@@ -593,7 +597,7 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 		long amount; 
 		try {
 			amount = Long.parseLong(this.getAmountInput().getText());
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			this.showError("The amount shall be an integer!");
 			return;
 		}
@@ -606,61 +610,59 @@ public class View extends JFrame implements AccountTransactionFacadeView {
 			fromAccount = myAccount;
 			toAccount = otherAccount;
 		}
-		String purpose = this.getPurposeInput().getText();
-		TransferOrTransactionView selectedTransferOrTransaction = this.getTransferOrTransactionList().getSelectedValue();
+		final String purpose = this.getPurposeInput().getText();
+		final TransferOrTransactionView selectedTransferOrTransaction = this.getTransferOrTransactionList().getSelectedValue();
 		if (selectedTransferOrTransaction != null) {
 			selectedTransferOrTransaction.accept(new TransferOrTransactionViewVisitor() {
 				@Override
-				public void handleTransferView(TransferView transferView) {
-					getViewModel().createTransfer(fromAccount, toAccount, amount, purpose);
+				public void handleTransferView(final TransferView transferView) {
+					View.this.getViewModel().createTransfer(fromAccount, toAccount, amount, purpose);
 				}
 				@Override
-				public void handleTransactionView(TransactionView transactionView) {
-					getViewModel().createTransferInTransaction(fromAccount, toAccount, amount, purpose, transactionView);
-					transferOrTransactionListSelectionChangedAction();
+				public void handleTransactionView(final TransactionView transactionView) {
+					View.this.getViewModel().createTransferInTransaction(fromAccount, toAccount, amount, purpose, transactionView);
+					View.this.transferOrTransactionListSelectionChangedAction();
 				}
 			});
 		} else {
 			this.getViewModel().createTransfer(fromAccount, toAccount, amount, purpose);
 		}
 	}
-	//TODO Start analysis of system architecture for example here!
 	protected void createTransactionAction() {
 		this.getViewModel().createTransaction();
 	}
 	protected void transferOrTransactionListSelectionChangedAction() {
-		TransferOrTransactionView selected = this.getTransferOrTransactionList().getSelectedValue();
+		final TransferOrTransactionView selected = this.getTransferOrTransactionList().getSelectedValue();
 		if (selected != null) {
 			selected.accept(new TransferOrTransactionViewVisitor(){
 				@Override
-				public void handleTransactionView(TransactionView transactionView) {
-					getViewModel().changeTransactionSelection(transactionView);
-					showTransactionDetails(transactionView);
+				public void handleTransactionView(final TransactionView transactionView) {
+					View.this.getViewModel().changeTransactionSelection(transactionView);
+					View.this.showTransactionDetails(transactionView);
 				}
 				@Override
-				public void handleTransferView(TransferView transferView) {
-					hideTransactionDetails();
+				public void handleTransferView(final TransferView transferView) {
+					View.this.hideTransactionDetails();
 				}
 			});
 		} else {
-			if (getTransferOrTransactionList().getModel().getSize() > 0) {
-				getTransferOrTransactionList().setSelectedIndex(0);
+			if (this.getTransferOrTransactionList().getModel().getSize() > 0) {
+				this.getTransferOrTransactionList().setSelectedIndex(0);
 			} else {
-				hideTransactionDetails();
+				this.hideTransactionDetails();
 			}
 		}
 	}
-	//TODO Start analysis of system architecture for example here!
 	protected void bookAction() {
-		TransferOrTransactionView selected = this.getTransferOrTransactionList().getSelectedValue();
+		final TransferOrTransactionView selected = this.getTransferOrTransactionList().getSelectedValue();
 		if (selected == null) {
 			this.showError("Select a transfer or transaction prior to booking!");
 			return;
 		}
 		try {
 			this.getViewModel().book(selected);
-		} catch (AccountException e) {
-			showError(e.getMessage());;
+		} catch (final AccountException e) {
+			this.showError(e.getMessage());;
 		}
 	}
 
