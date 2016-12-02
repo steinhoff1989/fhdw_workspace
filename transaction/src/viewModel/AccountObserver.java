@@ -1,4 +1,4 @@
-package model;
+package viewModel;
 
 public interface AccountObserver {
 

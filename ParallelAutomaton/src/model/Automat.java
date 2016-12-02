@@ -11,7 +11,7 @@ public class Automat {
 	private final Set<Transition> transitions;
 	
 	/**
-	 * Creates an automat object with a fixed anfangszustand and endzustand
+	 * Creates an automaton object with a fixed <anfangszustand> and <endzustand>
 	 */
 	public Automat(){
 		this.anfangszustand = new State(this);

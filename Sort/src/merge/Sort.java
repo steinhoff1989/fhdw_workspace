@@ -1,6 +1,8 @@
 package merge;
 
-import merge.Buffer.StoppException;
+//import merge.Buffer.StoppException;
+import BufferAndLock.Buffer;
+import BufferAndLock.Buffer.StoppException;;
 
 public class Sort<T extends Comparable<T>> {
 

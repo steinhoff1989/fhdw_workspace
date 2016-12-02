@@ -1,18 +1,17 @@
 package merge;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import merge.Buffer;
-import merge.Buffer.StoppException;
-import merge.Sort;
+import BufferAndLock.Buffer;
+import BufferAndLock.Buffer.StoppException;
 
 public class MergeTest {
 
 	@Test
 	public void test8Var() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		
 		inputBuffer.put(2);
@@ -28,7 +27,7 @@ public class MergeTest {
 		inputBuffer.put(4);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -44,7 +43,7 @@ public class MergeTest {
 	
 	@Test
 	public void test10Var() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		inputBuffer.put(2);
 		inputBuffer.put(3);
@@ -58,7 +57,7 @@ public class MergeTest {
 		inputBuffer.put(7);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -76,7 +75,7 @@ public class MergeTest {
 	
 	@Test
 	public void test15Var() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		
 		inputBuffer.put(2);
@@ -96,7 +95,7 @@ public class MergeTest {
 		inputBuffer.put(100);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -119,12 +118,12 @@ public class MergeTest {
 
 	@Test
 	public void test1Var() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		inputBuffer.put(2);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -133,13 +132,13 @@ public class MergeTest {
 	
 	@Test
 	public void test2VarSorted() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		inputBuffer.put(2);
 		inputBuffer.put(3);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -149,13 +148,13 @@ public class MergeTest {
 	
 	@Test
 	public void test2VarUnsorted() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		inputBuffer.put(3);
 		inputBuffer.put(2);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -164,14 +163,14 @@ public class MergeTest {
 	}
 	@Test
 	public void test3Var() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		inputBuffer.put(3);
 		inputBuffer.put(2);
 		inputBuffer.put(0);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -181,7 +180,7 @@ public class MergeTest {
 	}
 	@Test
 	public void test4Var() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		inputBuffer.put(3);
 		inputBuffer.put(2);
@@ -189,7 +188,7 @@ public class MergeTest {
 		inputBuffer.put(0);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		
@@ -201,7 +200,7 @@ public class MergeTest {
 	}
 	@Test
 	public void test5Var() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 		
 		inputBuffer.put(3);
 		inputBuffer.put(2);
@@ -210,7 +209,7 @@ public class MergeTest {
 		inputBuffer.put(5);
 		inputBuffer.stopp();
 		
-		Sort<Integer> ms = new Sort<>(inputBuffer);
+		final Sort<Integer> ms = new Sort<>(inputBuffer);
 		
 		ms.sort();
 		

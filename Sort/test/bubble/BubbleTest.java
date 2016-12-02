@@ -4,15 +4,15 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import BufferAndLock.DivideByZeroException;
-import bubble.Buffer.StoppException;
+import BufferAndLock.Buffer;
+import BufferAndLock.Buffer.StoppException;
 
 public class BubbleTest {
 
 	@Test
 	public void bubbleTest1() throws StoppException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
-		BubbleSort<Integer> toSort = new BubbleSort<>(inputBuffer);
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final BubbleSort<Integer> toSort = new BubbleSort<>(inputBuffer);
 
 		inputBuffer.put(0);
 		inputBuffer.put(2);
@@ -45,38 +45,38 @@ public class BubbleTest {
 
 	@Test
 	public void bubbleTest2() throws StoppException {
-		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
-		BubbleSort toSort = new BubbleSort(inputBuffer);
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final BubbleSort<Integer> toSort = new BubbleSort<Integer>(inputBuffer);
 
 		inputBuffer.put(0);
 		inputBuffer.put(2);
 		inputBuffer.put(5);
 		inputBuffer.stopp();
 
-		assertEquals(0, toSort.getNextElement());
-		assertEquals(2, toSort.getNextElement());
-		assertEquals(5, toSort.getNextElement());
+		assertEquals(0, toSort.getNextElement().intValue());
+		assertEquals(2, toSort.getNextElement().intValue());
+		assertEquals(5, toSort.getNextElement().intValue());
 	}
 
 	@Test
 	public void bubbleTest3() throws StoppException {
-		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
-		BubbleSort toSort = new BubbleSort(inputBuffer);
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final BubbleSort<Integer> toSort = new BubbleSort<Integer>(inputBuffer);
 
 		inputBuffer.put(0);
 		inputBuffer.put(5);
 		inputBuffer.put(2);
 		inputBuffer.stopp();
 
-		assertEquals(0, toSort.getNextElement());
-		assertEquals(2, toSort.getNextElement());
-		assertEquals(5, toSort.getNextElement());
+		assertEquals(0, toSort.getNextElement().intValue());
+		assertEquals(2, toSort.getNextElement().intValue());
+		assertEquals(5, toSort.getNextElement().intValue());
 	}
 
 	@Test
 	public void bubbleTest4() throws StoppException {
-		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
-		BubbleSort toSort = new BubbleSort(inputBuffer);
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final BubbleSort<Integer> toSort = new BubbleSort<Integer>(inputBuffer);
 
 		inputBuffer.put(0);
 		inputBuffer.put(2);
@@ -87,29 +87,29 @@ public class BubbleTest {
 		inputBuffer.put(4);
 		inputBuffer.stopp();
 
-		assertEquals(0, toSort.getNextElement());
-		assertEquals(1, toSort.getNextElement());
-		assertEquals(1, toSort.getNextElement());
-		assertEquals(2, toSort.getNextElement());
-		assertEquals(3, toSort.getNextElement());
-		assertEquals(4, toSort.getNextElement());
-		assertEquals(5, toSort.getNextElement());
+		assertEquals(0, toSort.getNextElement().intValue());
+		assertEquals(1, toSort.getNextElement().intValue());
+		assertEquals(1, toSort.getNextElement().intValue());
+		assertEquals(2, toSort.getNextElement().intValue());
+		assertEquals(3, toSort.getNextElement().intValue());
+		assertEquals(4, toSort.getNextElement().intValue());
+		assertEquals(5, toSort.getNextElement().intValue());
 	}
 
 	@Test
 	public void bubbleTest5() throws StoppException {
-		Buffer<Comparable> inputBuffer = new Buffer<Comparable>();
-		BubbleSort toSort = new BubbleSort(inputBuffer);
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
+		final BubbleSort<Integer> toSort = new BubbleSort<Integer>(inputBuffer);
 
 		inputBuffer.put(0);
 		inputBuffer.stopp();
 
-		assertEquals(0, toSort.getNextElement());
+		assertEquals(0, toSort.getNextElement().intValue());
 	}
 
 	@Test
-	public void test15Var() throws StoppException, DivideByZeroException {
-		Buffer<Integer> inputBuffer = new Buffer<Integer>();
+	public void test15Var() throws StoppException {
+		final Buffer<Integer> inputBuffer = new Buffer<Integer>();
 
 		inputBuffer.put(2);
 		inputBuffer.put(17);
@@ -128,7 +128,7 @@ public class BubbleTest {
 		inputBuffer.put(100);
 		inputBuffer.stopp();
 
-		BubbleSort<Integer> bs = new BubbleSort<>(inputBuffer);
+		final BubbleSort<Integer> bs = new BubbleSort<>(inputBuffer);
 
 		assertEquals(2, bs.getNextElement().intValue());
 		assertEquals(2, bs.getNextElement().intValue());

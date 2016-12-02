@@ -7,7 +7,7 @@ public abstract class Process {
 
 
 	/**
-	 * Creates a Process object that starts a new Thread that calls run() continiously
+	 * Creates a Process object that starts a new Thread that calls run() continously
 	 */
 	public Process() {
 		this.thread = new Thread(new Runnable() {

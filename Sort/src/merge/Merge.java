@@ -1,6 +1,8 @@
 package merge;
 
-import merge.Buffer.StoppException;
+//import merge.Buffer.StoppException;
+import BufferAndLock.Buffer;
+import BufferAndLock.Buffer.StoppException;;
 
 public class Merge<T extends Comparable<T>> extends Process<T> {
 

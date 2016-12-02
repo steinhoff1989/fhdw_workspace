@@ -5,7 +5,6 @@ import java.util.Iterator;
 import javax.swing.ListModel;
 
 import model.Account;
-import model.AccountObserver;
 import model.Entry;
 
 public class AccountView implements AccountObserver {

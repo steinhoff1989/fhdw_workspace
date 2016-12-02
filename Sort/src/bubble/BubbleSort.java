@@ -1,6 +1,8 @@
 package bubble;
 
-import bubble.Buffer.StoppException;
+import BufferAndLock.Buffer;
+import BufferAndLock.Buffer.StoppException;
+//import bubble.Buffer.StoppException;
 
 public class BubbleSort<T extends Comparable<T>> {
 

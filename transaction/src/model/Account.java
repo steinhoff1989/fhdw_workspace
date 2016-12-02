@@ -6,12 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 import exceptions.AmountUnderLimitException;
+import viewModel.AccountObserver;
 
 /**
  * A simple account that possesses a list of account entries, the sum of which
  * constitutes the account's >balance>.
  */
-public class Account {
+public class Account extends AccountObservee{
 
 	/**
 	 * The balance of all accounts shall be greater or equal than this limit.
@@ -25,17 +26,16 @@ public class Account {
 	private final String name;
 	private long balance;
 	List<Entry> accountEntries;
-	private final List<AccountObserver> observers;
-
+	
 	/**
 	 * Represents an Account with a given name. Starting value and accountEnties equals zero
 	 * @param name: The name of the Account
 	 */
 	public Account(final String name) {
+		super();
 		this.name = name;
 		this.balance = 0;
 		this.accountEntries = new LinkedList<Entry>();
-		this.observers = new LinkedList<AccountObserver>();
 	}
 
 	public long getBalance() {
@@ -60,18 +60,13 @@ public class Account {
 		this.observers.remove(observer);
 	}
 
-//	private void notifyObservers() {
-//		final Iterator<AccountObserver> currentObservers = this.observers.iterator();
-//		while (currentObservers.hasNext())
-//			currentObservers.next().update();
-//	}
-
 	public void book(final Entry e) throws AmountUnderLimitException {
 		e.acceptEntryVisitor(new EntryVisitor<Boolean>() {
 			@Override
 			public Boolean handleDebitEntry(final Debit e) throws AmountUnderLimitException {
 				if (Account.this.balance - e.transfer.getAmount() >= UniversalAccountLimit) {
 					Account.this.balance = Account.this.balance - e.transfer.getAmount();
+					Account.this.notifyObservers();
 					return true;
 				} else {
 					e.transfer.state.incrementCounter();
@@ -83,6 +78,7 @@ public class Account {
 			public Boolean handleCreditEntry(final Credit e) throws AmountUnderLimitException {
 				if (Account.this.balance + e.transfer.getAmount() >= UniversalAccountLimit) {
 					Account.this.balance = Account.this.balance + e.transfer.getAmount();
+					Account.this.notifyObservers();
 					return true;
 				}else{
 					e.transfer.state.incrementCounter();

@@ -5,10 +5,12 @@ import java.util.List;
 
 public class Buffer<E> {
 
+	@SuppressWarnings("serial")
 	public static class StoppException extends Exception {
 
 	}
 	
+	@SuppressWarnings("serial")
 	public static class DivideByZeroException extends Exception {
 
 	}
@@ -30,7 +32,7 @@ public class Buffer<E> {
 	private class Wrapped<E> implements BufferEntry<E> {
 		final private E wrapped;
 
-		Wrapped(E toBeWrapped) {
+		Wrapped(final E toBeWrapped) {
 			this.wrapped = toBeWrapped;
 		}
 
@@ -47,7 +49,7 @@ public class Buffer<E> {
 	}
 	
 	// hinten rein
-	synchronized public void put(E value) {
+	synchronized public void put(final E value) {
 		this.implementingList.add(new Wrapped<E>(value));
 		this.notify();
 	}
@@ -56,11 +58,11 @@ public class Buffer<E> {
 		while (this.isEmpty()) {
 			try {
 				this.wait();
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		E result = this.implementingList.get(0).getWrapped();
+		final E result = this.implementingList.get(0).getWrapped();
 
 		this.implementingList.remove(0);
 		return result;

@@ -154,7 +154,6 @@ public class TransactionTest {
 		
 		assertEquals(200, this.a1.getBalance());
 		
-		
 		try {
 			trans1.book();
 			assertEquals(-600, this.a1.getBalance());
