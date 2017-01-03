@@ -1,16 +1,16 @@
 package model;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class TrustCenter {
 	public static int getRandomBetweenCount = 0;
 	public static int runCount3Mod4 = 0;
 	private static int runCountIndustryalPrime = 0;
 
-	public static void setRunCountIndustryalPrime(int runCountIndustryalPrime) {
+	public static void setRunCountIndustryalPrime(final int runCountIndustryalPrime) {
 		TrustCenter.runCountIndustryalPrime = runCountIndustryalPrime;
 	}
 
@@ -18,8 +18,8 @@ public class TrustCenter {
 		return runCountIndustryalPrime;
 	}
 
-	public static List<BigInteger> getKeys(int binaryLength, double propabilityPercent) {
-		BigInteger p = getIndustrialPrime(binaryLength, propabilityPercent);
+	public static List<BigInteger> getKeys(final int binaryLength, final double propabilityPercent) {
+		final BigInteger p = getIndustrialPrime(binaryLength, propabilityPercent);
 
 		BigInteger q = getIndustrialPrime(binaryLength, propabilityPercent);
 
@@ -27,18 +27,18 @@ public class TrustCenter {
 			q = getIndustrialPrime(binaryLength, propabilityPercent);
 		}
 
-		BigInteger n = p.multiply(q);
-		BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+		final BigInteger n = p.multiply(q);
+		final BigInteger phiN = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 
 		System.out.println("p: " + p);
 		System.out.println("q: " + q);
 		System.out.println("n: " + n);
 		System.out.println("phi(n): " + phiN);
 
-		BigInteger e = getIndustrialPrime(BigInteger.ZERO, n, propabilityPercent);
-		BigInteger d = ModArith.modularInverse(e, phiN);
+		final BigInteger e = getIndustrialPrime(BigInteger.ZERO, n, propabilityPercent);
+		final BigInteger d = ModArith.modularInverse(e, phiN);
 
-		List<BigInteger> result = new ArrayList<BigInteger>();
+		final List<BigInteger> result = new ArrayList<BigInteger>();
 
 		result.add(p);
 		result.add(q);
@@ -50,15 +50,15 @@ public class TrustCenter {
 		return result;
 	}
 
-	
-
-	public static BigInteger getIndustrialPrime(int binaryLength, double propabilityPercent) {
-		BigInteger random3Mod4 = getRandom3Mod4(binaryLength);
-		return getIndustrialPrimeHelper(1, propabilityPercent, binaryLength, random3Mod4);
+	public static BigInteger getIndustrialPrime(final int binaryLength, final double propabilityPercent) {
+		final BigInteger maxValue = new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE);
+		final BigInteger minValue = new BigInteger("2").pow(binaryLength - 1);
+		
+		return getIndustrialPrime(minValue, maxValue, propabilityPercent);
 	}
 
-	public static BigInteger getIndustrialPrime(BigInteger minValue, BigInteger maxValue, double propabilityPercent) {
-		BigInteger random3Mod4 = getRandom3Mod4(minValue, maxValue);
+	public static BigInteger getIndustrialPrime(final BigInteger minValue, final BigInteger maxValue, final double propabilityPercent) {
+		final BigInteger random3Mod4 = getRandom3Mod4(minValue, maxValue);
 		return getIndustrialPrimeHelper(1, propabilityPercent, minValue, maxValue, random3Mod4);
 	}
 
@@ -73,29 +73,29 @@ public class TrustCenter {
 	 * @param potentialPrime
 	 * @return
 	 */
-	public static BigInteger getIndustrialPrimeHelper(double probabilityNotPrime, double minPropability,
-			int binaryLength, BigInteger potentialPrime) {
-		if (1 - probabilityNotPrime >= minPropability) {
-			return potentialPrime;
-		}
+//	public static BigInteger getIndustrialPrimeHelper(final double probabilityNotPrime, final double minPropability,
+//			final int binaryLength, final BigInteger potentialPrime) {
+//		if (1 - probabilityNotPrime >= minPropability) {
+//			return potentialPrime;
+//		}
+//
+//		if (testNumber(potentialPrime)) {
+//			// runCountIndustryalPrime++;
+//			return getIndustrialPrimeHelper(probabilityNotPrime * 0.5, minPropability, binaryLength, potentialPrime);
+//		} else {
+//			runCountIndustryalPrime++;
+//			if (potentialPrime.add(new BigInteger("4"))
+//					.compareTo(new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE)) <= 0) {
+//				return getIndustrialPrimeHelper(1, minPropability, binaryLength,
+//						potentialPrime.add(new BigInteger("4")));
+//			} else {
+//				return getIndustrialPrimeHelper(1, minPropability, binaryLength, getRandom3Mod4(binaryLength));
+//			}
+//		}
+//	}
 
-		if (testNumber(potentialPrime)) {
-			// runCountIndustryalPrime++;
-			return getIndustrialPrimeHelper(probabilityNotPrime * 0.5, minPropability, binaryLength, potentialPrime);
-		} else {
-			runCountIndustryalPrime++;
-			if (potentialPrime.add(new BigInteger("4"))
-					.compareTo(new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE)) <= 0) {
-				return getIndustrialPrimeHelper(1, minPropability, binaryLength,
-						potentialPrime.add(new BigInteger("4")));
-			} else {
-				return getIndustrialPrimeHelper(1, minPropability, binaryLength, getRandom3Mod4(binaryLength));
-			}
-		}
-	}
-
-	public static BigInteger getIndustrialPrimeHelper(double probabilityNotPrime, double minPropability,
-			BigInteger minValue, BigInteger maxValue, BigInteger potentialPrime) {
+	public static BigInteger getIndustrialPrimeHelper(final double probabilityNotPrime, final double minPropability,
+			final BigInteger minValue, final BigInteger maxValue, final BigInteger potentialPrime) {
 		if (1 - probabilityNotPrime >= minPropability) {
 			return potentialPrime;
 		}
@@ -115,6 +115,22 @@ public class TrustCenter {
 			}
 		}
 	}
+	
+	public static boolean isPrime(final double minPropability, final BigInteger potentialPrime){
+		return isPrimeHelper(1, minPropability, potentialPrime);
+	}
+
+	public static boolean isPrimeHelper(final double probabilityNotPrime, final double minPropability, final BigInteger potentialPrime){
+		if (1 - probabilityNotPrime >= minPropability) {
+			return true;
+		}
+
+		if (testNumber(potentialPrime)) {
+			return isPrimeHelper(probabilityNotPrime * 0.5, minPropability, potentialPrime);
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Tests for a random number between 0 and <potentialPrime> if
@@ -126,10 +142,10 @@ public class TrustCenter {
 	 * @param potentialPrime
 	 * @return
 	 */
-	public static Boolean testNumber(BigInteger potentialPrime) {
-		BigInteger random = getRandomBetween(BigInteger.ZERO, potentialPrime);
-		BigInteger result = ModArith.powerModulo(random, (potentialPrime.subtract(BigInteger.ONE)).divide(new BigInteger("2")),
-				potentialPrime);
+	public static Boolean testNumber(final BigInteger potentialPrime) {
+		final BigInteger random = getRandomBetween(BigInteger.ONE, potentialPrime);
+		final BigInteger result = ModArith.powerModulo(random,
+				(potentialPrime.subtract(BigInteger.ONE)).divide(new BigInteger("2")), potentialPrime);
 		return result.equals(BigInteger.ONE) || result.equals(potentialPrime.subtract(BigInteger.ONE));
 	}
 
@@ -140,18 +156,18 @@ public class TrustCenter {
 	 * @param binaryLength
 	 * @return
 	 */
-	public static BigInteger getRandom3Mod4(int binaryLength) {
-		BigInteger random = getRandom(binaryLength);
-		if (random.mod(new BigInteger("4")).equals(new BigInteger("3"))) {
-			runCount3Mod4 = 0;
-			return random;
-		}
-		runCount3Mod4++;
-		return getRandom3Mod4(binaryLength);
-	}
+//	public static BigInteger getRandom3Mod4(final int binaryLength) {
+//		final BigInteger random = getRandom(binaryLength);
+//		if (random.mod(new BigInteger("4")).equals(new BigInteger("3"))) {
+//			runCount3Mod4 = 0;
+//			return random;
+//		}
+//		runCount3Mod4++;
+//		return getRandom3Mod4(binaryLength);
+//	}
 
-	public static BigInteger getRandom3Mod4(BigInteger minValue, BigInteger maxValue) {
-		BigInteger random = getRandomBetween(minValue, maxValue);
+	public static BigInteger getRandom3Mod4(final BigInteger minValue, final BigInteger maxValue) {
+		final BigInteger random = getRandomBetween(minValue, maxValue);
 		if (random.mod(new BigInteger("4")).equals(new BigInteger("3"))) {
 			runCount3Mod4 = 0;
 			return random;
@@ -167,24 +183,12 @@ public class TrustCenter {
 	 *            The length of the returned BigIntegers binary equivalent
 	 * @return
 	 */
-	public static BigInteger getRandom(int binaryLength) {
-		// Random rnd = new Random();
-		// BigInteger random = new BigInteger(binaryLength, rnd);
-
-		BigInteger maxValue = new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE);
-		BigInteger minValue = new BigInteger("2").pow(binaryLength - 1);
-
-		return getRandomBetween(minValue, maxValue);
-
-		// if(random.compareTo(maxValue) <= 0 && random.compareTo(minValue) >=
-		// 0){
-		// getRandomBetweenCount = 0;
-		// return random;
-		// }else{
-		// getRandomBetweenCount++;
-		// return getRandom(binaryLength);
-		// }
-	}
+//	public static BigInteger getRandom(final int binaryLength) {
+//		final BigInteger maxValue = new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE);
+//		final BigInteger minValue = new BigInteger("2").pow(binaryLength - 1);
+//
+//		return getRandomBetween(minValue, maxValue);
+//	}
 
 	/**
 	 * Returns a random BigInteger between <minValue> and <maxValue>
@@ -192,15 +196,21 @@ public class TrustCenter {
 	 * @param minValue
 	 * @param maxValue
 	 */
-	public static BigInteger getRandomBetween(BigInteger minValue, BigInteger maxValue) {
-		BigInteger random = new BigDecimal(maxValue).multiply(new BigDecimal(Math.random())).toBigInteger();
-
-		if (random.compareTo(maxValue) <= 0 && random.compareTo(minValue) >= 0) {
-			getRandomBetweenCount = 0;
-			return random;
-		} else {
-			getRandomBetweenCount++;
-			return getRandomBetween(minValue, maxValue);
-		}
+	public static BigInteger getRandomBetween(final BigInteger minValue, final BigInteger maxValue) {
+//		final BigInteger random = new BigDecimal(maxValue).multiply(new BigDecimal(Math.random())).toBigInteger();
+//
+//		if (random.compareTo(maxValue) <= 0 && random.compareTo(minValue) >= 0) {
+//			getRandomBetweenCount = 0;
+//			return random;
+//		} else {
+//			getRandomBetweenCount++;
+//			return getRandomBetween(minValue, maxValue);
+//		}
+		BigInteger r;
+		do {
+		    r = new BigInteger(maxValue.bitLength(), new Random());
+		} while (r.compareTo(minValue) <= 0 || r.compareTo(maxValue) >= 0);
+		
+		return r;
 	}
 }

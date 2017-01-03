@@ -14,7 +14,7 @@ public class ModArithTest {
 
 	@Test
 	public void euklidExt1() {
-	BigInteger[] result = ModArith.euklidExt(new BigInteger("7"), new BigInteger("3"));
+	final BigInteger[] result = ModArith.euklidExt(new BigInteger("7"), new BigInteger("3"));
 		System.out.println(result[0]);
 		System.out.println(result[1]);
 		System.out.println(result[2]);
@@ -22,7 +22,7 @@ public class ModArithTest {
 	
 	@Test
 	public void euklidExt2() {
-	BigInteger[] result = ModArith.euklidExt(new BigInteger("10"), new BigInteger("21"));
+	final BigInteger[] result = ModArith.euklidExt(new BigInteger("10"), new BigInteger("21"));
 		System.out.println(result[0]);
 		System.out.println(result[1]);
 		System.out.println(result[2]);
@@ -30,7 +30,7 @@ public class ModArithTest {
 	
 	@Test
 	public void euklidExt3() {
-	BigInteger[] result = ModArith.euklidExt(new BigInteger("199"), new BigInteger("324"));
+	final BigInteger[] result = ModArith.euklidExt(new BigInteger("199"), new BigInteger("324"));
 		System.out.println(result[0]);
 		System.out.println(result[1]);
 		System.out.println(result[2]);
@@ -39,7 +39,7 @@ public class ModArithTest {
 	@Test
 	public void euklidExt4() {
 		//e=43;d=7;n=121
-	BigInteger[] result = ModArith.euklidExt(new BigInteger("43"), new BigInteger("100"));
+	final BigInteger[] result = ModArith.euklidExt(new BigInteger("43"), new BigInteger("100"));
 		System.out.println(result[0]);
 		System.out.println(result[1]);
 		System.out.println(result[2]);
@@ -55,5 +55,13 @@ public class ModArithTest {
 	public void powerModTest2() {
 		assertEquals(new BigInteger("100"),
 				ModArith.powerModulo(new BigInteger("19"), new BigInteger("1024"), new BigInteger("123")));
+	}
+	
+	@Test
+	public void euclidComplexTest1(){
+		final BigInteger a = BigInteger.valueOf(73);
+		final BigInteger b = BigInteger.valueOf(27);
+		
+		System.out.println(ModArith.euclidComplex(a, b));
 	}
 }
