@@ -117,6 +117,7 @@ public class TrustCenter {
 	}
 	
 	public static boolean isPrime(final double minPropability, final BigInteger potentialPrime){
+		if(potentialPrime.equals(BigInteger.valueOf(2))) return true;
 		return isPrimeHelper(1, minPropability, potentialPrime);
 	}
 

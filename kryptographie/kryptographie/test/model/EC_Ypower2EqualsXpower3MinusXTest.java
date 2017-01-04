@@ -82,14 +82,51 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 
 	@Test
 	public void calculateCurvePointTest1() {
-//		final BigInteger min = BigInteger.valueOf(5);
-//		final BigInteger max = BigInteger.valueOf(99);
-//		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(min, max, 0.9999);
+		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(5, 0.9999);
+		
+		System.out.println("P: "+ec.getP().getValue());
+		System.out.println("N: "+ec.getNumberOfElements());
+		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
+		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
+		final EllipticCurvePoint point = ec.calculateCurvePoint();
+		System.out.println("One Curvepoint: "+ point);
+		final BigInteger y2 = ModArith.powerModulo(point.getY(), BigInteger.valueOf(2), ec.getP().getValue());
+		final BigInteger x3MinusX = ModArith.powerModulo(point.getX(), BigInteger.valueOf(3), ec.getP().getValue()).subtract(point.getX()).mod(ec.getP().getValue());
+		System.out.println("y^2: " + y2);
+		System.out.println("x^3-x: " + x3MinusX);
+		System.out.println("y^2 = x^3-x: "+ y2.equals(x3MinusX));
+	}
+
+//	@Test
+//	public void calculateCurvePointTest2() {
+//		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(BigInteger.valueOf(12), BigInteger.valueOf(14), 0.9999);
+//		
+//		System.out.println("P: "+ec.getP().getValue());
+//		System.out.println("N: "+ec.getNumberOfElements());
+//		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
+//		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
+//		System.out.println("One Curvepoint: "+ ec.calculateCurvePoint());
+//	}
+
+	@Test
+	public void calculateCurvePointTest3() {
+		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(64, 0.9999);
+		
+		System.out.println("P: "+ec.getP().getValue());
+		System.out.println("N: "+ec.getNumberOfElements());
+		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
+		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
+		System.out.println("One Curvepoint: "+ ec.calculateCurvePoint());
+	}
+
+	@Test
+	public void calculateCurvePointTest4() {
 		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(512, 0.9999);
 		
 		System.out.println("P: "+ec.getP().getValue());
 		System.out.println("N: "+ec.getNumberOfElements());
 		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
+		System.out.println("One Curvepoint: "+ ec.calculateCurvePoint());
 	}
 	
 }

@@ -173,4 +173,9 @@ public class IndustrialPrime {
 	public BigInteger getValue() {
 		return this.value;
 	}
+
+	//Testing only!
+	protected void setValue(final BigInteger value) {
+		this.value = value;
+	}
 }
