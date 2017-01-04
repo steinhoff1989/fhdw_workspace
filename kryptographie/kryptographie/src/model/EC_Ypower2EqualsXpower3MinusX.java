@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 
+	public static final BigInteger A_OF_ELLIPTIC_CURVE = BigInteger.valueOf(-1);
+
 	public EC_Ypower2EqualsXpower3MinusX(final IndustrialPrime p) {
 		super(p);
 	}
@@ -63,6 +65,11 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		throw new Error(); // Es muss eine der 4 obigen Möglichkeiten eintreten!
 	}
 
+	/**
+	 * Generates a curvePoint of this EllipticCurve with an order of N/8
+	 * 
+	 * @return
+	 */
 	public EllipticCurvePoint calculateCurvePoint() {
 		final BigInteger p = this.getP().getValue();
 
@@ -85,44 +92,67 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 			if (t.equals(BigInteger.ONE)) {
 				exponent = (p.add(BigInteger.valueOf(3))).divide(BigInteger.valueOf(8));
 				y = ModArith.powerModulo(r, exponent, p);
-				return new EllipticCurvePoint(x, y);
+				final EllipticCurvePoint point = new EllipticCurvePoint(x, y);
+				if (!this.isOrderOfQ(point)) {
+					return this.calculateCurvePoint();
+				} else {
+					return point;
+				}
 			}
 			if (t.equals(p.subtract(BigInteger.ONE))) {
 				exponent = (p.add(BigInteger.valueOf(3))).divide(BigInteger.valueOf(8));
 				y = ModArith.modularInverse(BigInteger.valueOf(2), p)
 						.multiply(ModArith.powerModulo(BigInteger.valueOf(4).multiply(r), exponent, p)).mod(p);
-				return new EllipticCurvePoint(x, y);
+				final EllipticCurvePoint point = new EllipticCurvePoint(x, y);
+				if (!this.isOrderOfQ(point)) {
+					return this.calculateCurvePoint();
+				} else {
+					return point;
+				}
 			}
 			throw new Error(); // Kann mathematisch nicht auftreten.
 		} else {
 			return this.calculateCurvePoint();
 		}
 	}
-	
+
 	/**
-	 * Checks if <point> has a order of 2, 4 or 8. If so, the method returns true, otherwise false.
+	 * Checks if <point> has a order of 2, 4 or 8. If so, the method returns
+	 * true, otherwise false.
+	 * 
 	 * @param point
 	 * @return
+	 * @throws InfinityPointAccuredException
 	 */
-	public boolean isOrderOf2Or4Or8(final EllipticCurvePoint point){
+	public boolean isOrderOf2Or4Or8(final EllipticCurvePoint point) {
+		final SehnenTangentenService sts = new SehnenTangentenService();
 		EllipticCurvePoint nextPoint = point;
-		
-		for(int i=0;i<8;i++){
-			nextPoint = this.calculateNextCurvePoint(nextPoint, point);
-			
-			if(nextPoint.getX().equals(point.getX()) &&
-					nextPoint.getY().equals(point.getY())){
-				return false;
+
+		for (int i = 2; i < 8; i++) {
+			try {
+				nextPoint = sts.calculateConjunctionPoint(point, nextPoint, EC_Ypower2EqualsXpower3MinusX.A_OF_ELLIPTIC_CURVE, this.getP());
+			} catch (final InfinityPointAccuredException e) {
+				if(BigInteger.valueOf(i).equals(this.getNumberOfElements().divide(BigInteger.valueOf(8)))){
+					return false;
+				}
+				return true;
 			}
 		}
-		return true;
-	}
-
-	private EllipticCurvePoint calculateNextCurvePoint(final EllipticCurvePoint nextPoint, final EllipticCurvePoint point) {
-		if(!nextPoint.getX().equals(point.getX())){
-			
-		}
+		return false;
 	}
 	
+	public boolean isOrderOfQ(final EllipticCurvePoint point) {
+		final BigInteger q = this.getNumberOfElements().divide(BigInteger.valueOf(8));
+		final SehnenTangentenService sts = new SehnenTangentenService();
+		EllipticCurvePoint nextPoint = point;
 
+		for (BigInteger i = BigInteger.valueOf(2); i.compareTo(q)<=0; i=i.add(BigInteger.ONE)) {
+			try {
+				nextPoint = sts.calculateConjunctionPoint(point, nextPoint, EC_Ypower2EqualsXpower3MinusX.A_OF_ELLIPTIC_CURVE, this.getP());
+			} catch (final InfinityPointAccuredException e) {
+				return i.equals(q);
+			}
+		}
+		return false;
+	}
 }
