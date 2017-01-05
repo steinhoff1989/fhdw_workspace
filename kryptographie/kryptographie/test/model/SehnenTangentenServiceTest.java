@@ -7,6 +7,11 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
+import model.elgamal.EllipticCurvePoint;
+import model.elgamal.IndustrialPrime;
+import model.elgamal.InfinityPointAccuredException;
+import model.elgamal.SehnenTangentenService;
+
 public class SehnenTangentenServiceTest {
 
 	@Test

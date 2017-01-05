@@ -4,6 +4,10 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
+import model.elgamal.ComplexNumber;
+import model.elgamal.Fraction;
+import model.elgamal.FractionConstructionException;
+
 public class ComplexNumberTest {
 
 	@Test

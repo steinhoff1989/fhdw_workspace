@@ -1,4 +1,4 @@
-package model;
+package model.elgamal;
 
 import java.math.BigInteger;
 

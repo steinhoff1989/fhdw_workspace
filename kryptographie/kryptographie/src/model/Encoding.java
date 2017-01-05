@@ -13,14 +13,23 @@ public class Encoding {
 	public static class ChiffreEntry{
 		int position;
 		char character;
-		public ChiffreEntry(int position, char character) {
+		public ChiffreEntry(final int position, final char character) {
 			this.position = position;
 			this.character = character;
 		}
 	}
 	
-	public static List<BigInteger> encrypt(String block, int blockSize, BigInteger e, BigInteger n, String charset) {
-		List<BigInteger> blockNumbers = textToNumbersBlockChiffre(block, blockSize, charset);
+	/**
+	 * Encrypts the given text with the RSA algorithm to a List of encrypted BigIntegers
+	 * @param text: The text that shall be encrypted
+	 * @param blockSize: the length of each block (k)
+	 * @param e
+	 * @param n
+	 * @param charset
+	 * @return
+	 */
+	public static List<BigInteger> encrypt(final String text, final int blockSize, final BigInteger e, final BigInteger n, final String charset) {
+		final List<BigInteger> blockNumbers = textToNumbersBlockChiffre(text, blockSize, charset);
 
 		System.out.println("Number of blocks: " + blockNumbers.size());
 
@@ -28,50 +37,36 @@ public class Encoding {
 			System.out.println("Block " + i + ": " + blockNumbers.get(i));
 		}
 
-		List<BigInteger> chiffres = new ArrayList<BigInteger>();
+		final List<BigInteger> chiffres = new ArrayList<BigInteger>();
 
 		for (int i = 0; i < blockNumbers.size(); i++) {
-			BigInteger chiffre = ModArith.powerModulo(blockNumbers.get(i), e, n);
+			final BigInteger chiffre = ModArith.powerModulo(blockNumbers.get(i), e, n);
 			chiffres.add(chiffre);
-//			System.out.println(blockNumbers.get(i) + " --> " + chiffre);
 		}
-
-		// String encrypt = numbersToText(chiffres);
-
 		return chiffres;
 	}
 
-	public static String decrypt(List<BigInteger> blockNumbers, int blockSize, BigInteger d, BigInteger n,
-			String charset) {
-		// List<BigInteger> blockNumbers = textToNumbers(block, blockSize);
-
-		// System.out.println("Number of blocks: " + blockNumbers.size());
-
-		// for(int i=0;i<blockNumbers.size();i++){
-		// System.out.println("Block "+i+": "+blockNumbers.get(i));
-		// }
-
-		List<BigInteger> decryptedBlockNumbers = new ArrayList<BigInteger>();
+	public static String decrypt(final List<BigInteger> blockNumbers, final int blockSize, final BigInteger d, final BigInteger n,
+			final String charset) {
+		final List<BigInteger> decryptedBlockNumbers = new ArrayList<BigInteger>();
 
 		for (int i = 0; i < blockNumbers.size(); i++) {
-			BigInteger decryptedBlockNumber = ModArith.powerModulo(blockNumbers.get(i), d, n);
+			final BigInteger decryptedBlockNumber = ModArith.powerModulo(blockNumbers.get(i), d, n);
 			decryptedBlockNumbers.add(decryptedBlockNumber);
 		}
 
-		String decryptedText = numbersToTextBlockChiffre(decryptedBlockNumbers, blockSize, charset);
-
-		// String encrypt = numbersToText(chiffres);
+		final String decryptedText = numbersToTextBlockChiffre(decryptedBlockNumbers, blockSize, charset);
 
 		return decryptedText;
 	}
 
 	
 
-	public static String numbersToText(List<BigInteger> numbers) {
+	public static String numbersToText(final List<BigInteger> numbers) {
 		String result = "";
 
 		for (int i = 0; i < numbers.size(); i++) {
-			BigInteger number = numbers.get(i);
+			final BigInteger number = numbers.get(i);
 
 			byte[] textBytes = number.toByteArray();
 
@@ -85,7 +80,7 @@ public class Encoding {
 
 			try {
 				result += new String(textBytes, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
+			} catch (final UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
 			// result += number.toString(16) + ",";
@@ -98,21 +93,21 @@ public class Encoding {
 		return result;
 	}
 
-	public static String numbersToTextBlockChiffre(List<BigInteger> numbers, int blockSize, String charset) {
+	public static String numbersToTextBlockChiffre(final List<BigInteger> numbers, final int blockSize, final String charset) {
 		String result = "";
 		for (int i = 0; i < numbers.size(); i++) {
 			BigInteger number = numbers.get(i);
-			BigInteger range = getCharsetRange(charset);
+			final BigInteger range = getCharsetRange(charset);
 			String temp = "";
 
 			if (charset.equals("FHDW-Alphabet")) {
 				for (int y = 0; y < blockSize; y++) {
-				int value = Integer.parseInt(number.mod(range).toString());
+				final int value = Integer.parseInt(number.mod(range).toString());
 				number = number.divide(range);
 
-					Iterator<ChiffreEntry> iterator = getFHDWChiffreAlphabet().iterator();
+					final Iterator<ChiffreEntry> iterator = getFHDWChiffreAlphabet().iterator();
 					while(iterator.hasNext()){
-						ChiffreEntry current = iterator.next();
+						final ChiffreEntry current = iterator.next();
 						if(value == current.position){
 							temp = current.character+temp;
 						}
@@ -124,7 +119,7 @@ public class Encoding {
 			} else {
 
 				for (int y = 0; y < blockSize; y++) {
-					BigInteger value = number.mod(range);
+					final BigInteger value = number.mod(range);
 
 					number = number.divide(range);
 
@@ -134,7 +129,7 @@ public class Encoding {
 					}
 					try {
 						temp = new String(bytes, charset) + temp;
-					} catch (UnsupportedEncodingException e) {
+					} catch (final UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
 				}
@@ -145,40 +140,48 @@ public class Encoding {
 		return result;
 	}
 
-	public static List<BigInteger> textToNumbers(String text, int blockSize) {
-		List<BigInteger> blockNumbers = new ArrayList<BigInteger>();
-		List<String> textBlocks = getTextBlocks(text, blockSize);
+	public static List<BigInteger> textToNumbers(final String text, final int blockSize) {
+		final List<BigInteger> blockNumbers = new ArrayList<BigInteger>();
+		final List<String> textBlocks = getTextBlocks(text, blockSize);
 
 		for (int i = 0; i < textBlocks.size(); i++) {
 			byte[] blockBytes = new byte[] {};
 			try {
 				blockBytes = textBlocks.get(i).getBytes("UTF-8");
-			} catch (UnsupportedEncodingException e) {
+			} catch (final UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-			BigInteger value = new BigInteger(1, blockBytes);
+			final BigInteger value = new BigInteger(1, blockBytes);
 			blockNumbers.add(value);
 		}
 
 		return blockNumbers;
 	}
 
-	public static List<BigInteger> textToNumbersBlockChiffre(String text, int blockSize, String charset) {
-		List<BigInteger> blockNumbers = new ArrayList<BigInteger>();
-		List<String> textBlocks = getTextBlocks(text, blockSize);
+	/**
+	 * Generates a List of BigIntegers which represents the Blocknumbers 
+	 * for the given <text> 
+	 * @param text: The text from which the block numbers shall be generated
+	 * @param blockSize: The size of each block
+	 * @param charset: The charset that shall be used to generate the block numnbers
+	 * @return
+	 */
+	public static List<BigInteger> textToNumbersBlockChiffre(final String text, final int blockSize, final String charset) {
+		final List<BigInteger> blockNumbers = new ArrayList<BigInteger>();
+		final List<String> textBlocks = getTextBlocks(text, blockSize);
 
 		if (charset.equals("FHDW-Alphabet")) {
 			for (int i = 0; i < textBlocks.size(); i++) {
 				BigInteger blockInteger = BigInteger.ZERO;
 
 				for (int y = 0; y < textBlocks.get(i).length(); y++) {
-					String character = textBlocks.get(i).substring(y, y + 1);
+					final String character = textBlocks.get(i).substring(y, y + 1);
 					
 					int characterValue = 0;
 					
-					Iterator<ChiffreEntry> iterator = getFHDWChiffreAlphabet().iterator();
+					final Iterator<ChiffreEntry> iterator = getFHDWChiffreAlphabet().iterator();
 					while(iterator.hasNext()){
-						ChiffreEntry current = iterator.next();
+						final ChiffreEntry current = iterator.next();
 						if(character.equals(""+current.character)){
 							characterValue = current.position;
 						}
@@ -195,14 +198,14 @@ public class Encoding {
 				BigInteger blockInteger = BigInteger.ZERO;
 
 				for (int y = 0; y < textBlocks.get(i).length(); y++) {
-					String character = textBlocks.get(i).substring(y, y + 1);
+					final String character = textBlocks.get(i).substring(y, y + 1);
 					byte[] characterBytes = new byte[] {};
 					try {
 						characterBytes = character.getBytes(charset);
-					} catch (UnsupportedEncodingException e) {
+					} catch (final UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
-					BigInteger characterValue = new BigInteger(1, characterBytes);
+					final BigInteger characterValue = new BigInteger(1, characterBytes);
 
 					blockInteger = blockInteger
 							.add(characterValue.multiply(getCharsetRange(charset).pow(blockSize - 1 - y)));
@@ -215,11 +218,11 @@ public class Encoding {
 		return blockNumbers;
 	}
 
-	private static List<String> getTextBlocks(String text, int blockSize) {
-		List<String> textBlocks = new ArrayList<String>();
+	private static List<String> getTextBlocks(final String text, final int blockSize) {
+		final List<String> textBlocks = new ArrayList<String>();
 
 		for (int i = 0; i < text.length(); i += blockSize) {
-			String newBlock = text.substring(i, i + Math.min(blockSize, text.length() - i));
+			final String newBlock = text.substring(i, i + Math.min(blockSize, text.length() - i));
 			textBlocks.add(newBlock);
 		}
 
@@ -235,25 +238,31 @@ public class Encoding {
 		return textBlocks;
 	}
 
-	public static BigInteger textToNumberUnicode(String text) {
+	public static BigInteger textToNumberUnicode(final String text) {
 		try {
-			byte[] bytes = text.getBytes("UTF-8");
+			final byte[] bytes = text.getBytes("UTF-8");
 			return new BigInteger(1, bytes);
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			throw new Error();
 		}
 	}
 
-	public static String numberToTextUnicode(BigInteger integerValue) {
+	public static String numberToTextUnicode(final BigInteger integerValue) {
 		try {
-			byte[] bytes = integerValue.toByteArray();
+			final byte[] bytes = integerValue.toByteArray();
 			return new String(bytes, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
+		} catch (final UnsupportedEncodingException e) {
 			throw new Error();
 		}
 	}
 
-	public static int getMaximumK(BigInteger alphabetRange, String maximumBorder) {
+	/**
+	 * Returns the maximum k that is allowed to generate a 
+	 * @param alphabetRange
+	 * @param maximumBorder: the maximum Number that is allowed to display (mostly the modulo)
+	 * @return
+	 */
+	public static int getMaximumK(final BigInteger alphabetRange, final String maximumBorder) {
 		// BigInteger range = getCharsetRange(charset);
 		int maximumK = 0;
 
@@ -263,8 +272,16 @@ public class Encoding {
 
 		return maximumK;
 	}
+	
+	public static int getMaximumK(final BigInteger alphabetRange, final BigInteger maximumBorder) {
+		int maximumK = 0;
+		while (alphabetRange.pow(maximumK + 1).compareTo(maximumBorder) <= 0) {
+			maximumK++;
+		}
+		return maximumK;
+	}
 
-	public static int getMinimumL(BigInteger alphabetRange, String minimumBorder) {
+	public static int getMinimumL(final BigInteger alphabetRange, final String minimumBorder) {
 		// BigInteger range = getCharsetRange(charset);
 		int minimumL = 0;
 
@@ -275,7 +292,7 @@ public class Encoding {
 		return minimumL;
 	}
 
-	public static BigInteger getCharsetRange(String charsetName) {
+	public static BigInteger getCharsetRange(final String charsetName) {
 		switch (charsetName) {
 		case "UTF-8":
 			return new BigInteger("2").pow(32);
@@ -296,7 +313,7 @@ public class Encoding {
 	}
 
 	public static List<String> getAvailableCharsetNames() {
-		List<String> availableCharsets = new ArrayList<String>();
+		final List<String> availableCharsets = new ArrayList<String>();
 		availableCharsets.add("FHDW-Alphabet");
 		availableCharsets.add("windows-1250");
 		availableCharsets.add("UTF-8");
@@ -307,7 +324,7 @@ public class Encoding {
 	}
 
 	public static List<ChiffreEntry> getFHDWChiffreAlphabet() {
-		LinkedList<ChiffreEntry> alphabet = new LinkedList<ChiffreEntry>();
+		final LinkedList<ChiffreEntry> alphabet = new LinkedList<ChiffreEntry>();
 		int i = 0;
 		for (int j = 0; j < 26; j++) {
 			alphabet.add(new ChiffreEntry(i, Character.valueOf((char) ('A' + j))));

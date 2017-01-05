@@ -4,6 +4,10 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.elgamal.ComplexNumber;
+import model.elgamal.Fraction;
+import model.elgamal.FractionConstructionException;
+
 public class ModArith {
 
 	public static BigInteger euklid(final BigInteger a, final BigInteger b) {
@@ -69,6 +73,8 @@ public class ModArith {
 		}
 		return result;
 	}
+	
+	
 
 	public static ComplexNumber euclidComplex(final BigInteger a, final BigInteger b) {
 		final List<ComplexNumber> g = new ArrayList<ComplexNumber>();

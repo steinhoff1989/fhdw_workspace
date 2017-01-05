@@ -1,9 +1,11 @@
-package model;
+package model.elgamal;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import model.ModArith;
 
 public class IndustrialPrime {
 
@@ -58,15 +60,6 @@ public class IndustrialPrime {
 		} while (r.compareTo(minValue) <= 0 || r.compareTo(maxValue) >= 0);
 		
 		return r;
-		
-//		final BigInteger random = new BigDecimal(maxValue).multiply(new BigDecimal(Math.random())).toBigInteger();
-//		Math
-//
-//		if (random.compareTo(maxValue) <= 0 && random.compareTo(minValue) >= 0) {
-//			return random;
-//		} else {
-//			return this.getRandomBetween(minValue, maxValue);
-//		}
 	}
 
 	private BigInteger getIndustrialPrimeHelper(final double probabilityNotPrime, final double minPropability,
@@ -175,7 +168,7 @@ public class IndustrialPrime {
 	}
 
 	//Testing only!
-	protected void setValue(final BigInteger value) {
+	public void setValue(final BigInteger value) {
 		this.value = value;
 	}
 }

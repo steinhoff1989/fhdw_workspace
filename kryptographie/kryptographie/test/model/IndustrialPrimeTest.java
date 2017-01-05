@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
+import model.elgamal.IndustrialPrime;
+
 public class IndustrialPrimeTest {
 
 	@Test

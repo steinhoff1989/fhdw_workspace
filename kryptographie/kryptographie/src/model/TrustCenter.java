@@ -198,15 +198,6 @@ public class TrustCenter {
 	 * @param maxValue
 	 */
 	public static BigInteger getRandomBetween(final BigInteger minValue, final BigInteger maxValue) {
-//		final BigInteger random = new BigDecimal(maxValue).multiply(new BigDecimal(Math.random())).toBigInteger();
-//
-//		if (random.compareTo(maxValue) <= 0 && random.compareTo(minValue) >= 0) {
-//			getRandomBetweenCount = 0;
-//			return random;
-//		} else {
-//			getRandomBetweenCount++;
-//			return getRandomBetween(minValue, maxValue);
-//		}
 		BigInteger r;
 		do {
 		    r = new BigInteger(maxValue.bitLength(), new Random());

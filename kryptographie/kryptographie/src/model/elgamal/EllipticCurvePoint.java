@@ -1,15 +1,15 @@
-package model;
+package model.elgamal;
 
 import java.math.BigInteger;
 
 public class EllipticCurvePoint {
 
 	private final BigInteger x;
-	protected BigInteger getX() {
+	public BigInteger getX() {
 		return this.x;
 	}
 
-	protected BigInteger getY() {
+	public BigInteger getY() {
 		return this.y;
 	}
 
