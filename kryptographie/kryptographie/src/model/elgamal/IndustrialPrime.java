@@ -23,12 +23,31 @@ public class IndustrialPrime {
 		this(new BigInteger("2").pow(binaryLength - 1), new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE),
 				propabilityPercent, remainder, modulo);
 	}
+	
+	public IndustrialPrime(final int binaryLength, final double propabilityPercent, final int remainder,
+			final int modulo, final BigInteger random) {
+		this(new BigInteger("2").pow(binaryLength - 1), new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE),
+				propabilityPercent, remainder, modulo, random);
+	}
+
 
 	public IndustrialPrime(final BigInteger minValue, final BigInteger maxValue, final double propabilityPercent,
 			final int remainder, final int modulo) {
 		this.remainder = remainder;
 		this.modulo = modulo;
 		final BigInteger random = this.getRandom(minValue, maxValue, remainder, modulo);
+
+		this.value = this.getIndustrialPrimeHelper(1, propabilityPercent, minValue, maxValue, random, remainder,
+				modulo);
+		final List<BigInteger> xSquaredPlusYSquared = this.getValueAsXSquaredPlusYSquared();
+		this.xToSquare = xSquaredPlusYSquared.get(0);
+		this.yToSquare = xSquaredPlusYSquared.get(1);
+	}
+	
+	public IndustrialPrime(final BigInteger minValue, final BigInteger maxValue, final double propabilityPercent,
+			final int remainder, final int modulo, final BigInteger random) {
+		this.remainder = remainder;
+		this.modulo = modulo;
 
 		this.value = this.getIndustrialPrimeHelper(1, propabilityPercent, minValue, maxValue, random, remainder,
 				modulo);

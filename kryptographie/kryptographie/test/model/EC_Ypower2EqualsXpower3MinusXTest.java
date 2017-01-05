@@ -148,7 +148,33 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 	public void calculateGeneratingElementOfSubgroupHTest4() {
 		final Date date1 =  new Date();
 		System.out.println(date1);
-		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(512, 0.9999);
+		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(512, 0.99);
+		
+		System.out.println("P: "+ec.getP().getValue());
+		System.out.println("N: "+ec.getNumberOfElements());
+		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
+		
+		final Date date2 =  new Date();
+		System.err.println(date2);
+		long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date2.getTime() - date1.getTime());
+		System.out.println("Seconds needed to generate prime: " + differenceInSeconds);
+		
+		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupH());
+		
+		final Date date3 =  new Date();
+		System.err.println(date3);
+		differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date3.getTime() - date2.getTime());
+		System.out.println("Seconds needed to calculate Point: " + differenceInSeconds);
+		
+		differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date3.getTime() - date1.getTime());
+		System.out.println("Seconds needed complete: " + differenceInSeconds);
+	}
+
+	@Test
+	public void calculateGeneratingElementOfSubgroupHTest5() {
+		final Date date1 =  new Date();
+		System.out.println(date1);
+		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(1024, 0.99);
 		
 		System.out.println("P: "+ec.getP().getValue());
 		System.out.println("N: "+ec.getNumberOfElements());
@@ -171,7 +197,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 	}
 	
 	@Test
-	public void calculateGeneratingElementOfSubgroupHTest5() {
+	public void calculateGeneratingElementOfSubgroupHTest6() {
 		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(12, 0.9999);
 		
 		System.out.println("P: "+ec.getP().getValue());
@@ -203,7 +229,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 	}
 	
 	@Test
-	public void calculateGeneratingElementOfSubgroupHTest6() {
+	public void calculateGeneratingElementOfSubgroupHTest7() {
 		final Date date1 =  new Date();
 		System.out.println(date1);
 		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(1024, 0.99);

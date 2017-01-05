@@ -26,8 +26,15 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 */
 	public EC_Ypower2EqualsXpower3MinusX(final int binaryLength, final double minPropability) {
 		super();
-		this.setPossiblePrime(new BigInteger("2").pow(binaryLength - 1),
-				new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE), minPropability);
+		
+		final BigInteger min = new BigInteger("2").pow(binaryLength - 1);
+		final BigInteger max = new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE);
+		
+		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
+		this.setP(prime);
+		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
+			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
+		}		
 		this.numberOfElements = this.calculateNumberOfElements();
 	}
 
@@ -37,7 +44,12 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 */
 	public EC_Ypower2EqualsXpower3MinusX(final BigInteger min, final BigInteger max, final double minPropability) {
 		super();
-		this.setPossiblePrime(min, max, minPropability);
+		
+		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
+		this.setP(prime);
+		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
+			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
+		}
 	}
 
 	/**
@@ -47,11 +59,11 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 * @param max: Maximum border of prime
 	 * @param minPropability: the minimal probability that p and p/8 is prime.
 	 */
-	public void setPossiblePrime(final BigInteger min, final BigInteger max, final double minPropability) {
-		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
+	public void setPossiblePrime(final BigInteger min, final BigInteger max, final double minPropability, final BigInteger random) {
+		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8, random);
 		this.setP(prime);
 		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
-			this.setPossiblePrime(min, max, minPropability);
+			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
 		}
 	}
 
