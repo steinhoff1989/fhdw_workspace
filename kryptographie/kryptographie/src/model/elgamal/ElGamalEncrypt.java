@@ -12,8 +12,9 @@ public class ElGamalEncrypt {
 	private final String text;
 	private final EllipticCurve ec;
 	
-	public ElGamalEncrypt(final EllipticCurve ec, final String text, final BigInteger p, final EllipticCurvePoint g, final EllipticCurvePoint y){
-		this.publicKey = new ElGamal_publicKey(p, g, y);
+	public ElGamalEncrypt(final String text, final BigInteger p, final EllipticCurvePoint g, final EllipticCurvePoint y){
+		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(new IndustrialPrime(p));
+		this.publicKey = new ElGamal_publicKey(ec, p, ec.getQ() , g, y);
 		this.text = text;
 		this.ec=ec;
 	}
@@ -28,7 +29,7 @@ public class ElGamalEncrypt {
 		final List<Chiffrat> chiffrats = new ArrayList<Chiffrat>();
 		final List<EllipticCurvePoint> ellipticCurvePoints = this.encryptGenerateEllipticCurveBlocks();
 		
-		final BigInteger orderOfG = this.ec.getNumberOfElements().divide(BigInteger.valueOf(8));
+		final BigInteger orderOfG = this.ec.getQ();
 		BigInteger randomK = TrustCenter.getRandomBetween(BigInteger.valueOf(3), orderOfG);
 		EllipticCurvePoint ky = this.calculateKY(randomK);
 		

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 public abstract class EllipticCurve {
 
 	private IndustrialPrime p;
+	protected BigInteger q;
 	protected BigInteger numberOfElements;
 
 	public IndustrialPrime getP() {
@@ -27,9 +28,16 @@ public abstract class EllipticCurve {
 	
 	abstract public EllipticCurvePoint calculateGeneratingElementOfSubgroupH();
 	
-	abstract public EllipticCurvePoint powerFast(final EllipticCurvePoint basis_g, final BigInteger exponent) throws InfinityPointAccuredException;
-
 	public BigInteger getNumberOfElements() {
 		return this.numberOfElements;
 	}
+
+	public BigInteger getQ() {
+		return this.q;
+	}
+
+	abstract public EllipticCurvePoint powerFast(final EllipticCurvePoint basis_g, final BigInteger exponent)
+			throws InfinityPointAccuredException;
+	
+	abstract public EllipticCurvePoint calculateConjunctionPoint(EllipticCurvePoint point1, EllipticCurvePoint point2) throws InfinityPointAccuredException;
 }

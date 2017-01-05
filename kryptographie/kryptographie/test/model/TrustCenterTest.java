@@ -111,6 +111,12 @@ public class TrustCenterTest {
 		final BigInteger potentialPrime = TrustCenter.getIndustrialPrime(512, 0.9999);
 		System.out.println(potentialPrime.toString());
 	}
+	
+	@Test
+	public void getIndustrialPrime6() {
+		final BigInteger potentialPrime = TrustCenter.getIndustrialPrime(1024, 0.9999);
+		System.out.println(potentialPrime.toString());
+	}
 
 	@Test
 	public void testNumberTest1() {

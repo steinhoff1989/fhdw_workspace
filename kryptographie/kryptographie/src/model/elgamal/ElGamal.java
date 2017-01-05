@@ -28,7 +28,7 @@ public class ElGamal {
 		try {
 			final EllipticCurvePoint randomElementOfH = ellipticCurve.powerFast(generatingElementOfH, randomExponent);
 			this.privateKey = new ElGamal_privateKey(randomExponent);
-			this.publicKey = new ElGamal_publicKey(ellipticCurve.getP().getValue(), generatingElementOfH, randomElementOfH);
+			this.publicKey = new ElGamal_publicKey(ellipticCurve, ellipticCurve.getP().getValue(), ellipticCurve.getQ(), generatingElementOfH, randomElementOfH);
 		} catch (final InfinityPointAccuredException e) {
 			throw new Error("Mathematisch nicht möglich.");
 		}

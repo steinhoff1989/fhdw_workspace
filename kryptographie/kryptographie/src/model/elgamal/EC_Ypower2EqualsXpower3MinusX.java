@@ -2,6 +2,7 @@ package model.elgamal;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import model.ModArith;
@@ -11,6 +12,12 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 
 	//for y^2 = x^3-x : the a=-1, b=0
 	public static final BigInteger A_OF_ELLIPTIC_CURVE = BigInteger.valueOf(-1);
+	
+	private Date startTimeToFindPrime;
+	private Date endTimePrimeFound;
+	private BigInteger countOfTriedRandomNumbers = BigInteger.ZERO;
+	private BigInteger countOfPrimesFoundWhereNDiv8WasNotAPrime = BigInteger.ZERO;
+	
 
 	/**
 	 * Only for testing!
@@ -18,6 +25,8 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 */
 	public EC_Ypower2EqualsXpower3MinusX(final IndustrialPrime p) {
 		super(p);
+		this.numberOfElements = this.calculateNumberOfElements();
+		this.q = this.numberOfElements.divide(BigInteger.valueOf(8));
 	}
 
 	/**
@@ -31,11 +40,14 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		final BigInteger max = new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE);
 		
 		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
+		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
 		this.setP(prime);
 		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
-			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
+			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
+			this.setPossiblePrime(min, max, minPropability);
 		}		
 		this.numberOfElements = this.calculateNumberOfElements();
+		this.q = this.numberOfElements.divide(BigInteger.valueOf(8));
 	}
 
 	/**
@@ -46,10 +58,15 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		super();
 		
 		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
+		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
 		this.setP(prime);
 		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
-			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
+			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
+			this.setPossiblePrime(min, max, minPropability);
 		}
+		
+		this.numberOfElements = this.calculateNumberOfElements();
+		this.q = this.numberOfElements.divide(BigInteger.valueOf(8));
 	}
 
 	/**
@@ -60,10 +77,31 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 * @param minPropability: the minimal probability that p and p/8 is prime.
 	 */
 	public void setPossiblePrime(final BigInteger min, final BigInteger max, final double minPropability, final BigInteger random) {
+		this.startTimeToFindPrime = new Date();
 		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8, random);
+		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
 		this.setP(prime);
 		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
+			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
 			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
+		}
+		this.endTimePrimeFound = new Date();
+	}
+	
+	/**
+	 * Finds and sets a prime to this EllipticCurve, 
+	 * where their value divided by 8 is still a prime.
+	 * @param min: Minimum border of prime
+	 * @param max: Maximum border of prime
+	 * @param minPropability: the minimal probability that p and p/8 is prime.
+	 */
+	public void setPossiblePrime(final BigInteger min, final BigInteger max, final double minPropability) {
+		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
+		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
+		this.setP(prime);
+		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
+			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
+			this.setPossiblePrime(min, max, minPropability);
 		}
 	}
 
@@ -73,7 +111,8 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	@Override
 	protected BigInteger calculateNumberOfElements() {
 		if (this.getP().getValue().mod(BigInteger.valueOf(4)).equals(BigInteger.ONE)) {
-			return this.getP().getValue().add(BigInteger.ONE).subtract(this.getH());
+			final BigInteger result = this.getP().getValue().add(BigInteger.ONE).subtract(this.getH());
+			return result;
 		} else {
 			throw new UnsupportedOperationException();
 		}
@@ -151,6 +190,12 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		} else {
 			return this.calculateGeneratingElementOfSubgroupH();
 		}
+	}
+	
+	@Override
+	public EllipticCurvePoint calculateConjunctionPoint(final EllipticCurvePoint point1, final EllipticCurvePoint point2) throws InfinityPointAccuredException{
+		final SehnenTangentenService sts = new SehnenTangentenService();
+		return sts.calculateConjunctionPoint(point1, point2, A_OF_ELLIPTIC_CURVE, this.getP());
 	}
 
 	/**
@@ -232,5 +277,21 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 			exponentBinay = exponentBinay.substring(0, exponentBinay.length() - 1);
 		}
 		return result;
+	}
+
+	public Date getStartTimeToFindPrime() {
+		return this.startTimeToFindPrime;
+	}
+
+	public Date getEndTimePrimeFound() {
+		return this.endTimePrimeFound;
+	}
+
+	public BigInteger getCountOfTriedRandomNumbers() {
+		return this.countOfTriedRandomNumbers;
+	}
+
+	public BigInteger getCountOfPrimesFoundWhereNDiv8WasNotAPrime() {
+		return this.countOfPrimesFoundWhereNDiv8WasNotAPrime;
 	}
 }

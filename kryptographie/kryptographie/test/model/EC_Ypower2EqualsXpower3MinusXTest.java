@@ -159,6 +159,9 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date2.getTime() - date1.getTime());
 		System.out.println("Seconds needed to generate prime: " + differenceInSeconds);
 		
+		System.out.println("Count of random numbers tried: "+ec.getCountOfTriedRandomNumbers());
+		System.out.println("Count of primes found were N/8 was not prime: "+ec.getCountOfPrimesFoundWhereNDiv8WasNotAPrime());
+		
 		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupH());
 		
 		final Date date3 =  new Date();

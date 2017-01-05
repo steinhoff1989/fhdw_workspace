@@ -14,8 +14,13 @@ public class IndustrialPrime {
 	private BigInteger value;
 	private BigInteger xToSquare;
 	private BigInteger yToSquare;
+	private BigInteger countOfTriedRandomNumbers = BigInteger.ZERO;
 
 	public IndustrialPrime() {
+	};
+	
+	public IndustrialPrime(final BigInteger p) {
+		this.value = p;
 	};
 
 	public IndustrialPrime(final int binaryLength, final double propabilityPercent, final int remainder,
@@ -36,7 +41,7 @@ public class IndustrialPrime {
 		this.remainder = remainder;
 		this.modulo = modulo;
 		final BigInteger random = this.getRandom(minValue, maxValue, remainder, modulo);
-
+		
 		this.value = this.getIndustrialPrimeHelper(1, propabilityPercent, minValue, maxValue, random, remainder,
 				modulo);
 		final List<BigInteger> xSquaredPlusYSquared = this.getValueAsXSquaredPlusYSquared();
@@ -58,6 +63,7 @@ public class IndustrialPrime {
 
 	private BigInteger getRandom(final BigInteger minValue, final BigInteger maxValue, final int remainder,
 			final int modulo) {
+		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(BigInteger.ONE);
 		BigInteger random;
 		random = this.getRandomBetween(minValue, maxValue);
 		if (random.mod(BigInteger.valueOf(modulo)).equals(BigInteger.valueOf(remainder))) {
@@ -93,6 +99,7 @@ public class IndustrialPrime {
 					potentialPrime, remainder, modulo);
 		} else {
 			if (potentialPrime.add(BigInteger.valueOf(modulo)).compareTo(maxValue) <= 0) {
+				this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(BigInteger.ONE);
 				return this.getIndustrialPrimeHelper(1, minPropability, minValue, maxValue,
 						potentialPrime.add(BigInteger.valueOf(modulo)), remainder, modulo);
 			} else {
@@ -189,5 +196,14 @@ public class IndustrialPrime {
 	//Testing only!
 	public void setValue(final BigInteger value) {
 		this.value = value;
+	}
+
+	@Override
+	public String toString() {
+		return this.value.toString() + "="+ this.xToSquare+"^2 + "+this.yToSquare + "^2";
+	}
+
+	public BigInteger getCountOfTriedRandomNumbers() {
+		return this.countOfTriedRandomNumbers;
 	}
 }
