@@ -25,8 +25,8 @@ public class ElGamalDecrypt {
 
 		final List<EllipticCurvePoint> blockPoints = new ArrayList<EllipticCurvePoint>();
 		final List<BigInteger> chiffreNumbers = new ArrayList<BigInteger>();
-		for (int i = 0; i < this.chiffrats.getChiffrats().size(); i++) {
-			final Cipher currentChiffrat = this.chiffrats.getChiffrats().get(i);
+		for (int i = 0; i < this.chiffrats.getCiphers().size(); i++) {
+			final Cipher currentChiffrat = this.chiffrats.getCiphers().get(i);
 			final EllipticCurvePoint xa = this.calculateXA(currentChiffrat);
 			final BigInteger xaC1Invers = ModArith.modularInverse(xa.getX(), this.publicKey.getP());
 			final BigInteger xaC2Invers = ModArith.modularInverse(xa.getY(), this.publicKey.getP());

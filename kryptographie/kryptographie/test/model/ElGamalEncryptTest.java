@@ -24,9 +24,9 @@ public class ElGamalEncryptTest {
 
 		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt(textToEncrypt, elGamal.getPublicKey());
 		final CipherList chiffrats = elGamalEncrypt.encrypt();
-		for (int i = 0; i < chiffrats.getChiffrats().size(); i++) {
-			chiffrats.getChiffrats().get(i).saveToFile(PATH_TO_FILE);
-			System.out.println("Chiffratblock "+i+": "+chiffrats.getChiffrats().get(i));
+		for (int i = 0; i < chiffrats.getCiphers().size(); i++) {
+			chiffrats.getCiphers().get(i).saveToFile(PATH_TO_FILE);
+			System.out.println("Chiffratblock "+i+": "+chiffrats.getCiphers().get(i));
 		}
 		
 		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);

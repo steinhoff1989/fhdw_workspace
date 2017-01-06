@@ -24,11 +24,31 @@ public class Cipher {
 	}
 
 	/**
-	 * Creates a cipher object from a file that includes only a single cipher element. 
-	 * @param pathToFileWithSingleChiffratOnly: Path to the file that will be read
+	 * Generates a cipher object from a file that includes only a single cipher 
+	 * element, where the given file as to be well structured
+	 * 
+	 * A valid structure of a Cipher object
+	 * c=(a, b1, b2), where a:=(ax, ay)
+	 * looks like this:
+	 * length of ax
+	 * data of ax
+	 * length of ay
+	 * data of ay
+	 * length of b1
+	 * data of b1
+	 * length of b2
+	 * data of b2
+	 * 
+	 * This method is the reverse of the method saveToFile which will generate
+	 * the above defined structure and saves it to a file.
+	 * @param pathToFile: The path to the file which will be used to generate
+	 * the cipher object.
 	 * @throws IOException
+	 * @throws ArrayIndexOutOfBoundsException: will get thrown if the file has 
+	 * less bytes than it need to generate the cipher object 
+	 * » wrong file / wrong file structure?
 	 */
-	public Cipher(final String pathToFileWithSingleChiffratOnly) throws IOException {
+	public Cipher(final String pathToFileWithSingleChiffratOnly) throws IOException, ArrayIndexOutOfBoundsException {
 		int bytePosition = 0;
 		final FileInputStream fin = new FileInputStream(pathToFileWithSingleChiffratOnly);
 		final byte[] buffer = new byte[fin.available()];
@@ -66,26 +86,26 @@ public class Cipher {
 		bytePosition += byteLengthOfB2;
 	}
 
-	public EllipticCurvePoint getA() {
-		return this.a;
-	}
-
-	public BigInteger getB1() {
-		return this.b1;
-	}
-
-	public BigInteger getB2() {
-		return this.b2;
-	}
-
-	@Override
-	public String toString() {
-		return "(" + this.a + "," + this.b1 + "," + this.b2 + ")";
-	}
-
 	/**
-	 * Saves the cipher object to a file. Append the file, if it is not empty.
-	 * @param pathToOutputFile: Path to the file that will be appended/generated
+	 * Creates a well structured file that contains this cipher object
+	 * 
+	 * The generated structured file of a Cipher object
+	 * c=(a, b1, b2), where a:=(ax, ay)
+	 * looks like this:
+	 * length of ax
+	 * data of ax
+	 * length of ay
+	 * data of ay
+	 * length of b1
+	 * data of b1
+	 * length of b2
+	 * data of b2
+	 * 
+	 * This method is the complement of the constructor that will read a file
+	 * to generate a cipher object. You can use this function to store a 
+	 * cipher object to a file and use the constructor to regenerate 
+	 * the cipher object at a later time.
+	 * @param pathToOutputFile: The path to the output file
 	 * @throws IOException
 	 */
 	public void saveToFile(final String pathToOutputFile) throws IOException {
@@ -109,4 +129,22 @@ public class Cipher {
 
 		fout.close();
 	}
+	
+	@Override
+	public String toString() {
+		return "(" + this.a + "," + this.b1 + "," + this.b2 + ")";
+	}
+	
+	public EllipticCurvePoint getA() {
+		return this.a;
+	}
+
+	public BigInteger getB1() {
+		return this.b1;
+	}
+
+	public BigInteger getB2() {
+		return this.b2;
+	}
+
 }

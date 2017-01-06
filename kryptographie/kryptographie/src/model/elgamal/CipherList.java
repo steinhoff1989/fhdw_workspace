@@ -22,8 +22,8 @@ public class CipherList {
 	}
 
 	/**
-	 * Generates the cipherList object from a given file that must include 
-	 * a well structured list of cipher elements
+	 * Generates the cipherList object from a file, 
+	 * where the given file as to be well structured
 	 * 
 	 * A valid structure of two cipher objects 
 	 * c1=(a1, b11, b12) where a1 := (x1, y1)
@@ -52,8 +52,11 @@ public class CipherList {
 	 * @param pathToCipherListFile: The path to the file which will be used to generate
 	 * the cipherList object.
 	 * @throws IOException
+	 * @throws ArrayIndexOutOfBoundsException: will get thrown if the file has 
+	 * less bytes than it need to generate the cipherList object 
+	 * » wrong file / wrong file structure?
 	 */
-	public CipherList(final String pathToCipherListFile) throws IOException{
+	public CipherList(final String pathToCipherListFile) throws IOException, ArrayIndexOutOfBoundsException{
 		super();
 		this.ciphers = new ArrayList<Cipher>();
 		this.readFromFile(pathToCipherListFile);
@@ -62,7 +65,7 @@ public class CipherList {
 	/**
 	 * Creates a well structured file that contains all <ciphers>
 	 * 
-	 * A valid structure of two cipher objects 
+	 * The generated structured file of two cipher objects
 	 * c1=(a1, b11, b12) where a1 := (x1, y1)
 	 * c2=(a2, b21, b22) where a2 := (x2, y2)
 	 * looks like this:
@@ -193,7 +196,7 @@ public class CipherList {
 		return result;
 	}
 	
-	public List<Cipher> getChiffrats() {
+	public List<Cipher> getCiphers() {
 		return this.ciphers;
 	}
 }

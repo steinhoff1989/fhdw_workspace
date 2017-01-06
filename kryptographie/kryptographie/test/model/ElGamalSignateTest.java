@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+
 import org.junit.Test;
 
 import model.elgamal.CipherList;
@@ -8,13 +10,13 @@ import model.elgamal.ElGamal;
 import model.elgamal.ElGamalDecrypt;
 import model.elgamal.ElGamalEncrypt;
 import model.elgamal.ElGamalVerificate;
-import model.elgamal.InfinityPointAccuredException;
 import model.elgamal.Signature;
 
 public class ElGamalSignateTest {
 
 	@Test
-	public void ElGamalSignateTest1() {
+	public void ElGamalSignateTest1() throws IOException {
+		final String PATH_TO_CIPHER_LIST = "C:\\Steini\\trash\\cipherList.txt";
 		final ElGamal elGamal = new ElGamal(12, 0.99);
 
 		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
@@ -22,24 +24,21 @@ public class ElGamalSignateTest {
 		
 		System.out.println(chiffrats.toString());
 		
-		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey(), chiffrats.toString());
-		final Signature signature = signate.signate();
+		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey());
+		final Signature signature = signate.signateAFile(PATH_TO_CIPHER_LIST);
 		
 		System.out.println("Signature: "+signature);
 		
 		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
-		System.out.println(elGamalDecrypt.decrypt());
+		System.out.println("Entschlüsselte Text: "+elGamalDecrypt.decrypt());
 		
-		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
-		try {
-			System.out.println(verificate.verificate());
-		} catch (final InfinityPointAccuredException e) {
-			System.out.println("InfinityPointAccuredException");
-		}
+		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature);
+		System.out.println("Signatur » u = r (mod q) :" + verificate.verificateCipherList(PATH_TO_CIPHER_LIST));
 	}
 	
 	@Test
-	public void ElGamalSignateTest2() {
+	public void ElGamalSignateTest2() throws IOException {
+		final String PATH_TO_CIPHER_LIST = "C:\\Steini\\trash\\cipherList.txt";
 		final ElGamal elGamal = new ElGamal(64, 0.99);
 
 		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
@@ -47,25 +46,22 @@ public class ElGamalSignateTest {
 		
 		System.out.println(chiffrats.toString());
 		
-		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey(), chiffrats.toString());
-		final Signature signature = signate.signate();
+		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey());
+		final Signature signature = signate.signateAFile(PATH_TO_CIPHER_LIST);
 		
 		System.out.println("Signature: "+signature);
 		
 		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
-		System.out.println(elGamalDecrypt.decrypt());
+		System.out.println("Entschlüsselte Text: "+elGamalDecrypt.decrypt());
 		
-		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
-		try {
-			System.out.println(verificate.verificate());
-		} catch (final InfinityPointAccuredException e) {
-			System.out.println("InfinityPointAccuredException");
-		}
+		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature);
+		System.out.println("Signatur » u = r (mod q) :" + verificate.verificateCipherList(PATH_TO_CIPHER_LIST));
 	}
 
 	
 	@Test
-	public void ElGamalSignateTest3() {
+	public void ElGamalSignateTest3() throws IOException {
+		final String PATH_TO_CIPHER_LIST = "C:\\Steini\\trash\\cipherList.txt";
 		final ElGamal elGamal = new ElGamal(128, 0.99);
 
 		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
@@ -73,24 +69,21 @@ public class ElGamalSignateTest {
 		
 		System.out.println(chiffrats.toString());
 		
-		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey(), chiffrats.toString());
-		final Signature signature = signate.signate();
+		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey());
+		final Signature signature = signate.signateAFile(PATH_TO_CIPHER_LIST);
 		
 		System.out.println("Signature: "+signature);
 		
 		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
-		System.out.println(elGamalDecrypt.decrypt());
+		System.out.println("Entschlüsselte Text: "+elGamalDecrypt.decrypt());
 		
-		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
-		try {
-			System.out.println(verificate.verificate());
-		} catch (final InfinityPointAccuredException e) {
-			System.out.println("InfinityPointAccuredException");
-		}
+		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature);
+		System.out.println("Signatur » u = r (mod q) :" + verificate.verificateCipherList(PATH_TO_CIPHER_LIST));
 	}
 	
 	@Test
-	public void ElGamalSignateTest4() {
+	public void ElGamalSignateTest4() throws IOException {
+		final String PATH_TO_CIPHER_LIST = "C:\\Steini\\trash\\cipherList.txt";
 		final ElGamal elGamal = new ElGamal(256, 0.99);
 
 		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
@@ -98,24 +91,21 @@ public class ElGamalSignateTest {
 		
 		System.out.println(chiffrats.toString());
 		
-		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey(), chiffrats.toString());
-		final Signature signature = signate.signate();
+		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey());
+		final Signature signature = signate.signateAFile(PATH_TO_CIPHER_LIST);
 		
 		System.out.println("Signature: "+signature);
 		
 		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
-		System.out.println(elGamalDecrypt.decrypt());
+		System.out.println("Entschlüsselte Text: "+elGamalDecrypt.decrypt());
 		
-		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
-		try {
-			System.out.println(verificate.verificate());
-		} catch (final InfinityPointAccuredException e) {
-			System.out.println("InfinityPointAccuredException");
-		}
+		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature);
+		System.out.println("Signatur » u = r (mod q) :" + verificate.verificateCipherList(PATH_TO_CIPHER_LIST));
 	}
 	
 	@Test
-	public void ElGamalSignateTest5() {
+	public void ElGamalSignateTest5() throws IOException {
+		final String PATH_TO_CIPHER_LIST = "C:\\Steini\\trash\\cipherList.txt";
 		final ElGamal elGamal = new ElGamal(512, 0.99);
 
 		System.out.println();
@@ -126,19 +116,17 @@ public class ElGamalSignateTest {
 		
 		System.out.println("Chiffrat" + chiffrats.toString());
 		
-		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey(), chiffrats.toString());
-		final Signature signature = signate.signate();
+		chiffrats.saveToFile(PATH_TO_CIPHER_LIST, true);
+		
+		final ELGamalSignate signate = new ELGamalSignate(elGamal.getPublicKey(), elGamal.getPrivateKey());
+		final Signature signature = signate.signateAFile(PATH_TO_CIPHER_LIST);
 		
 		System.out.println("Signature: "+signature);
 		
 		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
 		System.out.println("Entschlüsselte Text: "+elGamalDecrypt.decrypt());
 		
-		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
-		try {
-			System.out.println("Signatur » u = r (mod q) :" + verificate.verificate());
-		} catch (final InfinityPointAccuredException e) {
-			System.out.println("InfinityPointAccuredException");
-		}
+		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature);
+		System.out.println("Signatur » u = r (mod q) :" + verificate.verificateCipherList(PATH_TO_CIPHER_LIST));
 	}
 }
