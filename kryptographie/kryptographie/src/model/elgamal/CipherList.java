@@ -189,7 +189,7 @@ public class CipherList {
 			final Cipher current = iterator.next();
 			result += current.toString();
 			if(iterator.hasNext()){
-				result += ",";
+				result += ",\n";
 			}
 		}
 		result += "]";
