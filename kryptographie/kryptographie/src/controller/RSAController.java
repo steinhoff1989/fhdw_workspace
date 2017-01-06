@@ -12,6 +12,7 @@ public class RSAController {
 	private CalculateKeysWorker keysWorker;
 	private final SignHandler signHandler;
 	private final VerifyHandler verifyHandler;
+	private final ElGamalKeysHandler elGamalKeysHandler;
 		
 	public RSAController(final RSAView view) {
 		this.view = view;
@@ -19,6 +20,7 @@ public class RSAController {
 		this.decryptionHandler = new DecryptionHandler(this.view);
 		this.signHandler = new SignHandler(view);
 		this.verifyHandler = new VerifyHandler(view);
+		this.elGamalKeysHandler = new ElGamalKeysHandler(view);
 	}
 
 	public void btn_primes_empty_clicked(final ActionEvent e) {
@@ -64,5 +66,19 @@ public class RSAController {
 
 	public void btn_verifySig_verify(final ActionEvent e) {
 		this.verifyHandler.btn_verifySig_verify(e);
+	}
+
+	public void btn_elGamalKeys_calculate(final ActionEvent e) {
+		final ElGamalKeysWorker elGamalKeysWorker = new ElGamalKeysWorker(this.view);
+		elGamalKeysWorker.execute();
+	}
+
+	public void btn_elGamalKeys_savePrivateKey(final ActionEvent e) {
+		this.elGamalKeysHandler.btn_elGamalKeys_savePrivateKey(e);
+		
+	}
+
+	public void btn_elGamalKeys_savePublicKey(final ActionEvent e) {
+		this.elGamalKeysHandler.btn_elGamalKeys_savePublicKey(e);
 	}
 }

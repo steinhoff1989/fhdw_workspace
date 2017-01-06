@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -17,10 +18,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -112,6 +115,23 @@ public class RSAView extends JFrame {
 	private JButton btn_verifySig_verify;
 	private JTextArea txt_verifySig_signedChiffrat;
 	private JLabel lbl_verifySig_result;
+	private final JTextField txt_elGamalKeys_binaryLength;
+	private final JTextField txt_elGamalKeys_probability;
+	private final JButton btn_elGamalKeys_calculate;
+	private final JTextArea txt_elGamalKeys_p;
+	private final JTextArea txt_elGamalKeys_q;
+	private final JTextArea txt_elGamalKeys_x;
+	private final JTextArea txt_elGamalKeys_gx;
+	private final JTextArea txt_elGamalKeys_yx;
+	private final JTextArea txt_elGamalKeys_gy;
+	private final JTextArea txt_elGamalKeys_yy;
+	private final JLabel lbl_elGamalKeys_timeToGenerateKeys;
+	private final JLabel lbl_elGamalKeys_countOfTriedRandomNumbers;
+	private final JLabel lbl_elGamalKeys_foundPrimesNotRightOrder;
+	private final JLabel lbl_elGamalKeys_Ndiv8IsPrime;
+	private final JLabel lbl_elGamalKeys_ordGEqNdiv8;
+	private final JButton btn_elGamalKeys_savePublicKey;
+	private final JButton btn_elGamalKeys_savePrivateKey;
 
 	/**
 	 * Launch the application.
@@ -167,6 +187,228 @@ public class RSAView extends JFrame {
 		final JTabbedPane tabbed_main = new JTabbedPane(JTabbedPane.TOP);
 		tabbed_main.setBounds(5, 0, 717, 500);
 		this.pane_main.add(tabbed_main);
+		
+		final JPanel panel_elGamal_generate_keys = new JPanel();
+		tabbed_main.addTab("ElGamal Create Keys", null, panel_elGamal_generate_keys, null);
+		panel_elGamal_generate_keys.setLayout(null);
+		
+		final JLabel label = new JLabel("Binary length per prime");
+		label.setBounds(10, 14, 140, 16);
+		panel_elGamal_generate_keys.add(label);
+		
+		final JLabel label_5 = new JLabel("Probability of primes");
+		label_5.setBounds(10, 51, 140, 16);
+		panel_elGamal_generate_keys.add(label_5);
+		
+		this.txt_elGamalKeys_binaryLength = new JTextField();
+		this.txt_elGamalKeys_binaryLength.setToolTipText("Binary length per prime");
+		this.txt_elGamalKeys_binaryLength.setText("128");
+		this.txt_elGamalKeys_binaryLength.setColumns(10);
+		this.txt_elGamalKeys_binaryLength.setBounds(162, 11, 69, 22);
+		panel_elGamal_generate_keys.add(this.txt_elGamalKeys_binaryLength);
+		
+		this.txt_elGamalKeys_probability = new JTextField();
+		this.txt_elGamalKeys_probability.setToolTipText("Probability of primes");
+		this.txt_elGamalKeys_probability.setText("99.999");
+		this.txt_elGamalKeys_probability.setColumns(10);
+		this.txt_elGamalKeys_probability.setBounds(162, 48, 69, 22);
+		panel_elGamal_generate_keys.add(this.txt_elGamalKeys_probability);
+		
+		this.btn_elGamalKeys_calculate = new JButton("Calculate");
+		this.btn_elGamalKeys_calculate.setBounds(476, 11, 222, 59);
+		panel_elGamal_generate_keys.add(this.btn_elGamalKeys_calculate);
+		this.btn_elGamalKeys_calculate.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				RSAView.this.controler.btn_elGamalKeys_calculate(e);
+			}
+		});
+		
+		
+		final JSeparator separator = new JSeparator();
+		separator.setBounds(10, 78, 688, 1);
+		panel_elGamal_generate_keys.add(separator);
+		
+		final JLabel lblPublicKey = new JLabel("Public key");
+		lblPublicKey.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPublicKey.setBounds(10, 80, 63, 14);
+		panel_elGamal_generate_keys.add(lblPublicKey);
+		
+		final JLabel lblP_2 = new JLabel("p");
+		lblP_2.setBounds(10, 95, 46, 14);
+		panel_elGamal_generate_keys.add(lblP_2);
+		
+		final JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 110, 221, 99);
+		panel_elGamal_generate_keys.add(scrollPane);
+		
+		this.txt_elGamalKeys_p = new JTextArea();
+		scrollPane.setViewportView(this.txt_elGamalKeys_p);
+		
+		final JLabel lblQ_1 = new JLabel("q");
+		lblQ_1.setBounds(10, 215, 46, 14);
+		panel_elGamal_generate_keys.add(lblQ_1);
+		
+		final JScrollPane scrollPane_21 = new JScrollPane();
+		scrollPane_21.setBounds(10, 230, 221, 99);
+		panel_elGamal_generate_keys.add(scrollPane_21);
+		
+		this.txt_elGamalKeys_q = new JTextArea();
+		scrollPane_21.setViewportView(this.txt_elGamalKeys_q);
+		
+		final JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(10, 340, 688, 1);
+		panel_elGamal_generate_keys.add(separator_1);
+		
+		final JLabel lblPrivateKey = new JLabel("Private key");
+		lblPrivateKey.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPrivateKey.setBounds(10, 340, 74, 14);
+		panel_elGamal_generate_keys.add(lblPrivateKey);
+		
+		final JLabel lblX = new JLabel("x");
+		lblX.setBounds(10, 352, 46, 14);
+		panel_elGamal_generate_keys.add(lblX);
+		
+		final JSeparator separator_2 = new JSeparator();
+		separator_2.setOrientation(SwingConstants.VERTICAL);
+		separator_2.setBounds(241, 352, 2, 112);
+		panel_elGamal_generate_keys.add(separator_2);
+		
+		final JScrollPane scrollPane_26 = new JScrollPane();
+		scrollPane_26.setBounds(10, 365, 221, 99);
+		panel_elGamal_generate_keys.add(scrollPane_26);
+		
+		this.txt_elGamalKeys_x = new JTextArea();
+		scrollPane_26.setViewportView(this.txt_elGamalKeys_x);
+		
+		final JScrollPane scrollPane_27 = new JScrollPane();
+		scrollPane_27.setBounds(241, 110, 221, 99);
+		panel_elGamal_generate_keys.add(scrollPane_27);
+		
+		this.txt_elGamalKeys_gx = new JTextArea();
+		scrollPane_27.setViewportView(this.txt_elGamalKeys_gx);
+		
+		final JScrollPane scrollPane_28 = new JScrollPane();
+		scrollPane_28.setBounds(474, 110, 222, 99);
+		panel_elGamal_generate_keys.add(scrollPane_28);
+		
+		this.txt_elGamalKeys_yx = new JTextArea();
+		scrollPane_28.setViewportView(this.txt_elGamalKeys_yx);
+		
+		final JScrollPane scrollPane_29 = new JScrollPane();
+		scrollPane_29.setBounds(241, 230, 221, 99);
+		panel_elGamal_generate_keys.add(scrollPane_29);
+		
+		this.txt_elGamalKeys_gy = new JTextArea();
+		scrollPane_29.setViewportView(this.txt_elGamalKeys_gy);
+		
+		final JScrollPane scrollPane_30 = new JScrollPane();
+		scrollPane_30.setBounds(474, 230, 222, 99);
+		panel_elGamal_generate_keys.add(scrollPane_30);
+		
+		this.txt_elGamalKeys_yy = new JTextArea();
+		scrollPane_30.setViewportView(this.txt_elGamalKeys_yy);
+		
+		final JLabel lblGx = new JLabel("gx");
+		lblGx.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGx.setBounds(241, 95, 221, 14);
+		panel_elGamal_generate_keys.add(lblGx);
+		
+		final JLabel lblGy = new JLabel("gy");
+		lblGy.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGy.setBounds(241, 215, 221, 14);
+		panel_elGamal_generate_keys.add(lblGy);
+		
+		final JLabel lblYx = new JLabel("yx");
+		lblYx.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYx.setBounds(474, 95, 221, 14);
+		panel_elGamal_generate_keys.add(lblYx);
+		
+		final JLabel lblYy = new JLabel("yy");
+		lblYy.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYy.setBounds(476, 215, 221, 14);
+		panel_elGamal_generate_keys.add(lblYy);
+		
+		final JLabel lblGgx = new JLabel("G := (gx, gy)");
+		lblGgx.setHorizontalAlignment(SwingConstants.CENTER);
+		lblGgx.setBounds(241, 78, 221, 14);
+		panel_elGamal_generate_keys.add(lblGgx);
+		
+		final JLabel lblYyx = new JLabel("Y := (yx, yy)");
+		lblYyx.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYyx.setBounds(476, 80, 221, 14);
+		panel_elGamal_generate_keys.add(lblYyx);
+		
+		final JLabel lblInformations = new JLabel("Informations");
+		lblInformations.setHorizontalAlignment(SwingConstants.CENTER);
+		lblInformations.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblInformations.setBounds(251, 345, 303, 14);
+		panel_elGamal_generate_keys.add(lblInformations);
+		
+		final JLabel lblSecondsToGenerate = new JLabel("Seconds to generate keys:");
+		lblSecondsToGenerate.setBounds(253, 365, 209, 14);
+		panel_elGamal_generate_keys.add(lblSecondsToGenerate);
+		
+		final JLabel lblCountOfTried = new JLabel("Count of tried random numbers:");
+		lblCountOfTried.setBounds(253, 395, 209, 14);
+		panel_elGamal_generate_keys.add(lblCountOfTried);
+		
+		this.lbl_elGamalKeys_timeToGenerateKeys = new JLabel("");
+		this.lbl_elGamalKeys_timeToGenerateKeys.setFont(new Font("Tahoma", Font.BOLD, 11));
+		this.lbl_elGamalKeys_timeToGenerateKeys.setBounds(253, 375, 209, 14);
+		panel_elGamal_generate_keys.add(this.lbl_elGamalKeys_timeToGenerateKeys);
+		
+		final JLabel lblCountOfFound = new JLabel("Found primes where N/8 was no prime:");
+		lblCountOfFound.setBounds(253, 433, 209, 14);
+		panel_elGamal_generate_keys.add(lblCountOfFound);
+		
+		this.lbl_elGamalKeys_countOfTriedRandomNumbers = new JLabel("");
+		this.lbl_elGamalKeys_countOfTriedRandomNumbers.setFont(new Font("Tahoma", Font.BOLD, 11));
+		this.lbl_elGamalKeys_countOfTriedRandomNumbers.setBounds(253, 408, 209, 14);
+		panel_elGamal_generate_keys.add(this.lbl_elGamalKeys_countOfTriedRandomNumbers);
+		
+		this.lbl_elGamalKeys_foundPrimesNotRightOrder = new JLabel("");
+		this.lbl_elGamalKeys_foundPrimesNotRightOrder.setFont(new Font("Tahoma", Font.BOLD, 11));
+		this.lbl_elGamalKeys_foundPrimesNotRightOrder.setBounds(253, 447, 209, 14);
+		panel_elGamal_generate_keys.add(this.lbl_elGamalKeys_foundPrimesNotRightOrder);
+		
+		final JLabel lblNIsPrime = new JLabel("N/8 is prime:");
+		lblNIsPrime.setBounds(449, 365, 105, 14);
+		panel_elGamal_generate_keys.add(lblNIsPrime);
+		
+		this.lbl_elGamalKeys_Ndiv8IsPrime = new JLabel("");
+		this.lbl_elGamalKeys_Ndiv8IsPrime.setFont(new Font("Tahoma", Font.BOLD, 11));
+		this.lbl_elGamalKeys_Ndiv8IsPrime.setBounds(449, 375, 105, 14);
+		panel_elGamal_generate_keys.add(this.lbl_elGamalKeys_Ndiv8IsPrime);
+		
+		final JLabel lblOrdgq = new JLabel("ord(G)=q (N/8)");
+		lblOrdgq.setBounds(449, 395, 105, 14);
+		panel_elGamal_generate_keys.add(lblOrdgq);
+		
+		this.lbl_elGamalKeys_ordGEqNdiv8 = new JLabel("");
+		this.lbl_elGamalKeys_ordGEqNdiv8.setFont(new Font("Tahoma", Font.BOLD, 11));
+		this.lbl_elGamalKeys_ordGEqNdiv8.setBounds(449, 408, 105, 14);
+		panel_elGamal_generate_keys.add(this.lbl_elGamalKeys_ordGEqNdiv8);
+		
+		this.btn_elGamalKeys_savePrivateKey = new JButton("Save private key");
+		this.btn_elGamalKeys_savePrivateKey.setBounds(577, 352, 121, 44);
+		panel_elGamal_generate_keys.add(this.btn_elGamalKeys_savePrivateKey);
+		this.btn_elGamalKeys_savePrivateKey.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				RSAView.this.controler.btn_elGamalKeys_savePrivateKey(e);
+			}
+		});
+		
+		this.btn_elGamalKeys_savePublicKey = new JButton("Save public key");
+		this.btn_elGamalKeys_savePublicKey.setBounds(577, 420, 121, 44);
+		panel_elGamal_generate_keys.add(this.btn_elGamalKeys_savePublicKey);
+		this.btn_elGamalKeys_savePublicKey.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				RSAView.this.controler.btn_elGamalKeys_savePublicKey(e);
+			}
+		});
 
 		final JPanel panel_createKeys = new JPanel();
 		// panel_createKeys.addKeyListener(new KeyAdapter()
@@ -179,7 +421,7 @@ public class RSAView extends JFrame {
 		// }
 		// }
 		// });
-		tabbed_main.addTab("Create Keys", null, panel_createKeys, null);
+		tabbed_main.addTab("RSA Create Keys", null, panel_createKeys, null);
 		panel_createKeys.setLayout(null);
 
 		final JLabel lblNewLabel_4 = new JLabel("Binary length per prime");
@@ -354,7 +596,7 @@ public class RSAView extends JFrame {
 		panel_createKeys.add(this.lblMinimumL);
 
 		final JPanel encrypt = new JPanel();
-		tabbed_main.addTab("Encrypt", null, encrypt, null);
+		tabbed_main.addTab("RSA Encrypt", null, encrypt, null);
 		encrypt.setLayout(null);
 
 		final JLabel lblText = new JLabel("Text");
@@ -519,7 +761,7 @@ public class RSAView extends JFrame {
 
 		final JPanel decrypt = new JPanel();
 		decrypt.setLayout(null);
-		tabbed_main.addTab("Decrypt", null, decrypt, null);
+		tabbed_main.addTab("RSA Decrypt", null, decrypt, null);
 
 		final JLabel lblEncryptedMessage = new JLabel("Encrypted message");
 		lblEncryptedMessage.setBounds(12, 13, 112, 16);
@@ -678,7 +920,7 @@ public class RSAView extends JFrame {
 		decrypt.add(btn_decrypt_calculate2);
 				
 				final JPanel panel_signaturCreate = new JPanel();
-				tabbed_main.addTab("Signatur - Create", null, panel_signaturCreate, null);
+				tabbed_main.addTab("RSA Signatur - Create", null, panel_signaturCreate, null);
 				panel_signaturCreate.setLayout(null);
 				
 				final JScrollPane scrollPane_22 = new JScrollPane();
@@ -755,7 +997,7 @@ public class RSAView extends JFrame {
 				panel_signaturCreate.add(lblSignature);
 		
 				final JPanel panel_signaturVerification = new JPanel();
-				tabbed_main.addTab("Signatur - Verification", null, panel_signaturVerification, null);
+				tabbed_main.addTab("RSA Signatur - Verification", null, panel_signaturVerification, null);
 				panel_signaturVerification.setLayout(null);
 				
 				final JScrollPane scrollPane_17 = new JScrollPane();
@@ -1328,5 +1570,65 @@ public class RSAView extends JFrame {
 
 	public void deactivateProgressbar() {
 		this.progressBar.setIndeterminate(false);
+	}
+
+	public JTextField getTxt_elGamalKeys_binaryLength() {
+		return this.txt_elGamalKeys_binaryLength;
+	}
+
+	public JTextField getTxt_elGamalKeys_probability() {
+		return this.txt_elGamalKeys_probability;
+	}
+
+	public JButton getBtn_elGamalKeys_calculate() {
+		return this.btn_elGamalKeys_calculate;
+	}
+
+	public JTextArea getTxt_elGamalKeys_p() {
+		return this.txt_elGamalKeys_p;
+	}
+
+	public JTextArea getTxt_elGamalKeys_q() {
+		return this.txt_elGamalKeys_q;
+	}
+
+	public JTextArea getTxt_elGamalKeys_x() {
+		return this.txt_elGamalKeys_x;
+	}
+
+	public JTextArea getTxt_elGamalKeys_gx() {
+		return this.txt_elGamalKeys_gx;
+	}
+
+	public JTextArea getTxt_elGamalKeys_yx() {
+		return this.txt_elGamalKeys_yx;
+	}
+
+	public JTextArea getTxt_elGamalKeys_gy() {
+		return this.txt_elGamalKeys_gy;
+	}
+
+	public JTextArea getTxt_elGamalKeys_yy() {
+		return this.txt_elGamalKeys_yy;
+	}
+
+	public JLabel getLbl_elGamalKeys_timeToGenerateKeys() {
+		return this.lbl_elGamalKeys_timeToGenerateKeys;
+	}
+
+	public JLabel getLbl_elGamalKeys_countOfTriedRandomNumbers() {
+		return this.lbl_elGamalKeys_countOfTriedRandomNumbers;
+	}
+
+	public JLabel getLbl_elGamalKeys_foundPrimesNotRightOrder() {
+		return this.lbl_elGamalKeys_foundPrimesNotRightOrder;
+	}
+
+	public JLabel getLbl_elGamalKeys_Ndiv8IsPrime() {
+		return this.lbl_elGamalKeys_Ndiv8IsPrime;
+	}
+
+	public JLabel getLbl_elGamalKeys_ordGEqNdiv8() {
+		return this.lbl_elGamalKeys_ordGEqNdiv8;
 	}
 }

@@ -13,6 +13,9 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	private IndustrialPrime p;
 	private final BigInteger q;
 	private final BigInteger numberOfElements;
+	private boolean isPrimeQ = false;
+	private boolean generatingElementOfSubgroupHIsOrderOfQ = false;
+	private EllipticCurvePoint generatingElementOfSubgroupH;
 	
 	//for y^2 = x^3-x : the a=-1, b=0
 	public static final BigInteger A_OF_ELLIPTIC_CURVE = BigInteger.valueOf(-1);
@@ -88,9 +91,11 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
 		this.p=prime;
 		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
+			this.isPrimeQ = false;
 			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
 			this.setPossiblePrime(min, max, minPropability);
 		}
+		this.isPrimeQ = false;
 	}
 
 	/**
@@ -162,6 +167,8 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 					return this.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 				} else {
 					this.endTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ = new Date();
+					this.generatingElementOfSubgroupH = point;
+					this.generatingElementOfSubgroupHIsOrderOfQ = true;
 					return point;
 				}
 			}
@@ -174,6 +181,8 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 					return this.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 				} else {
 					this.endTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ = new Date();
+					this.generatingElementOfSubgroupH = point;
+					this.generatingElementOfSubgroupHIsOrderOfQ = true;
 					return point;
 				}
 			}
@@ -336,5 +345,13 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 
 	public IndustrialPrime getP() {
 		return this.p;
+	}
+
+	public boolean isPrimeQ() {
+		return this.isPrimeQ;
+	}
+
+	public boolean isGeneratingElementOfSubgroupHIsOrderOfQ() {
+		return this.generatingElementOfSubgroupHIsOrderOfQ;
 	}
 }
