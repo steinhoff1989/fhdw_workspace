@@ -6,14 +6,14 @@ import model.ModArith;
 
 public class SehnenTangentenService {
 
-	public EllipticCurvePoint calculateConjunctionPoint(final EllipticCurvePoint p1, final EllipticCurvePoint p2, final BigInteger aOfEllipticCurve, final IndustrialPrime prime) throws InfinityPointAccuredException {
+	public EllipticCurvePoint calculateConjunctionPoint(final EllipticCurvePoint p1, final EllipticCurvePoint p2, final BigInteger aOfEllipticCurve, final BigInteger prime) throws InfinityPointAccuredException {
 		final BigInteger m = this.calculateM(p1, p2, aOfEllipticCurve, prime);
 		return this.calculateP3(p1, p2, m, prime);
 	}
 
-	public BigInteger calculateM(final EllipticCurvePoint p1, final EllipticCurvePoint p2, final BigInteger aOfEllipticCurve, final IndustrialPrime prime) throws InfinityPointAccuredException {
+	public BigInteger calculateM(final EllipticCurvePoint p1, final EllipticCurvePoint p2, final BigInteger aOfEllipticCurve, final BigInteger prime) throws InfinityPointAccuredException {
 		if(p1.getX().equals(p2.getX()) &&
-				p1.getY().add(p2.getY()).mod(prime.getValue()).equals(BigInteger.ZERO)){
+				p1.getY().add(p2.getY()).mod(prime).equals(BigInteger.ZERO)){
 			throw new InfinityPointAccuredException();
 		}
 		
@@ -21,9 +21,9 @@ public class SehnenTangentenService {
 			final BigInteger dividend = p2.getY().subtract(p1.getY());
 			BigInteger divisor = p2.getX().subtract(p1.getX());
 			
-			divisor = ModArith.modularInverse(divisor, prime.getValue());
+			divisor = ModArith.modularInverse(divisor, prime);
 			
-			return dividend.multiply(divisor).mod(prime.getValue()).mod(prime.getValue());
+			return dividend.multiply(divisor).mod(prime).mod(prime);
 		}
 		
 		if(p1.getX().equals(p2.getX()) &&
@@ -33,17 +33,17 @@ public class SehnenTangentenService {
 			final BigInteger dividend = BigInteger.valueOf(3).multiply(p1.getX().pow(2)).add(aOfEllipticCurve);
 			BigInteger divisor = BigInteger.valueOf(2).multiply(p1.getY());
 			
-			divisor = ModArith.modularInverse(divisor, prime.getValue());
+			divisor = ModArith.modularInverse(divisor, prime);
 			
-			return dividend.multiply(divisor).mod(prime.getValue());
+			return dividend.multiply(divisor).mod(prime);
 		}
 		
 		throw new Error("Not possible!");
 	}
 
-	public EllipticCurvePoint calculateP3(final EllipticCurvePoint p1, final EllipticCurvePoint p2, final BigInteger m, final IndustrialPrime prime) {
-		final BigInteger x = m.pow(2).subtract(p1.getX()).subtract(p2.getX()).mod(prime.getValue());
-		final BigInteger y = m.multiply(BigInteger.valueOf(-1)).multiply(x.subtract(p1.getX())).subtract(p1.getY()).mod(prime.getValue());
+	public EllipticCurvePoint calculateP3(final EllipticCurvePoint p1, final EllipticCurvePoint p2, final BigInteger m, final BigInteger prime) {
+		final BigInteger x = m.pow(2).subtract(p1.getX()).subtract(p2.getX()).mod(prime);
+		final BigInteger y = m.multiply(BigInteger.valueOf(-1)).multiply(x.subtract(p1.getX())).subtract(p1.getY()).mod(prime);
 		
 		return new EllipticCurvePoint(x, y);
 	}

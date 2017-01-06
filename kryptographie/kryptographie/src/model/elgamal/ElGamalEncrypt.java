@@ -10,26 +10,22 @@ public class ElGamalEncrypt {
 
 	private final ElGamal_publicKey publicKey;
 	private final String text;
-	private final EllipticCurve ec;
 	
 	public ElGamalEncrypt(final String text, final BigInteger p, final EllipticCurvePoint g, final EllipticCurvePoint y){
-		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(new IndustrialPrime(p));
-		this.publicKey = new ElGamal_publicKey(ec, p, ec.getQ() , g, y);
 		this.text = text;
-		this.ec=ec;
+		this.publicKey = new ElGamal_publicKey(p, this.publicKey.getQ() , g, y);
 	}
 	
-	public ElGamalEncrypt(final EllipticCurve ec, final String text, final ElGamal_publicKey publicKey){
+	public ElGamalEncrypt(final String text, final ElGamal_publicKey publicKey){
 		this.publicKey = publicKey;
 		this.text = text;
-		this.ec=ec;
 	}
 	
-	public List<Chiffrat> encrypt(){
-		final List<Chiffrat> chiffrats = new ArrayList<Chiffrat>();
+	public CipherList encrypt(){
+		final List<Cipher> chiffrats = new ArrayList<Cipher>();
 		final List<EllipticCurvePoint> ellipticCurvePoints = this.encryptGenerateEllipticCurveBlocks();
 		
-		final BigInteger orderOfG = this.ec.getQ();
+		final BigInteger orderOfG = this.publicKey.getQ();
 		BigInteger randomK = TrustCenter.getRandomBetween(BigInteger.valueOf(3), orderOfG);
 		EllipticCurvePoint ky = this.calculateKY(randomK);
 		
@@ -43,15 +39,16 @@ public class ElGamalEncrypt {
 		for(int i=0;i<ellipticCurvePoints.size();i++){
 			final BigInteger b1 = ky.getX().multiply(ellipticCurvePoints.get(i).getX()).mod(this.publicKey.getP());
 			final BigInteger b2 = ky.getY().multiply(ellipticCurvePoints.get(i).getY()).mod(this.publicKey.getP());
-			chiffrats.add(new Chiffrat(a, b1, b2));
+			chiffrats.add(new Cipher(a, b1, b2));
 		}
 		
-		return chiffrats;
+		final CipherList chiffratsList = new CipherList(chiffrats);
+		return chiffratsList;
 	}
 	
 	public EllipticCurvePoint calculateKY(final BigInteger k){
 		try {
-			return this.ec.powerFast(this.publicKey.getY(), k);
+			return EC_Ypower2EqualsXpower3MinusX.powerFast(this.publicKey.getY(), k, this.publicKey.getP());
 		} catch (final InfinityPointAccuredException e) {
 			return this.calculateKY(k);
 		}
@@ -59,7 +56,7 @@ public class ElGamalEncrypt {
 	
 	public EllipticCurvePoint calculateA(final BigInteger k){
 		try {
-			return this.ec.powerFast(this.publicKey.getG(), k);
+			return EC_Ypower2EqualsXpower3MinusX.powerFast(this.publicKey.getG(), k, this.publicKey.getP());
 		} catch (final InfinityPointAccuredException e) {
 			return this.calculateKY(k);
 		}

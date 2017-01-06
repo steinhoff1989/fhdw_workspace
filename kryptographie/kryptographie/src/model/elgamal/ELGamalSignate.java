@@ -23,15 +23,14 @@ public class ELGamalSignate {
 	public ELGamalSignate(final BigInteger privateKeyX, final BigInteger publicKeyP, final BigInteger publicKeyQ, final EllipticCurvePoint publicKeyG, final EllipticCurvePoint publicKeyY) {
 		super();
 		this.privateKey = new ElGamal_privateKey(privateKeyX);
-		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(new IndustrialPrime(publicKeyP));
-		this.publicKey = new ElGamal_publicKey(ec, publicKeyP, publicKeyQ, publicKeyG, publicKeyY);
+		this.publicKey = new ElGamal_publicKey(publicKeyP, publicKeyQ, publicKeyG, publicKeyY);
 	}
 	
 	public Signature signate(){
 		final BigInteger randomK = TrustCenter.getRandomBetween(BigInteger.valueOf(3), this.publicKey.getQ());
 		
 		try {
-			final EllipticCurvePoint pointKG = this.publicKey.getEc().powerFast(this.publicKey.getG(), randomK);
+			final EllipticCurvePoint pointKG = EC_Ypower2EqualsXpower3MinusX.powerFast(this.publicKey.getG(), randomK, this.publicKey.getP());
 			final BigInteger r = pointKG.getX().mod(this.publicKey.getQ());
 			if(r.equals(BigInteger.ZERO)){
 				return this.signate();

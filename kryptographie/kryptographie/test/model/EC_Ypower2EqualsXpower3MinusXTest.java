@@ -97,7 +97,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		System.out.println("N: "+N);
 		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
 		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
-		final EllipticCurvePoint point = ec.calculateGeneratingElementOfSubgroupH();
+		final EllipticCurvePoint point = ec.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 		System.out.println("One Curvepoint: "+ point);
 		final BigInteger y2 = ModArith.powerModulo(point.getY(), BigInteger.valueOf(2), ec.getP().getValue());
 		final BigInteger x3MinusX = ModArith.powerModulo(point.getX(), BigInteger.valueOf(3), ec.getP().getValue()).subtract(point.getX()).mod(ec.getP().getValue());
@@ -112,7 +112,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		try {
 			for(BigInteger i=BigInteger.valueOf(2);i.compareTo(N) <= 0;i=i.add(BigInteger.ONE)){
 				temp = i;
-				nextPoint = sts.calculateConjunctionPoint(point, nextPoint, EC_Ypower2EqualsXpower3MinusX.A_OF_ELLIPTIC_CURVE, ec.getP());
+				nextPoint = sts.calculateConjunctionPoint(point, nextPoint, EC_Ypower2EqualsXpower3MinusX.A_OF_ELLIPTIC_CURVE, ec.getP().getValue());
 				System.out.println(i+"g: "+nextPoint.toString());
 			}
 		} catch (final InfinityPointAccuredException e) {
@@ -120,16 +120,16 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		}
 	}
 
-//	@Test
-//	public void calculateGeneratingElementOfSubgroupHTest2() {
-//		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(BigInteger.valueOf(12), BigInteger.valueOf(14), 0.9999);
-//		
-//		System.out.println("P: "+ec.getP().getValue());
-//		System.out.println("N: "+ec.getNumberOfElements());
-//		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
-//		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
-//		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupH());
-//	}
+	@Test
+	public void calculateGeneratingElementOfSubgroupHTest2() {
+		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(BigInteger.valueOf(12), BigInteger.valueOf(14), 0.9999);
+		
+		System.out.println("P: "+ec.getP().getValue());
+		System.out.println("N: "+ec.getNumberOfElements());
+		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
+		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
+		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupHAndOrderOfQ());
+	}
 
 	@Test
 	public void calculateGeneratingElementOfSubgroupHTest3() {
@@ -139,38 +139,28 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		System.out.println("N: "+ec.getNumberOfElements());
 		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
 		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
-		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupH());
+		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupHAndOrderOfQ());
 		
 		
 	}
 
 	@Test
 	public void calculateGeneratingElementOfSubgroupHTest4() {
-		final Date date1 =  new Date();
-		System.out.println(date1);
 		final EC_Ypower2EqualsXpower3MinusX ec = new EC_Ypower2EqualsXpower3MinusX(512, 0.99);
 		
 		System.out.println("P: "+ec.getP().getValue());
 		System.out.println("N: "+ec.getNumberOfElements());
 		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
 		
-		final Date date2 =  new Date();
-		System.err.println(date2);
-		long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date2.getTime() - date1.getTime());
-		System.out.println("Seconds needed to generate prime: " + differenceInSeconds);
-		
 		System.out.println("Count of random numbers tried: "+ec.getCountOfTriedRandomNumbers());
 		System.out.println("Count of primes found were N/8 was not prime: "+ec.getCountOfPrimesFoundWhereNDiv8WasNotAPrime());
 		
-		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupH());
-		
-		final Date date3 =  new Date();
-		System.err.println(date3);
-		differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date3.getTime() - date2.getTime());
-		System.out.println("Seconds needed to calculate Point: " + differenceInSeconds);
-		
-		differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date3.getTime() - date1.getTime());
-		System.out.println("Seconds needed complete: " + differenceInSeconds);
+		long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(ec.getEndTimePrimeFound().getTime() - ec.getStartTimeToFindPrime().getTime());
+		System.out.println("Seconds needed to calculate working prime: " + differenceInSeconds);
+		System.out.println();
+		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupHAndOrderOfQ());
+		differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(ec.getEndTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ().getTime() - ec.getStartTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ().getTime());
+		System.out.println("Seconds needed to find a generating Element of subgroup H: "+ differenceInSeconds);
 	}
 
 	@Test
@@ -188,7 +178,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date2.getTime() - date1.getTime());
 		System.out.println("Seconds needed to generate prime: " + differenceInSeconds);
 		
-		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupH());
+		System.out.println("One Curvepoint: "+ ec.calculateGeneratingElementOfSubgroupHAndOrderOfQ());
 		
 		final Date date3 =  new Date();
 		System.err.println(date3);
@@ -208,7 +198,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		System.out.println("N: "+N);
 		System.out.println("N/8: "+ec.getNumberOfElements().divide(BigInteger.valueOf(8)));
 		System.out.println("N/8 is Prime:"+TrustCenter.isPrime(0.99, ec.getNumberOfElements().divide(BigInteger.valueOf(8))));
-		final EllipticCurvePoint point = ec.calculateGeneratingElementOfSubgroupH();
+		final EllipticCurvePoint point = ec.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 		System.out.println("One Curvepoint: "+ point);
 		final BigInteger y2 = ModArith.powerModulo(point.getY(), BigInteger.valueOf(2), ec.getP().getValue());
 		final BigInteger x3MinusX = ModArith.powerModulo(point.getX(), BigInteger.valueOf(3), ec.getP().getValue()).subtract(point.getX()).mod(ec.getP().getValue());
@@ -223,7 +213,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		try {
 			for(BigInteger i=BigInteger.valueOf(2);i.compareTo(N) <= 0;i=i.add(BigInteger.ONE)){
 				temp = i;
-				nextPoint = sts.calculateConjunctionPoint(point, nextPoint, EC_Ypower2EqualsXpower3MinusX.A_OF_ELLIPTIC_CURVE, ec.getP());
+				nextPoint = sts.calculateConjunctionPoint(point, nextPoint, EC_Ypower2EqualsXpower3MinusX.A_OF_ELLIPTIC_CURVE, ec.getP().getValue());
 				System.out.println(i+"g: "+nextPoint.toString());
 			}
 		} catch (final InfinityPointAccuredException e) {
@@ -248,7 +238,7 @@ public class EC_Ypower2EqualsXpower3MinusXTest {
 		long differenceInSeconds = TimeUnit.MILLISECONDS.toSeconds(date2.getTime() - date1.getTime());
 		System.out.println("Seconds needed to generate prime: " + differenceInSeconds);
 		
-		final EllipticCurvePoint point = ec.calculateGeneratingElementOfSubgroupH();
+		final EllipticCurvePoint point = ec.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 		System.out.println("One Curvepoint: "+ point);
 		final BigInteger y2 = ModArith.powerModulo(point.getY(), BigInteger.valueOf(2), ec.getP().getValue());
 		final BigInteger x3MinusX = ModArith.powerModulo(point.getX(), BigInteger.valueOf(3), ec.getP().getValue()).subtract(point.getX()).mod(ec.getP().getValue());

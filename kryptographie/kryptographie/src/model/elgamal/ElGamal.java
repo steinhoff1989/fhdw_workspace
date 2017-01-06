@@ -10,7 +10,7 @@ public class ElGamal {
 	private final double minProbabilit;
 	private ElGamal_privateKey privateKey;
 	private ElGamal_publicKey publicKey;
-	EllipticCurve ellipticCurve;
+	EC_Ypower2EqualsXpower3MinusX ellipticCurve;
 
 	public ElGamal(final int binaryLength, final double minProbability) {
 		this.binaryLength = binaryLength;
@@ -19,16 +19,16 @@ public class ElGamal {
 	}
 
 	private void generateKeys(){
-		final EllipticCurve ellipticCurve = new EC_Ypower2EqualsXpower3MinusX(this.binaryLength, this.minProbabilit);
+		final EC_Ypower2EqualsXpower3MinusX ellipticCurve = new EC_Ypower2EqualsXpower3MinusX(this.binaryLength, this.minProbabilit);
 		this.ellipticCurve = ellipticCurve;
-		final EllipticCurvePoint generatingElementOfH = ellipticCurve.calculateGeneratingElementOfSubgroupH();
+		final EllipticCurvePoint generatingElementOfH = ellipticCurve.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 		
 		final BigInteger orderOfG = ellipticCurve.calculateNumberOfElements().divide(BigInteger.valueOf(8));
 		final BigInteger randomExponent = TrustCenter.getRandomBetween(BigInteger.valueOf(3), orderOfG);
 		try {
 			final EllipticCurvePoint randomElementOfH = ellipticCurve.powerFast(generatingElementOfH, randomExponent);
 			this.privateKey = new ElGamal_privateKey(randomExponent);
-			this.publicKey = new ElGamal_publicKey(ellipticCurve, ellipticCurve.getP().getValue(), ellipticCurve.getQ(), generatingElementOfH, randomElementOfH);
+			this.publicKey = new ElGamal_publicKey(ellipticCurve.getP().getValue(), ellipticCurve.getQ(), generatingElementOfH, randomElementOfH);
 		} catch (final InfinityPointAccuredException e) {
 			throw new Error("Mathematisch nicht möglich.");
 		}
@@ -50,8 +50,9 @@ public class ElGamal {
 		return this.publicKey;
 	}
 
-	public EllipticCurve getEllipticCurve() {
+	public EC_Ypower2EqualsXpower3MinusX getEllipticCurve() {
 		return this.ellipticCurve;
 	}
+
 
 }

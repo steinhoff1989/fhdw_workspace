@@ -10,21 +10,27 @@ import model.TrustCenter;
 
 public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 
+	private IndustrialPrime p;
+	private final BigInteger q;
+	private final BigInteger numberOfElements;
+	
 	//for y^2 = x^3-x : the a=-1, b=0
 	public static final BigInteger A_OF_ELLIPTIC_CURVE = BigInteger.valueOf(-1);
 	
 	private Date startTimeToFindPrime;
-	private Date endTimePrimeFound;
+	private Date endTimeToFindPrime;
 	private BigInteger countOfTriedRandomNumbers = BigInteger.ZERO;
 	private BigInteger countOfPrimesFoundWhereNDiv8WasNotAPrime = BigInteger.ZERO;
 	
+	private Date startTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ;
+	private Date endTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ;
 
 	/**
 	 * Only for testing!
 	 * @param p: The industrial Prime over which the ellipticCUrve gets generated
 	 */
 	public EC_Ypower2EqualsXpower3MinusX(final IndustrialPrime p) {
-		super(p);
+		this.p = p;
 		this.numberOfElements = this.calculateNumberOfElements();
 		this.q = this.numberOfElements.divide(BigInteger.valueOf(8));
 	}
@@ -34,20 +40,7 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 * binary length <binaryLength>, which divided by 8 is a prime.
 	 */
 	public EC_Ypower2EqualsXpower3MinusX(final int binaryLength, final double minPropability) {
-		super();
-		
-		final BigInteger min = new BigInteger("2").pow(binaryLength - 1);
-		final BigInteger max = new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE);
-		
-		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
-		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
-		this.setP(prime);
-		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
-			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
-			this.setPossiblePrime(min, max, minPropability);
-		}		
-		this.numberOfElements = this.calculateNumberOfElements();
-		this.q = this.numberOfElements.divide(BigInteger.valueOf(8));
+		this(new BigInteger("2").pow(binaryLength - 1), new BigInteger("2").pow(binaryLength).subtract(BigInteger.ONE), minPropability);
 	}
 
 	/**
@@ -56,14 +49,9 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 */
 	public EC_Ypower2EqualsXpower3MinusX(final BigInteger min, final BigInteger max, final double minPropability) {
 		super();
-		
-		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
-		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
-		this.setP(prime);
-		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
-			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
-			this.setPossiblePrime(min, max, minPropability);
-		}
+		this.startTimeToFindPrime = new Date();
+		this.setPossiblePrime(min, max, minPropability);
+		this.endTimeToFindPrime = new Date();
 		
 		this.numberOfElements = this.calculateNumberOfElements();
 		this.q = this.numberOfElements.divide(BigInteger.valueOf(8));
@@ -76,17 +64,17 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 * @param max: Maximum border of prime
 	 * @param minPropability: the minimal probability that p and p/8 is prime.
 	 */
-	public void setPossiblePrime(final BigInteger min, final BigInteger max, final double minPropability, final BigInteger random) {
-		this.startTimeToFindPrime = new Date();
-		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8, random);
-		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
-		this.setP(prime);
-		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
-			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
-			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
-		}
-		this.endTimePrimeFound = new Date();
-	}
+//	public void setPossiblePrime(final BigInteger min, final BigInteger max, final double minPropability, final BigInteger random) {
+//		this.startTimeToFindPrime = new Date();
+//		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8, random);
+//		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
+//		this.setP(prime);
+//		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
+//			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
+//			this.setPossiblePrime(min, max, minPropability, prime.getValue().add(BigInteger.valueOf(8)));
+//		}
+//		this.endTimePrimeFound = new Date();
+//	}
 	
 	/**
 	 * Finds and sets a prime to this EllipticCurve, 
@@ -98,7 +86,7 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	public void setPossiblePrime(final BigInteger min, final BigInteger max, final double minPropability) {
 		final IndustrialPrime prime = new IndustrialPrime(min, max, minPropability, 5, 8);
 		this.countOfTriedRandomNumbers = this.countOfTriedRandomNumbers.add(prime.getCountOfTriedRandomNumbers());
-		this.setP(prime);
+		this.p=prime;
 		if (!TrustCenter.isPrime(minPropability, this.calculateNumberOfElements().divide(BigInteger.valueOf(8)))) {
 			this.countOfPrimesFoundWhereNDiv8WasNotAPrime = this.countOfPrimesFoundWhereNDiv8WasNotAPrime.add(BigInteger.ONE);
 			this.setPossiblePrime(min, max, minPropability);
@@ -108,7 +96,6 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	/**
 	 * Calculates the number of elements over the class variable p. Also known as order of p.
 	 */
-	@Override
 	protected BigInteger calculateNumberOfElements() {
 		if (this.getP().getValue().mod(BigInteger.valueOf(4)).equals(BigInteger.ONE)) {
 			final BigInteger result = this.getP().getValue().add(BigInteger.ONE).subtract(this.getH());
@@ -145,8 +132,10 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	 * which is a generating Element of subgroup H
 	 * @return
 	 */
-	@Override
-	public EllipticCurvePoint calculateGeneratingElementOfSubgroupH() {
+	public EllipticCurvePoint calculateGeneratingElementOfSubgroupHAndOrderOfQ() {
+		if(this.startTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ == null){
+			this.startTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ = new Date();
+		}
 		final BigInteger p = this.getP().getValue();
 
 		if (!p.mod(BigInteger.valueOf(8)).equals(BigInteger.valueOf(5))) {
@@ -158,7 +147,7 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		final BigInteger r = ModArith.powerModulo(x, BigInteger.valueOf(3), p).subtract(x).mod(p);
 
 		if (r.equals(BigInteger.ZERO))
-			return this.calculateGeneratingElementOfSubgroupH();
+			return this.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 
 		if (this.getP().isSquareReminder(r)) {
 			BigInteger exponent = (p.subtract(BigInteger.ONE)).divide(BigInteger.valueOf(4)).mod(p);
@@ -170,8 +159,9 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 				y = ModArith.powerModulo(r, exponent, p);
 				final EllipticCurvePoint point = new EllipticCurvePoint(x, y);
 				if (!this.isOrderOfQ(point)) {
-					return this.calculateGeneratingElementOfSubgroupH();
+					return this.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 				} else {
+					this.endTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ = new Date();
 					return point;
 				}
 			}
@@ -181,21 +171,26 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 						.multiply(ModArith.powerModulo(BigInteger.valueOf(4).multiply(r), exponent, p)).mod(p);
 				final EllipticCurvePoint point = new EllipticCurvePoint(x, y);
 				if (!this.isOrderOfQ(point)) {
-					return this.calculateGeneratingElementOfSubgroupH();
+					return this.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 				} else {
+					this.endTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ = new Date();
 					return point;
 				}
 			}
 			throw new Error(); // Kann mathematisch nicht auftreten.
 		} else {
-			return this.calculateGeneratingElementOfSubgroupH();
+			return this.calculateGeneratingElementOfSubgroupHAndOrderOfQ();
 		}
 	}
 	
-	@Override
 	public EllipticCurvePoint calculateConjunctionPoint(final EllipticCurvePoint point1, final EllipticCurvePoint point2) throws InfinityPointAccuredException{
 		final SehnenTangentenService sts = new SehnenTangentenService();
-		return sts.calculateConjunctionPoint(point1, point2, A_OF_ELLIPTIC_CURVE, this.getP());
+		return sts.calculateConjunctionPoint(point1, point2, A_OF_ELLIPTIC_CURVE, this.getP().getValue());
+	}
+	
+	public static EllipticCurvePoint calculateConjunctionPoint(final EllipticCurvePoint point1, final EllipticCurvePoint point2, final BigInteger prime) throws InfinityPointAccuredException{
+		final SehnenTangentenService sts = new SehnenTangentenService();
+		return sts.calculateConjunctionPoint(point1, point2, A_OF_ELLIPTIC_CURVE, prime);
 	}
 
 	/**
@@ -216,7 +211,7 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		results.add(basis);
 		for (int i = 1; i < k; i++) {
 			try {
-				result = sts.calculateConjunctionPoint(result, result, A_OF_ELLIPTIC_CURVE, this.getP());
+				result = sts.calculateConjunctionPoint(result, result, A_OF_ELLIPTIC_CURVE, this.getP().getValue());
 			} catch (final InfinityPointAccuredException e) {
 				return false;
 			}
@@ -231,7 +226,7 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 				} else {
 					try {
 						result = sts.calculateConjunctionPoint(result, results.get(results.size() - i),
-								A_OF_ELLIPTIC_CURVE, this.getP());
+								A_OF_ELLIPTIC_CURVE, this.getP().getValue());
 					} catch (final InfinityPointAccuredException e) {
 						return i == 1;
 					}
@@ -241,16 +236,8 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		}
 		return false;
 	}
-
-	/**
-	 * Calculates the elliptic curve point <basis_g>*exponent
-	 * @param basis_g: the element that gets conjuncted
-	 * @param exponent: says how often basis_g will be conjuncted to itself
-	 * @return: The new found elliptioc curve point <basis_g>*exponent
-	 * @throws InfinityPointAccuredException: gets thrown if the infinity Point gets calculated
-	 */
-	@Override
-	public EllipticCurvePoint powerFast(final EllipticCurvePoint basis_g, final BigInteger exponent)
+	
+	public static EllipticCurvePoint powerFast(final EllipticCurvePoint basis_g, final BigInteger exponent, final BigInteger p)
 			throws InfinityPointAccuredException {
 		final SehnenTangentenService sts = new SehnenTangentenService();
 		String exponentBinay = exponent.toString(2);
@@ -260,7 +247,7 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 		EllipticCurvePoint result = basis_g;
 		results.add(basis_g);
 		for (int i = 1; i < k; i++) {
-			result = sts.calculateConjunctionPoint(result, result, A_OF_ELLIPTIC_CURVE, this.getP());
+			result = sts.calculateConjunctionPoint(result, result, A_OF_ELLIPTIC_CURVE, p);
 			results.add(result);
 		}
 
@@ -271,7 +258,43 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 					result = results.get(results.size() - i);
 				} else {
 					result = sts.calculateConjunctionPoint(result, results.get(results.size() - i), A_OF_ELLIPTIC_CURVE,
-							this.getP());
+							p);
+				}
+			}
+			exponentBinay = exponentBinay.substring(0, exponentBinay.length() - 1);
+		}
+		return result;
+	}
+
+	/**
+	 * Calculates the elliptic curve point <basis_g>*exponent
+	 * @param basis_g: the element that gets conjuncted
+	 * @param exponent: says how often basis_g will be conjuncted to itself
+	 * @return: The new found elliptioc curve point <basis_g>*exponent
+	 * @throws InfinityPointAccuredException: gets thrown if the infinity Point gets calculated
+	 */
+	public EllipticCurvePoint powerFast(final EllipticCurvePoint basis_g, final BigInteger exponent)
+			throws InfinityPointAccuredException {
+		final SehnenTangentenService sts = new SehnenTangentenService();
+		String exponentBinay = exponent.toString(2);
+		final int k = exponentBinay.length();
+		final List<EllipticCurvePoint> results = new ArrayList<EllipticCurvePoint>();
+
+		EllipticCurvePoint result = basis_g;
+		results.add(basis_g);
+		for (int i = 1; i < k; i++) {
+			result = sts.calculateConjunctionPoint(result, result, A_OF_ELLIPTIC_CURVE, this.getP().getValue());
+			results.add(result);
+		}
+
+		result = null;
+		for (int i = k; i > 0; i--) {
+			if (exponentBinay.endsWith("1")) {
+				if (result == null) {
+					result = results.get(results.size() - i);
+				} else {
+					result = sts.calculateConjunctionPoint(result, results.get(results.size() - i), A_OF_ELLIPTIC_CURVE,
+							this.getP().getValue());
 				}
 			}
 			exponentBinay = exponentBinay.substring(0, exponentBinay.length() - 1);
@@ -284,7 +307,7 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 	}
 
 	public Date getEndTimePrimeFound() {
-		return this.endTimePrimeFound;
+		return this.endTimeToFindPrime;
 	}
 
 	public BigInteger getCountOfTriedRandomNumbers() {
@@ -293,5 +316,25 @@ public class EC_Ypower2EqualsXpower3MinusX extends EllipticCurve {
 
 	public BigInteger getCountOfPrimesFoundWhereNDiv8WasNotAPrime() {
 		return this.countOfPrimesFoundWhereNDiv8WasNotAPrime;
+	}
+
+	public Date getStartTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ() {
+		return this.startTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ;
+	}
+
+	public Date getEndTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ() {
+		return this.endTimeCalculateGeneratingElementOfSubgroupHAndOrderOfQ;
+	}
+
+	public BigInteger getQ() {
+		return this.q;
+	}
+
+	public BigInteger getNumberOfElements() {
+		return this.numberOfElements;
+	}
+
+	public IndustrialPrime getP() {
+		return this.p;
 	}
 }

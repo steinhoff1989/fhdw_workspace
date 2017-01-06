@@ -1,10 +1,8 @@
 package model;
 
-import java.util.List;
-
 import org.junit.Test;
 
-import model.elgamal.Chiffrat;
+import model.elgamal.CipherList;
 import model.elgamal.ELGamalSignate;
 import model.elgamal.ElGamal;
 import model.elgamal.ElGamalDecrypt;
@@ -19,11 +17,8 @@ public class ElGamalSignateTest {
 	public void ElGamalSignateTest1() {
 		final ElGamal elGamal = new ElGamal(12, 0.99);
 
-		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt(elGamal.getEllipticCurve(), "Das ist ein Test", elGamal.getPublicKey());
-		final List<Chiffrat> chiffrats = elGamalEncrypt.encrypt();
-//		for (int i = 0; i < chiffrats.size(); i++) {
-//			System.out.println(chiffrats.get(i));
-//		}
+		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
+		final CipherList chiffrats = elGamalEncrypt.encrypt();
 		
 		System.out.println(chiffrats.toString());
 		
@@ -32,8 +27,8 @@ public class ElGamalSignateTest {
 		
 		System.out.println("Signature: "+signature);
 		
-		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), chiffrats, elGamal.getEllipticCurve());
-		System.out.println(elGamalDecrypt.decryppt());
+		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
+		System.out.println(elGamalDecrypt.decrypt());
 		
 		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
 		try {
@@ -47,8 +42,8 @@ public class ElGamalSignateTest {
 	public void ElGamalSignateTest2() {
 		final ElGamal elGamal = new ElGamal(64, 0.99);
 
-		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt(elGamal.getEllipticCurve(), "Das ist ein Test", elGamal.getPublicKey());
-		final List<Chiffrat> chiffrats = elGamalEncrypt.encrypt();
+		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
+		final CipherList chiffrats = elGamalEncrypt.encrypt();
 		
 		System.out.println(chiffrats.toString());
 		
@@ -57,8 +52,8 @@ public class ElGamalSignateTest {
 		
 		System.out.println("Signature: "+signature);
 		
-		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), chiffrats, elGamal.getEllipticCurve());
-		System.out.println(elGamalDecrypt.decryppt());
+		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
+		System.out.println(elGamalDecrypt.decrypt());
 		
 		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
 		try {
@@ -73,8 +68,8 @@ public class ElGamalSignateTest {
 	public void ElGamalSignateTest3() {
 		final ElGamal elGamal = new ElGamal(128, 0.99);
 
-		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt(elGamal.getEllipticCurve(), "Das ist ein Test", elGamal.getPublicKey());
-		final List<Chiffrat> chiffrats = elGamalEncrypt.encrypt();
+		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
+		final CipherList chiffrats = elGamalEncrypt.encrypt();
 		
 		System.out.println(chiffrats.toString());
 		
@@ -83,8 +78,8 @@ public class ElGamalSignateTest {
 		
 		System.out.println("Signature: "+signature);
 		
-		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), chiffrats, elGamal.getEllipticCurve());
-		System.out.println(elGamalDecrypt.decryppt());
+		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
+		System.out.println(elGamalDecrypt.decrypt());
 		
 		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
 		try {
@@ -98,8 +93,8 @@ public class ElGamalSignateTest {
 	public void ElGamalSignateTest4() {
 		final ElGamal elGamal = new ElGamal(256, 0.99);
 
-		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt(elGamal.getEllipticCurve(), "Das ist ein Test", elGamal.getPublicKey());
-		final List<Chiffrat> chiffrats = elGamalEncrypt.encrypt();
+		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
+		final CipherList chiffrats = elGamalEncrypt.encrypt();
 		
 		System.out.println(chiffrats.toString());
 		
@@ -108,8 +103,8 @@ public class ElGamalSignateTest {
 		
 		System.out.println("Signature: "+signature);
 		
-		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), chiffrats, elGamal.getEllipticCurve());
-		System.out.println(elGamalDecrypt.decryppt());
+		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
+		System.out.println(elGamalDecrypt.decrypt());
 		
 		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
 		try {
@@ -126,8 +121,8 @@ public class ElGamalSignateTest {
 		System.out.println();
 		System.out.println();
 		
-		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt(elGamal.getEllipticCurve(), "Das ist ein Test", elGamal.getPublicKey());
-		final List<Chiffrat> chiffrats = elGamalEncrypt.encrypt();
+		final ElGamalEncrypt elGamalEncrypt = new ElGamalEncrypt("Das ist ein Test", elGamal.getPublicKey());
+		final CipherList chiffrats = elGamalEncrypt.encrypt();
 		
 		System.out.println("Chiffrat" + chiffrats.toString());
 		
@@ -136,8 +131,8 @@ public class ElGamalSignateTest {
 		
 		System.out.println("Signature: "+signature);
 		
-		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), chiffrats, elGamal.getEllipticCurve());
-		System.out.println("Entschlüsselte Text: "+elGamalDecrypt.decryppt());
+		final ElGamalDecrypt elGamalDecrypt = new ElGamalDecrypt(elGamal.getPrivateKey(), elGamal.getPublicKey(), chiffrats);
+		System.out.println("Entschlüsselte Text: "+elGamalDecrypt.decrypt());
 		
 		final ElGamalVerificate verificate = new ElGamalVerificate(elGamal.getPublicKey(), signature, chiffrats.toString());
 		try {

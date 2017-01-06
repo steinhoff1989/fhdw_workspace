@@ -25,10 +25,10 @@ public class ElGamalVerificate {
 		final BigInteger u1 = w.multiply(hashOfText).mod(this.publicKey.getQ());
 		final BigInteger u2 = this.signature.getR().multiply(w).mod(this.publicKey.getQ());
 
-		final EllipticCurvePoint u1g = this.publicKey.getEc().powerFast(this.publicKey.getG(), u1);
-		final EllipticCurvePoint u2y = this.publicKey.getEc().powerFast(this.publicKey.getY(), u2);
+		final EllipticCurvePoint u1g = EC_Ypower2EqualsXpower3MinusX.powerFast(this.publicKey.getG(), u1, this.publicKey.getP());
+		final EllipticCurvePoint u2y = EC_Ypower2EqualsXpower3MinusX.powerFast(this.publicKey.getY(), u2, this.publicKey.getP());
 
-		final EllipticCurvePoint uv = this.publicKey.getEc().calculateConjunctionPoint(u1g, u2y);
+		final EllipticCurvePoint uv = EC_Ypower2EqualsXpower3MinusX.calculateConjunctionPoint(u1g, u2y, this.publicKey.getP());
 		
 		System.out.println("Q: "+this.publicKey.getQ());
 		System.out.println("r: "+this.signature.getR().mod(this.publicKey.getQ()));
