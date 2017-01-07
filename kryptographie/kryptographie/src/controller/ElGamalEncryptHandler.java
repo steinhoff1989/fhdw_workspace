@@ -76,24 +76,7 @@ public class ElGamalEncryptHandler {
 	}
 
 	public void btn_elGamalEncrypt_saveCiphers(final ActionEvent e) {
-		if (this.cipherList == null) {
-			JOptionPane.showMessageDialog(null, "The text is not encrypted. Please encrypt first!");
-		} else {
-			final JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
-			fileChooser.setSelectedFile(new File("ciphers.txt"));
-			if (fileChooser.showSaveDialog(this.view) == JFileChooser.APPROVE_OPTION) {
-				final File file = fileChooser.getSelectedFile();
-
-				try {
-					this.cipherList.saveToFile(file.getAbsolutePath(), true);
-					JOptionPane.showMessageDialog(null,
-							"Encrypted cipherList successfully saved in:\n " + file.getAbsolutePath());
-				} catch (final IOException e1) {
-					JOptionPane.showMessageDialog(null, "Something went wrong. Maybe a wrong path?");
-				}
-			}
-		}
+		
 
 	}
 
@@ -112,6 +95,25 @@ public class ElGamalEncryptHandler {
 		this.cipherList = elGamalEncrypt.encrypt();
 
 		this.view.getTxt_elGamalEncrypt_ciphers().setText(this.cipherList.toString());
+		
+		if (this.cipherList == null) {
+			JOptionPane.showMessageDialog(null, "The text is not encrypted. Please encrypt first!");
+		} else {
+			final JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+			fileChooser.setSelectedFile(new File("ciphers.txt"));
+			if (fileChooser.showSaveDialog(this.view) == JFileChooser.APPROVE_OPTION) {
+				final File file = fileChooser.getSelectedFile();
+
+				try {
+					this.cipherList.saveToFile(file.getAbsolutePath(), true);
+					JOptionPane.showMessageDialog(null,
+							"Encrypted cipherList successfully saved in:\n " + file.getAbsolutePath());
+				} catch (final IOException e1) {
+					JOptionPane.showMessageDialog(null, "Something went wrong. Maybe a wrong path?");
+				}
+			}
+		}
 	}
 
 }

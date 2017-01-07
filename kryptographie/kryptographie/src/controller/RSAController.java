@@ -14,6 +14,7 @@ public class RSAController {
 	private final VerifyHandler verifyHandler;
 	private final ElGamalKeysHandler elGamalKeysHandler;
 	private final ElGamalEncryptHandler elGamalEncryptHandler;
+	private final ElGamalDecryptHandler elGamalDecryptHandler;
 		
 	public RSAController(final RSAView view) {
 		this.view = view;
@@ -23,6 +24,7 @@ public class RSAController {
 		this.verifyHandler = new VerifyHandler(view);
 		this.elGamalKeysHandler = new ElGamalKeysHandler(view);
 		this.elGamalEncryptHandler = new ElGamalEncryptHandler(view);
+		this.elGamalDecryptHandler = new ElGamalDecryptHandler(view);
 	}
 
 	public void btn_primes_empty_clicked(final ActionEvent e) {
@@ -100,5 +102,21 @@ public class RSAController {
 	public void btn_elGamalEncrypt_encrypt(final ActionEvent e) {
 		this.elGamalEncryptHandler.btn_elGamalEncrypt_encrypt(e);
 		
+	}
+
+	public void btn_elGamalDecrypt_decrypt(final ActionEvent e) {
+		this.elGamalDecryptHandler.btn_elGamalDecrypt_decrypt(e);
+	}
+
+	public void btn_elGamalDecrypt_selectCipherList(final ActionEvent e) {
+		this.elGamalDecryptHandler.btn_elGamalDecrypt_selectCipherList(e);
+	}
+
+	public void btn_elGamalDecrypt_selectPublicKey(final ActionEvent e) {
+		this.elGamalDecryptHandler.btn_elGamalDecrypt_selectPublicKey(e);
+	}
+
+	public void btn_elGamalDecrypt_selectPrivateKey(final ActionEvent e) {
+		this.elGamalDecryptHandler.btn_elGamalDecrypt_selectPrivateKey(e);
 	}
 }

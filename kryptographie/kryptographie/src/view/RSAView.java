@@ -22,7 +22,6 @@ import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
@@ -135,11 +134,18 @@ public class RSAView extends JFrame {
 	private final JTextArea txt_elGamalEncrypt_text;
 	private final JTextArea txt_elGamalEncrypt_ciphers;
 	private final JButton btn_elGamalEncrypt_encrypt;
-	private final JButton btn_elGamalEncrypt_saveCiphers;
 	private final JButton btn_elGamalEncrypt_selectTextFile;
 	private final JButton btn_elGamalEncrypt_selectPublicKeyFile;
 	private final JLabel lbl_elGamalEncrypt_selectPublicKeyFile;
 	private final JLabel lbl_elGamalEncrypt_selectTextFile;
+	private final JTextArea txt_elGamalDecrypt_decryptedText;
+	private final JButton btn_elGamalDecrypt_selectPrivateKey;
+	private final JLabel lbl_elGamalDecrypt_selectPrivateKey;
+	private final JButton btn_elGamalDecrypt_selectPublicKey;
+	private final JLabel lbl_elGamalDecrypt_selectPublicKey;
+	private final JButton btn_elGamalDecrypt_selectCipherList;
+	private final JLabel lbl_elGamalDecrypt_selectCipherList;
+	private final JButton btn_elGamalDecrypt_decrypt;
 
 	/**
 	 * Launch the application.
@@ -193,7 +199,7 @@ public class RSAView extends JFrame {
 		this.pane_main.setLayout(null);
 
 		final JTabbedPane tabbed_main = new JTabbedPane(JTabbedPane.TOP);
-		tabbed_main.setBounds(5, 0, 717, 500);
+		tabbed_main.setBounds(5, 0, 717, 515);
 		this.pane_main.add(tabbed_main);
 		
 		final JPanel panel_elGamal_generate_keys = new JPanel();
@@ -434,7 +440,7 @@ public class RSAView extends JFrame {
 		panel_elGamal_encrypt.add(label_7);
 		
 		final JScrollPane scrollPane_32 = new JScrollPane();
-		scrollPane_32.setBounds(10, 262, 692, 199);
+		scrollPane_32.setBounds(10, 262, 692, 198);
 		panel_elGamal_encrypt.add(scrollPane_32);
 		
 		this.txt_elGamalEncrypt_ciphers = new JTextArea();
@@ -444,24 +450,13 @@ public class RSAView extends JFrame {
 		lblCiphers.setBounds(10, 246, 56, 16);
 		panel_elGamal_encrypt.add(lblCiphers);
 		
-		this.btn_elGamalEncrypt_encrypt = new JButton("Encrypt");
-		this.btn_elGamalEncrypt_encrypt.setBounds(360, 146, 342, 39);
+		this.btn_elGamalEncrypt_encrypt = new JButton("Encrypt & Save");
+		this.btn_elGamalEncrypt_encrypt.setBounds(360, 196, 342, 39);
 		panel_elGamal_encrypt.add(this.btn_elGamalEncrypt_encrypt);
 		this.btn_elGamalEncrypt_encrypt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				RSAView.this.controler.btn_elGamalEncrypt_encrypt(e);
-			}
-		});
-		
-		
-		this.btn_elGamalEncrypt_saveCiphers = new JButton("Save ciphers to text");
-		this.btn_elGamalEncrypt_saveCiphers.setBounds(360, 196, 342, 39);
-		panel_elGamal_encrypt.add(this.btn_elGamalEncrypt_saveCiphers);
-		this.btn_elGamalEncrypt_saveCiphers.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				RSAView.this.controler.btn_elGamalEncrypt_saveCiphers(e);
 			}
 		});
 		
@@ -492,7 +487,75 @@ public class RSAView extends JFrame {
 		this.lbl_elGamalEncrypt_selectPublicKeyFile = new JLabel("No public key selected");
 		this.lbl_elGamalEncrypt_selectPublicKeyFile.setBounds(541, 90, 161, 14);
 		panel_elGamal_encrypt.add(this.lbl_elGamalEncrypt_selectPublicKeyFile);
-
+		
+		final JPanel panel_elGamal_decrypt = new JPanel();
+		tabbed_main.addTab("ElGamal Decrypt", null, panel_elGamal_decrypt, null);
+		panel_elGamal_decrypt.setLayout(null);
+		
+		final JScrollPane scrollPane_33 = new JScrollPane();
+		scrollPane_33.setBounds(10, 186, 692, 259);
+		panel_elGamal_decrypt.add(scrollPane_33);
+		
+		this.txt_elGamalDecrypt_decryptedText = new JTextArea();
+		scrollPane_33.setViewportView(this.txt_elGamalDecrypt_decryptedText);
+		
+		final JLabel lblDecryptedText_1 = new JLabel("Decrypted Text");
+		lblDecryptedText_1.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblDecryptedText_1.setBounds(10, 161, 110, 14);
+		panel_elGamal_decrypt.add(lblDecryptedText_1);
+		
+		this.btn_elGamalDecrypt_selectPrivateKey = new JButton("Select private key");
+		this.btn_elGamalDecrypt_selectPrivateKey.setBounds(10, 11, 171, 39);
+		panel_elGamal_decrypt.add(this.btn_elGamalDecrypt_selectPrivateKey);
+		this.btn_elGamalDecrypt_selectPrivateKey.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				RSAView.this.controler.btn_elGamalDecrypt_selectPrivateKey(e);
+			}
+		});
+		
+		this.lbl_elGamalDecrypt_selectPrivateKey = new JLabel("No private key selected");
+		this.lbl_elGamalDecrypt_selectPrivateKey.setBounds(191, 23, 262, 14);
+		panel_elGamal_decrypt.add(this.lbl_elGamalDecrypt_selectPrivateKey);
+		
+		this.btn_elGamalDecrypt_selectPublicKey = new JButton("Select public key");
+		this.btn_elGamalDecrypt_selectPublicKey.setBounds(10, 61, 171, 39);
+		panel_elGamal_decrypt.add(this.btn_elGamalDecrypt_selectPublicKey);
+		this.btn_elGamalDecrypt_selectPublicKey.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				RSAView.this.controler.btn_elGamalDecrypt_selectPublicKey(e);
+			}
+		});
+		
+		this.lbl_elGamalDecrypt_selectPublicKey = new JLabel("No public key selected");
+		this.lbl_elGamalDecrypt_selectPublicKey.setBounds(191, 73, 262, 14);
+		panel_elGamal_decrypt.add(this.lbl_elGamalDecrypt_selectPublicKey);
+		
+		this.btn_elGamalDecrypt_selectCipherList = new JButton("Select cipherlist");
+		this.btn_elGamalDecrypt_selectCipherList.setBounds(10, 111, 171, 39);
+		panel_elGamal_decrypt.add(this.btn_elGamalDecrypt_selectCipherList);
+		this.btn_elGamalDecrypt_selectCipherList.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				RSAView.this.controler.btn_elGamalDecrypt_selectCipherList(e);
+			}
+		});
+		
+		this.lbl_elGamalDecrypt_selectCipherList = new JLabel("No cipherlist selected");
+		this.lbl_elGamalDecrypt_selectCipherList.setBounds(191, 123, 262, 14);
+		panel_elGamal_decrypt.add(this.lbl_elGamalDecrypt_selectCipherList);
+		
+		this.btn_elGamalDecrypt_decrypt = new JButton("DECRYPT");
+		this.btn_elGamalDecrypt_decrypt.setBounds(463, 111, 239, 39);
+		panel_elGamal_decrypt.add(this.btn_elGamalDecrypt_decrypt);
+		this.btn_elGamalDecrypt_decrypt.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				RSAView.this.controler.btn_elGamalDecrypt_decrypt(e);
+			}
+		});
+		
 		final JPanel panel_createKeys = new JPanel();
 		// panel_createKeys.addKeyListener(new KeyAdapter()
 		// {
@@ -1162,18 +1225,13 @@ public class RSAView extends JFrame {
 				this.lbl_verifySig_result.setBounds(598, 305, 104, 14);
 				panel_signaturVerification.add(this.lbl_verifySig_result);
 
-		final JToolBar toolBar_1 = new JToolBar();
-		toolBar_1.setEnabled(false);
-		toolBar_1.setFloatable(false);
-		toolBar_1.setBounds(5, 509, 101, 18);
-		this.pane_main.add(toolBar_1);
-
-		final JLabel lblNewLabel_3 = new JLabel("v 1.0");
-		toolBar_1.add(lblNewLabel_3);
-
 		this.progressBar = new JProgressBar();
-		this.progressBar.setBounds(652, 513, 70, 14);
+		this.progressBar.setBounds(652, 517, 70, 14);
 		this.pane_main.add(this.progressBar);
+		
+				final JLabel lblNewLabel_3 = new JLabel("v 1.0");
+				lblNewLabel_3.setBounds(15, 517, 25, 14);
+				this.pane_main.add(lblNewLabel_3);
 		// progressBar.setStringPainted(true);
 		// progressBar.setMaximum(10);
 		// progressBar.setMinimum(0);
@@ -1729,5 +1787,21 @@ public class RSAView extends JFrame {
 
 	public JLabel getLbl_elGamalEncrypt_selectTextFile() {
 		return this.lbl_elGamalEncrypt_selectTextFile;
+	}
+
+	public JTextArea getTxt_elGamalDecrypt_decryptedText() {
+		return this.txt_elGamalDecrypt_decryptedText;
+	}
+
+	public JLabel getLbl_elGamalDecrypt_selectPrivateKey() {
+		return this.lbl_elGamalDecrypt_selectPrivateKey;
+	}
+
+	public JLabel getLbl_elGamalDecrypt_selectPublicKey() {
+		return this.lbl_elGamalDecrypt_selectPublicKey;
+	}
+
+	public JLabel getLbl_elGamalDecrypt_selectCipherList() {
+		return this.lbl_elGamalDecrypt_selectCipherList;
 	}
 }
